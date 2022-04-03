@@ -1,52 +1,70 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, reactive, ref, toRef, toRefs, unref } from 'vue'
+import { useFloating } from '../../../use-floating/src/index'
 
-defineProps<{ msg: string }>()
 
-const count = ref(0)
+const { x, y, floating,reference,setReference,setFloating} = toRefs(useFloating({
+  placement: 'right',
+  strategy: 'absolute'
+  // middleware: [shift()],
+}));
+
+// let reference = toRef(floatData, 'reference');
+// let x = floatData.x;
+// let y = floatData.y;
+// let floating = floatData.floating;
+
+
+
+console.log(reference);
+
+const tipStyle = reactive({
+  top: `${unref(y)}px`,
+  left: `${unref(x)}px`
+})
+
+// onMounted(() => {
+//   console.log(reference, origin)
+//   reference.value = origin.value;  
+//   // floating.value = ref(float);  
+// })
+
+const setEl =  (type: 'reference'| 'floating',el:Element)=> {
+  if(type == 'reference' && reference){
+    reference.value = el
+  }
+  if(type == 'floating' && floating){
+    floating.value = el
+  }
+}
+
+
+
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
-
-  <p>See <code>README.md</code> for more information.</p>
-
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Docs
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+  <div>
+    <h1>use floating</h1>
+    <div>
+      x:{{ x }}
+      y:{{ y }}
+    </div>
+    <button :ref="setReference">drop</button>
+    <div :ref="setFloating" class="t-floating" :style="{
+      left: `${x}px`
+    }">
+      tooltip content Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, esse velit magnam dolor nobis quod nihil enim totam debitis fugit.
+      Blanditiis, magni pariatur natus autem dolorum sapiente quae dolor adipisci.
+    </div>
+  </div>
 </template>
 
 <style scoped>
-a {
-  color: #42b983;
-}
-
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
-
-code {
-  background-color: #eee;
-  padding: 2px 4px;
+.t-floating {
+  position: absolute;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  color: #304455;
+  background: #999;
+  color: white;
 }
 </style>

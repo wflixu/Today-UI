@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "dev:r": "pnpm dev --filter=react-demo",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev:v": "pnpm dev --filter=vue-demo",
+    "build": "pnpm build --filter=use-floating",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
