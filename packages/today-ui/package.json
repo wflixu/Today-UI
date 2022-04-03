@@ -1,12 +1,22 @@
 {
   "name": "today-ui",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "dropdown menu toolptip powered by vue3, floating-ui",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "floating-ui",
+    "@floating-ui/dom",
+    "vue3",
+    "composition api",
+    "tooltip",
+    "menu",
+    "dropdown",
+    "contextmenu",
+    "modal"
+  ],
+  "author": "wflixu",
+  "license": "MIT"
 }
