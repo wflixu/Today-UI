@@ -1,0 +1,19 @@
+lockfileVersion: 5.3
+
+specifiers:
+  '@floating-ui/dom': ^0.4.2
+
+dependencies:
+  '@floating-ui/dom': 0.4.2
+
+packages:
+
+  /@floating-ui/core/0.6.1:
+    resolution: {integrity: sha512-Y30eVMcZva8o84c0HcXAtDO4BEzPJMvF6+B7x7urL2xbAqVsGJhojOyHLaoQHQYjb6OkqRq5kO+zeySycQwKqg==}
+    dev: false
+
+  /@floating-ui/dom/0.4.2:
+    resolution: {integrity: sha512-2/4vOhMAujkMmGqGX1Gut84phe5MNfk1kGeM+RSTJCpeR0SWR2/RR+/f1r1msOvTQa28wn7HEhxGe71CjYY/vw==}
+    dependencies:
+      '@floating-ui/core': 0.6.1
+    dev: false

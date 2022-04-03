@@ -1,5 +1,8 @@
+
+import DropView from '@/views/DropView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import Floating from '../views/Floating.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +11,16 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/drop',
+      name: 'drop',
+      component: DropView
+    },
+    {
+      path: '/floating',
+      name: 'FloatingVue',
+      component: Floating
     },
     {
       path: '/about',

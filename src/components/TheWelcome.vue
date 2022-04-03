@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineComponent, ref, computed, reactive } from 'vue';
+
 const origin = ref();
 const visible = ref(false);
 const position = ref(['top', 'right']);
@@ -11,13 +12,13 @@ const handleVisible = () => (visible.value = !visible.value);
   <div>
     <div ref="origin" class=" h-40 w-40 bg-gray border-light-800 border">origin</div>
     <button @click="handleVisible" style="margin:20px;">{{ title }}</button>
-    <d-flexible-overlay
+    <t-flexible-overlay
       v-model="visible"
       :origin="origin"
       :position="position"
       show-arrow
       class="custom-overlay"
-    >hello world</d-flexible-overlay>
+    >hello world</t-flexible-overlay>
   </div>
 </template>
 <style>
