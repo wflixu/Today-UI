@@ -1,6 +1,6 @@
 {
   "name": "use-floating",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "using floating-ui with vue3 composition api",
   "main": "dist/use-floating.js",
   "module": "dist/use-floating.esm.js",
@@ -24,9 +24,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=build rollup -c"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "floating-ui",
+    "@floating-ui/dom",
+    "vue3",
+    "composition api",
+    "tooltip",
+    "menu",
+    "dropdown",
+    "contextmenu",
+    "modal"
+  ],
+  "author": "wflixu",
+  "license": "MIT",
   "dependencies": {
     "@floating-ui/dom": "^0.4.2",
     "vue": "^3.2.31",
