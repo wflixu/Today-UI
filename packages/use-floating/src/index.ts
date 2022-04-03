@@ -25,14 +25,12 @@ type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'plac
 };
 
 export type UseFloatingReturn = Data & {
-  reference: Ref<Element>;
-  floating: Ref<Element>;
-  refs:{
+  refs: {
     reference: Ref<Element>;
     floating: Ref<Element>;
   }
-  setReference: (ref: Element) => void;
-  setFloating: (ref: Element) => void;
+  reference: (ref: Element) => void;
+  floating: (ref: Element) => void;
 };
 
 export function useFloating({
@@ -45,7 +43,18 @@ export function useFloating({
   }): UseFloatingReturn {
   const reference = ref<Element>();
   const floating = ref<Element>();
-  
+
+  const setReference = (node: Element) => {
+    if (reference) {
+      reference.value = node;
+    }
+  }
+  const setFloating = (node: Element) => {
+    if (floating) {
+      floating.value = node;
+    }
+  }
+
   const returnData = reactive<Partial<UseFloatingReturn>>(
     {
       x: 0,
@@ -53,22 +62,10 @@ export function useFloating({
       strategy: unref(strategy),
       placement: unref(placement),
       middlewareData: {},
-      reference,
-      floating,
+      reference: setReference,
+      floating: setFloating,
     }
   );
-
-
- const setReference = (node:Element)=>{
-   if(reference){
-     reference.value = node;
-   }
- }
- const setFloating = (node:Element)=>{
-   if(floating){
-     floating.value = node;
-   }
- }
   const update = async () => {
     console.log('update:start', reference.value, floating.value);
     if (!reference.value || !floating.value) {
@@ -83,9 +80,6 @@ export function useFloating({
     Object.assign(returnData, data);
   };
   watchEffect(update);
-  
-   returnData.setReference = setReference;
-   returnData.setFloating = setFloating;
   return returnData as unknown as UseFloatingReturn;
 }
 
