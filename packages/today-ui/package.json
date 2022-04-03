@@ -17,6 +17,10 @@
     "contextmenu",
     "modal"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wflixu/Today-UI"
+  },
   "author": "wflixu",
   "license": "MIT"
 }

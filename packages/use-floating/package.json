@@ -37,6 +37,10 @@
   ],
   "author": "wflixu",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wflixu/Today-UI"
+  },
   "dependencies": {
     "@floating-ui/dom": "^0.4.2",
     "vue": "^3.2.31",
