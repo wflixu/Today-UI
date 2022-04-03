@@ -7,6 +7,7 @@
     "dev:r": "pnpm dev --filter=react-demo",
     "dev:v": "pnpm dev --filter=vue-demo",
     "build": "pnpm build --filter=use-floating",
+    "publish": "pnpm build && cd ./packages/use-floating &&  pnpm publish",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
