@@ -3,15 +3,15 @@ lockfileVersion: 5.3
 specifiers:
   '@vitejs/plugin-vue': ^2.3.0
   '@vitejs/plugin-vue-jsx': ^1.3.7
+  regenerator-runtime: ^0.13.9
   typescript: ^4.5.4
-  use-floating: ^0.0.3
   vite: ^2.9.0
   vue: ^3.2.25
   vue-tsc: ^0.29.8
 
 dependencies:
   '@vitejs/plugin-vue-jsx': 1.3.9
-  use-floating: link:../use-floating
+  regenerator-runtime: 0.13.9
   vue: 3.2.31
 
 devDependencies:
@@ -1207,6 +1207,10 @@ packages:
       pug-runtime: 3.0.1
       pug-strip-comments: 2.0.0
     dev: true
+
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+    dev: false
 
   /request-light/0.5.7:
     resolution: {integrity: sha512-i/wKzvcx7Er8tZnvqSxWuNO5ZGggu2UgZAqj/RyZ0si7lBTXL7kZiI/dWxzxnQjaY7s5HEy1qK21Do4Ncr6cVw==}

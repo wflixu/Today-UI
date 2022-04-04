@@ -1,13 +1,11 @@
 export default {
   presets: [
-    [
-      "@babel/preset-env",
-      {
-        useBuiltIns: "usage",
-        debug: true,
-        corejs: 3,
-      },
-    ],
+    // [
+    //   "@babel/preset-env",
+    //   {
+    //     loose:true
+    //   },
+    // ],
     "@babel/typescript",
     "vue",
   ],

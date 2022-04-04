@@ -66,7 +66,6 @@ export function useFloating({
     }
   );
   const update = async () => {
-    console.log('update:start', reference.value, floating.value);
     if (!reference.value || !floating.value) {
       return;
     }
@@ -75,7 +74,6 @@ export function useFloating({
       placement: unref(placement),
       strategy: unref(strategy),
     });
-    console.log(data);
     Object.assign(returnData, data);
   };
   watchEffect(update);
