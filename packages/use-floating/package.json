@@ -1,6 +1,6 @@
 {
   "name": "use-floating",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "using floating-ui with vue3 composition api",
   "main": "dist/use-floating.js",
   "module": "dist/use-floating.esm.js",
@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=build rollup -c"
+    "build": "NODE_ENV=build rollup -c",
+    "build:type":"tsc -p ./tsconfig.type.json"
   },
   "keywords": [
     "floating-ui",

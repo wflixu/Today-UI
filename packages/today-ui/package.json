@@ -2,9 +2,27 @@
   "name": "today-ui",
   "version": "0.0.1",
   "description": "dropdown menu toolptip powered by vue3, floating-ui",
-  "main": "index.js",
+  "main": "dist/use-floating.js",
+  "module": "dist/use-floating.esm.js",
+  "unpkg": "dist/use-floating.min.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/use-floating.esm.js",
+      "require": "./dist/use-floating.cjs"
+    },
+    "./package.json": "./package.json",
+    "./src/index.ts": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=build rollup -c"
   },
   "keywords": [
     "floating-ui",
@@ -22,5 +40,8 @@
     "url": "https://github.com/wflixu/Today-UI"
   },
   "author": "wflixu",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "use-floating": "^0.0.1"
+  }
 }

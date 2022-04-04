@@ -5,10 +5,9 @@ import {
   Middleware,
   SideObject,
   Strategy,
-  VirtualElement,
 } from '@floating-ui/core';
 import { computePosition, arrow as arrowCore, Placement } from '@floating-ui/dom';
-import { computed, onMounted, reactive, ref, Ref, toRefs, watchEffect, unref, isRef } from 'vue';
+import { reactive, ref, Ref, watchEffect, unref, isRef } from 'vue';
 
 
 export * from '@floating-ui/dom';
