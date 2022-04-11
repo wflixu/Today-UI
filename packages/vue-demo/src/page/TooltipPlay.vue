@@ -1,7 +1,9 @@
 <template>
     <div>
         <h2>component tooltip</h2>
-        <t-tooltip></t-tooltip>
+        <t-tooltip>
+            <button>test button</button>
+        </t-tooltip>
     </div>
 </template>
 

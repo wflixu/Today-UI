@@ -1,11 +1,10 @@
-import { ComputePositionConfig, ComputePositionReturn, Middleware, SideObject, Strategy } from '@floating-ui/core';
-import { Placement } from '@floating-ui/dom';
+import { ComputePositionConfig, ComputePositionReturn, Middleware, SideObject, Strategy, Placement } from '@floating-ui/dom';
 import { Ref } from 'vue';
 export * from '@floating-ui/dom';
 export declare type MaybeRef<T> = Ref<T> | T;
 declare type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
-    x: MaybeRef<number | null>;
-    y: MaybeRef<number | null>;
+    x: Ref<number>;
+    y: Ref<number>;
 };
 declare type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy'> & {
     placement: MaybeRef<Placement>;
@@ -13,8 +12,8 @@ declare type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform'
 };
 export declare type UseFloatingReturn = Data & {
     refs: {
-        reference: Ref<Element>;
-        floating: Ref<Element>;
+        reference: Ref<Element | undefined>;
+        floating: Ref<Element | undefined>;
     };
     reference: (ref: Element) => void;
     floating: (ref: Element) => void;

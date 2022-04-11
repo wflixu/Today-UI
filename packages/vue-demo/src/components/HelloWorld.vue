@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
 import { computed, toRefs } from 'vue'
-import { useFloating,shift, flip, offset } from './../../../use-floating/'
+import { useFloating,shift, flip, offset } from './../../../use-floating/src/index'
 
 
-const { x, y, floating, reference } = toRefs(useFloating({
+const { x, y, floating, reference } = useFloating({
   placement: 'top',
   strategy: 'absolute',
   middleware: [flip(), offset(10), shift()],
-}));
+});
 
 const tipStyle = computed(() => {
   return {

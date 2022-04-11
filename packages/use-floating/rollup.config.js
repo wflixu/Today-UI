@@ -1,9 +1,21 @@
 import path from "path";
-import { babel } from "@rollup/plugin-babel";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
+
 import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import commonjs from "@rollup/plugin-commonjs";
+
+import ts from 'rollup-plugin-typescript2';
+import resolve from '@rollup/plugin-node-resolve';
+
+const pkg = require('./package.json');
+const name = pkg.name;
+
+const banner = `/*!
+* ${pkg.name} v${pkg.version}
+* (c) ${new Date().getFullYear()} ${pkg.author}
+* @license MIT
+*/
+`;
 
 const input = path.join(__dirname, "src/index.ts");
 
@@ -11,8 +23,9 @@ const bundles = [
   {
     input,
     output: {
-      file: path.join(__dirname, "dist/use-floating.esm.js"),
+      file: pkg.module,
       format: "esm",
+      banner
     },
   },
   {
@@ -20,17 +33,18 @@ const bundles = [
     output: {
       file: path.join(__dirname, "dist/use-floating.esm.min.js"),
       format: "esm",
+      banner
     },
   },
   {
     input,
     output: {
+      banner,
       name:'UseFloating',
-      file: path.join(__dirname, "dist/use-floating.js"),
+      file: path.join(__dirname, "dist/use-floating.global.js"),
       format: "umd",
       globals: {
         vue: "Vue",
-        "@floating-ui/core": "FloatingUICore",
         "@floating-ui/dom": "FloatingUIDOM",
       },
     },
@@ -39,11 +53,11 @@ const bundles = [
     input,
     output: {
       name: "UseFloating",
-      file: path.join(__dirname, "dist/use-floating.min.js"),
+      banner,
+      file: path.join(__dirname, "dist/use-floating.global.min.js"),
       format: "umd",
       globals: {
         vue: "Vue",
-        "@floating-ui/core": "FloatingUICore",
         "@floating-ui/dom": "FloatingUIDOM",
       },
     },
@@ -51,7 +65,8 @@ const bundles = [
   {
     input,
     output: {
-      file: path.join(__dirname, "dist/use-floating.cjs"),
+      banner,
+      file: pkg.main,
       format: "cjs",
     },
   },
@@ -60,15 +75,24 @@ const bundles = [
 const buildExport = bundles.map(({ input, output }) => ({
   input,
   output,
-  external: ["vue", "@floating-ui/core", "@floating-ui/dom"],
+  external: ["vue", "@floating-ui/dom"],
   plugins: [
-    commonjs(),
-    nodeResolve({ extensions: [".ts"] }),
-    babel({
-      babelHelpers: "bundled",
-      extensions: [".ts"],
-      plugins: [],
+    ts({
+      check: false,
+      tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+      cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
+      tsconfigOverride: {
+        compilerOptions: {
+          sourceMap: output.sourcemap,
+          declaration: true,
+          declarationMap: true,
+        },
+        exclude: ['__tests__', 'test-dts'],
+      },
     }),
+    resolve(),
+    commonjs(),
+   
     replace({
       __DEV__: output.file.includes(".min.")
         ? "false"
@@ -79,25 +103,4 @@ const buildExport = bundles.map(({ input, output }) => ({
   ],
 }));
 
-const devExport = {
-  input: path.join(__dirname, "src/index.ts"),
-  output: {
-    file: path.join(__dirname, `test/visual/dist/index.mjs`),
-    format: "esm",
-  },
-  plugins: [
-    commonjs(),
-    nodeResolve({ extensions: [".ts"] }),
-    babel({
-      babelHelpers: "bundled",
-      extensions: [".ts"],
-      plugins: [],
-    }),
-    replace({
-      __DEV__: "true",
-      preventAssignment: true,
-    }),
-  ],
-};
-
-export default process.env.NODE_ENV === "build" ? buildExport : devExport;
+export default buildExport ;

@@ -1,0 +1,10 @@
+.t-tooltip{
+  display: unset;
+}
+.t-tooltip-content {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #999;
+    color: white;
+}
