@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { computed, toRefs } from 'vue'
-import { useFloating,shift, flip, offset } from './../../../use-floating/src/index'
+import { useFloating,shift, flip, offset } from 'use-floating'
 
 
 const { x, y, floating, reference } = useFloating({

@@ -77,6 +77,8 @@ const buildExport = bundles.map(({ input, output }) => ({
   output,
   external: ["vue", "@floating-ui/dom"],
   plugins: [
+    resolve(),
+    commonjs(),
     ts({
       check: false,
       tsconfig: path.resolve(__dirname, 'tsconfig.json'),
@@ -84,14 +86,11 @@ const buildExport = bundles.map(({ input, output }) => ({
       tsconfigOverride: {
         compilerOptions: {
           sourceMap: output.sourcemap,
-          declaration: true,
-          declarationMap: true,
+         
         },
         exclude: ['__tests__', 'test-dts'],
       },
     }),
-    resolve(),
-    commonjs(),
    
     replace({
       __DEV__: output.file.includes(".min.")

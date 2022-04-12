@@ -1,11 +1,11 @@
 {
   "name": "use-floating",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "using floating-ui with vue3 composition api",
   "main": "dist/use-floating.js",
   "module": "dist/use-floating.esm.js",
   "unpkg": "dist/use-floating.global.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/use-floating.esm.js",
@@ -43,12 +43,12 @@
     "url": "https://github.com/wflixu/Today-UI"
   },
   "peerDependencies": {
-    "vue": "^3.2.0",
-    "@floating-ui/dom": "^0.4.2"
+    "@floating-ui/dom": "^0.4.2",
+    "vue": "^3.2.0"
   },
   "dependencies": {
     "@floating-ui/dom": "^0.4.2",
-    "vue": "^3.2.31"
+    "vue": "3.2.32"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.4",
@@ -64,6 +64,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.31.0",
     "ts-jest": "^27.0.7",
+    "tslib": "^2.3.1",
     "typescript": "^4.5.2"
   }
 }

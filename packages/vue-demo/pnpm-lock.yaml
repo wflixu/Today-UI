@@ -6,7 +6,7 @@ specifiers:
   regenerator-runtime: ^0.13.9
   today-ui: 0.0.1
   typescript: ^4.5.4
-  use-floating: 0.0.7
+  use-floating: 0.0.8
   vite: ^2.9.0
   vue: ^3.2.25
   vue-tsc: ^0.29.8
