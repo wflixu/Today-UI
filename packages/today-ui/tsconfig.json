@@ -26,24 +26,21 @@
     "baseUrl": "./",
     "paths": {
       "@src/*": ["src/*"],
-      "tdesign-vue-next": ["src/*"],
-      "@common/*": ["src/_common/*"],
+      "today-ui": ["src/*"],
     }
   },
   "include": [
     "./**/*.ts",
     "./**/*.tsx",
     "src/**/*.vue",
-    "scripts/rollup.config.js"
   ],
   
   "exclude": [
     "node_modules",
-    "src/_common",
     "dist",
     "lib",
     "esm",
-    "es",
+    "es"
   ],
   "compileOnSave": false
 }

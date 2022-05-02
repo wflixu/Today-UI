@@ -15,9 +15,9 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import staticImport from 'rollup-plugin-static-import';
 import ignoreImport from 'rollup-plugin-ignore-import';
 
-import pkg from '../package.json';
+import pkg from './package.json';
 
-const name = 'tdesign';
+const name = 'today-ui';
 
 const externalDeps = Object.keys(pkg.dependencies || {}).concat([/lodash/, /@babel\/runtime/]);
 const externalPeerDeps = Object.keys(pkg.peerDependencies || {});
@@ -204,7 +204,7 @@ const umdConfig = {
     }),
   ),
   output: {
-    name: 'TDesign',
+  
     banner,
     format: 'umd',
     exports: 'named',
@@ -224,7 +224,7 @@ const umdMinConfig = {
     env: 'production',
   }),
   output: {
-    name: 'TDesign',
+    name: 'TodayUI',
     banner,
     format: 'umd',
     exports: 'named',

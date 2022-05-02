@@ -12,6 +12,10 @@ node_modules
 
 # production
 /build
+**/dist
+**/es
+**/lib
+**/esm
 
 # npm
 package-lock.json

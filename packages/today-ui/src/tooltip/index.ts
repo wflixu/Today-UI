@@ -3,7 +3,7 @@ import { withInstall, type WithInstallType } from './../shared/withInstall';
 
 
 import _Tooltip from './Tooltip';
-
+import "./style"
 
 export * from './type';
 

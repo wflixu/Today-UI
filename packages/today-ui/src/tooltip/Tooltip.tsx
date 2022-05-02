@@ -2,7 +2,6 @@
 import { computed, defineComponent, onMounted, ref } from "vue";
 import { useFloating, offset, flip, shift, type Placement } from "use-floating";
 import props from "./props";
-import './style/';
 
 export default defineComponent({
     name: "TTooltip",
