@@ -47,7 +47,7 @@ const getPlugins = ({
       target: 'esnext',
       minify: false,
       jsx: 'preserve',
-      tsconfig: 'tsconfig.json',
+      tsconfig: './tsconfig.json',
     }),
     babel({
       babelHelpers: 'runtime',
@@ -204,7 +204,7 @@ const umdConfig = {
     }),
   ),
   output: {
-  
+    name: 'TodayUI',
     banner,
     format: 'umd',
     exports: 'named',

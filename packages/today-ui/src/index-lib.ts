@@ -1,5 +1,6 @@
+
 // import './style';
-import todayui from './index';
+import TodayUI from './index';
 
 const ENV = process.env.NODE_ENV;
 if (
@@ -14,4 +15,4 @@ if (
 }
 
 export * from './index';
-export default todayui;
+export default TodayUI;
