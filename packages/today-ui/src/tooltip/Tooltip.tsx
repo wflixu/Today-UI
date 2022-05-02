@@ -1,24 +1,20 @@
 
-import { computed, defineComponent, onMounted, ref, toRef, toRefs, unref } from "vue";
-import { useFloating, Placement, offset, flip, shift } from "../../../use-floating/src/index";
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useFloating, offset, flip, shift, type Placement } from "use-floating";
+import props from "./props";
+import './style/';
 
-import './tooltip.css';
 export default defineComponent({
     name: "TTooltip",
-    props: {
-        label: {
-            type: String,
-            default: "default tip content"
-        }
-    },
+    props,
     setup(props, { slots }) {
-        console.log(slots)
+
         let defaultContent = slots.default();
         const open = ref(false);
         const { x, y, floating, reference } = useFloating({
-            placement: 'top',
+            placement: props.placement,
             strategy: 'fixed',
-            middleware: [flip(), offset(0), shift()],
+            middleware: [flip(), offset(props.offset), shift()],
         });
 
         const tipStyle = computed(() => {
@@ -31,17 +27,24 @@ export default defineComponent({
         const onClick = () => {
             open.value = true;
         }
-        
+
         const onMouseleave = () => {
             open.value = false;
         }
+
+        onMounted(() => {
+            console.log('mounted');
+            
+            console.log(defaultContent[0].el);
+            reference(defaultContent[0].el as Element);
+        })
 
         return () => {
 
             return (
                 <>
-                    <div ref={reference}  onMouseover={onClick} onMouseout={onMouseleave} className="t-tooltip">{defaultContent} </div>
-                    <div ref={floating} className="t-tooltip-content" style={{
+                    <div onMouseover={onClick} onMouseout={onMouseleave} class="t-tooltip">{defaultContent} </div>
+                    <div ref={floating} class="t-tooltip-content" style={{
                         ...tipStyle.value,
                     }}>
                         {props.label}
@@ -51,4 +54,5 @@ export default defineComponent({
             )
         }
     }
+
 })

@@ -6,7 +6,9 @@ import TooltipPlay from './page/TooltipPlay.vue';
 </script>
 
 <template>
-  <TooltipPlay/>
+  <HelloWorld />
+  <hr>
+  <TooltipPlay />
 </template>
 
 <style>

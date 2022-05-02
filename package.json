@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
     "dev:r": "pnpm dev --filter=react-demo",
-    "dev:v": "pnpm dev --filter=vue-demo",
+    "dev": "pnpm -F vue-demo  dev",
     "dev:i": "pnpm install --filter=vue-demo",
     "build": "pnpm build --filter=use-floating",
     "buildt": "pnpm build:type --filter=use-floating",
@@ -15,10 +14,12 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
-  "dependencies": {
-    
-  },
   "devDependencies": {
-     
+    "pnpm": "^6.32.9"
+  },
+  "dependencies": {
+    "less": "^4.1.2",
+    "today-ui": "^0.0.1",
+    "use-floating": "^0.0.8"
   }
 }

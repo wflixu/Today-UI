@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "target": "esnext",
+    "outDir": "lib",
+    "declaration": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": false,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "removeComments": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"],
+      "tdesign-vue-next": ["src/*"],
+      "@common/*": ["src/_common/*"],
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "src/**/*.vue",
+    "scripts/rollup.config.js"
+  ],
+  
+  "exclude": [
+    "node_modules",
+    "src/_common",
+    "dist",
+    "lib",
+    "esm",
+    "es",
+  ],
+  "compileOnSave": false
+}
