@@ -34,7 +34,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install && pnpm build
+        run: pnpm  --filter=today-ui install && pnpm build
       - run: cd ./packages/today-ui/ &&  npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
