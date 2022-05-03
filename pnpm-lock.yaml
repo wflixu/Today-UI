@@ -3,12 +3,10 @@ lockfileVersion: 5.3
 specifiers:
   less: ^4.1.2
   pnpm: ^6.32.9
-  today-ui: ^0.0.1
   use-floating: ^0.0.8
 
 dependencies:
   less: 4.1.2
-  today-ui: 0.0.1
   use-floating: 0.0.8
 
 devDependencies:
@@ -299,10 +297,6 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
-    dev: false
-
-  /today-ui/0.0.1:
-    resolution: {integrity: sha512-CRReduJcx78oyyAwMRHA8qsxA5tvG5nPgPb/3YENeurSmZeJAc6pxD3eSOffze/MVMQJVmGko//1e7lxbNDjpw==}
     dev: false
 
   /tslib/2.4.0:

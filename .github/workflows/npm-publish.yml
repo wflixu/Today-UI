@@ -9,33 +9,27 @@ on:
       - release
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
+  
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v3
+         with:
+            ref: release
       - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 6.20.3
-
+         with:
+           version: 6.20.3
       - uses: actions/setup-node@v2
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
-
       - name: Install dependencies
-        run: pnpm  --filter=today-ui install && pnpm build
-      - run: cd ./packages/today-ui/ &&  npm publish
+        run: pnpm  install 
+      - name: build
+        run: pnpm  build
+      - name: publish
+        run: cd ./packages/today-ui/ &&  npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
