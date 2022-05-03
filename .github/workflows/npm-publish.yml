@@ -25,9 +25,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm  install 
+        run: pnpm  install --filter=today-ui 
       - name: build
-        run: pnpm  build
+        run: pnpm  build --filter=today-ui
       - name: publish
         run: cd ./packages/today-ui/ &&  npm publish
         env:
