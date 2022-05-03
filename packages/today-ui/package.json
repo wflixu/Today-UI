@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env NODE_ENV=production rollup -c ./rollup.config.js",
+    "build": "cross-env NODE_ENV=production rollup -c ./rollup.config.js && pnpm build:type",
     "build:type": "tsc --emitDeclarationOnly -d --outDir es/  && tsc --emitDeclarationOnly -d --outDir lib/",
     "build:tsc": "pnpm run build:tsc-es && pnpm run build:tsc-esm && pnpm run build:tsc-lib",
     "build:tsc-es": "tsc --emitDeclarationOnly -d --outDir es/",

@@ -22,6 +22,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
+    "skipLibCheck": true,
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
