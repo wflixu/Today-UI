@@ -1,9 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import "regenerator-runtime/runtime.js";
-import TodayUI  from 'today-ui';
+
+// import TodayUI  from 'today-ui';
+import TTooltip from './../../today-ui/src/tooltip/';
 const app = createApp(App)
 
-app.use(TodayUI);
+// app.use(TodayUI);
+app.use(TTooltip)
 
 app.mount('#app')

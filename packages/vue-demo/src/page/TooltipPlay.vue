@@ -9,7 +9,11 @@
  
 <script lang="ts">
 import { defineComponent } from 'vue'
+import TTooltip from '../../../today-ui/src/tooltip/Tooltip.tsx'
 export default defineComponent({
+    components:{
+       TTooltip 
+    },
     setup() {
         return {}
     }
