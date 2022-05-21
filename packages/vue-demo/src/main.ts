@@ -1,11 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-
+import { router } from './router'
 // import TodayUI  from 'today-ui';
-import TTooltip from './../../today-ui/src/tooltip/';
-const app = createApp(App)
 
+const app = createApp(App)
+app.use(router);
 // app.use(TodayUI);
-app.use(TTooltip)
 
 app.mount('#app')

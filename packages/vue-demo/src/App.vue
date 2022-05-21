@@ -1,14 +1,15 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-import TooltipPlay from './page/TooltipPlay.vue';
+import { useRouter, useRoute } from 'vue-router'
+const route = useRoute();
 </script>
 
 <template>
-  <HelloWorld />
-  <hr>
-  <TooltipPlay />
+  <div class="navi">
+    <div class="back" v-if="route.name != 'navi'">
+      <router-link to="/">返回</router-link>
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
@@ -18,5 +19,10 @@ import TooltipPlay from './page/TooltipPlay.vue';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.back {
+  position: fixed;
+  top:20px;
+  right:20px;
 }
 </style>

@@ -155,6 +155,10 @@ export default defineComponent({
     };
   },
   render() {
+    
+    let defaultContent = this.$slots.default();
+    let content = this.$slots.content && this.$slots.content();
+    debugger;
     return (
       <Fragment>
         <Trigger
@@ -164,12 +168,12 @@ export default defineComponent({
           ref="triggerRef"
           onResize={this.emitResize}
         >
-          {this.$slots.default()}
+          {defaultContent}
         </Trigger>
         {this.mountContent && (
           <Teleport to={getAttach(this.attach)}>
             <Content onResize={this.emitResize} onVnodeMounted={this.emitContentMounted}>
-              {this.$slots.content && this.$slots.content()}
+              {content}
             </Content>
           </Teleport>
         )}

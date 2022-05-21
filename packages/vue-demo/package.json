@@ -12,7 +12,8 @@
     "regenerator-runtime": "^0.13.9",
     "today-ui": "workspace:0.0.3",
     "use-floating": "0.0.8",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.0",
