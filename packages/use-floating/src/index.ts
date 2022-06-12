@@ -5,10 +5,10 @@ import {
   Middleware,
   SideObject,
   Strategy,
-  computePosition, arrow as arrowCore, Placement
+  computePosition, arrow as arrowCore, Placement, MiddlewareData
 } from '@floating-ui/dom';
 
-import { ref, Ref, watchEffect, unref, isRef, reactive } from 'vue';
+import { ref, Ref, watchEffect, unref, isRef, reactive, UnwrapNestedRefs } from 'vue';
 
 
 export * from '@floating-ui/dom';
@@ -18,8 +18,9 @@ export type MaybeRef<T> = Ref<T> | T
 type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
   x: Ref<number>;
   y: Ref<number>;
+  middlewareData:UnwrapNestedRefs<MiddlewareData>;
 };
-type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy'> & {
+type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy' | ''> & {
   placement: Ref<Placement> | Placement,
   strategy: Ref<Strategy> | Strategy,
 };
@@ -97,7 +98,7 @@ export function useFloating({
 
 
 export const arrow = (options: {
-  element: Ref<HTMLElement | null> | HTMLElement;
+  element: Ref<HTMLElement | undefined> | HTMLElement;
   padding?: number | SideObject;
 }): Middleware => {
   const { element, padding = 0 } = options;

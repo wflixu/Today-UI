@@ -1,14 +1,15 @@
-import { ComputePositionConfig, ComputePositionReturn, Middleware, SideObject, Strategy, Placement } from '@floating-ui/dom';
-import { Ref } from 'vue';
+import { ComputePositionConfig, ComputePositionReturn, Middleware, SideObject, Strategy, Placement, MiddlewareData } from '@floating-ui/dom';
+import { Ref, UnwrapNestedRefs } from 'vue';
 export * from '@floating-ui/dom';
 export declare type MaybeRef<T> = Ref<T> | T;
 declare type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
     x: Ref<number>;
     y: Ref<number>;
+    middlewareData: UnwrapNestedRefs<MiddlewareData>;
 };
-declare type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy'> & {
-    placement: MaybeRef<Placement>;
-    strategy: MaybeRef<Strategy>;
+declare type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy' | ''> & {
+    placement: Ref<Placement> | Placement;
+    strategy: Ref<Strategy> | Strategy;
 };
 export declare type UseFloatingReturn = Data & {
     refs: {
@@ -21,6 +22,6 @@ export declare type UseFloatingReturn = Data & {
 };
 export declare function useFloating({ middleware, placement, strategy, }?: UseFloatingConfig): UseFloatingReturn;
 export declare const arrow: (options: {
-    element: Ref<HTMLElement | null> | HTMLElement;
+    element: Ref<HTMLElement | undefined> | HTMLElement;
     padding?: number | SideObject;
 }) => Middleware;
