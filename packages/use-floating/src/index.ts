@@ -8,7 +8,7 @@ import {
   computePosition, arrow as arrowCore, Placement
 } from '@floating-ui/dom';
 
-import { ref, Ref, watchEffect, unref, isRef } from 'vue';
+import { ref, Ref, watchEffect, unref, isRef, reactive } from 'vue';
 
 
 export * from '@floating-ui/dom';
@@ -20,8 +20,8 @@ type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
   y: Ref<number>;
 };
 type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy'> & {
-  placement: MaybeRef<Placement>,
-  strategy: MaybeRef<Strategy>,
+  placement: Ref<Placement> | Placement,
+  strategy: Ref<Strategy> | Strategy,
 };
 
 export type UseFloatingReturn = Data & {
@@ -39,7 +39,7 @@ export function useFloating({
   placement,
   strategy,
 }: UseFloatingConfig = {
-    strategy: 'absolute',
+    strategy: 'fixed',
     placement: 'top',
   }): UseFloatingReturn {
   const reference = ref<Element>();
@@ -79,7 +79,7 @@ export function useFloating({
     y: ref(0),
     strategy: unref(strategy),
     placement: unref(placement),
-    middlewareData: {},
+    middlewareData: reactive({}),
     refs:{
       reference,
       floating,

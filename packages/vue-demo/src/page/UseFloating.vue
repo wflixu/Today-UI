@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import { computed, toRefs, ref } from 'vue'
-import { useFloating, shift, flip, offset, arrow } from 'use-floating'
+import { computed, toRefs, ref, effect } from 'vue'
+import { useFloating, shift, flip, offset, arrow,MaybeRef } from 'use-floating'
 import type { Placement } from 'use-floating'
 
 
-const placement  : MaybeRef< Placement> = ref<Placement>('bottom') ;
+const placement  = ref<Placement>('bottom') ;
+
 const onChangePlacement = (e: any) => {
     placement.value = e.target.value;
 }
 
 // 箭头
-const arrowEl = ref<HTMLElement | null>(null);
+const arrowEl = ref(null);
 
-const { x, y, floating, reference, middlewareData } = useFloating({
+const { x, y, floating, reference, middlewareData,update } = useFloating({
     placement: placement,
     strategy: 'fixed',
     middleware: [flip(), offset(), shift(), arrow({ element: arrowEl })],
 });
+
+effect(()=>{
+
+})
+
+
 
 const show = ref(true);
 

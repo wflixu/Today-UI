@@ -1,6 +1,6 @@
 {
   "name": "use-floating",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "using floating-ui with vue3 composition api",
   "main": "dist/use-floating.umd.js",
   "module": "dist/use-floating.es.js",
@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "test": "pnpm vite build",
-    "dev": "pnpm vite",
+    "dev": "pnpm vite  --force",
     "build": "tsc -p ./tsconfig.type.json && pnpm vite build",
     "build:type": "tsc -p ./tsconfig.type.json"
   },

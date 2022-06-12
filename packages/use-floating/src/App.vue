@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, toRefs, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useFloating, shift, flip, offset, Placement, arrow } from './index'
 
 
-const placement = ref<Placement>('bottom');
+const placement = ref<Placement>('right-start');
 const onChangePlacement = (e: any) => {
   placement.value = e.target.value;
 }
@@ -11,10 +11,10 @@ const onChangePlacement = (e: any) => {
 // 箭头
 const arrowEl = ref(null);
 
-const { x, y, floating, reference, middlewareData } = useFloating({
+const { x, y, floating, reference, middlewareData,update } = useFloating({
   placement: placement,
   strategy: 'fixed',
-  middleware: [flip(), offset(), shift(), arrow({ element: arrowEl })],
+  middleware: [flip(), offset(5), shift(), arrow({ element: arrowEl })],
 });
 
 const show = ref(true);
@@ -28,8 +28,38 @@ const tipStyle = computed(() => {
   }
 })
 
+const arrowStyle = computed(() => {
+
+  if (middlewareData.arrow && placement) {
+    let arrow = middlewareData.arrow;
+    console.log(arrow)
+    const staticSide = ({
+      top: 'bottom',
+      right: 'left',
+      bottom: 'top',
+      left: 'right',
+    })[placement.value.split('-')[0]] as string;
+    let arrowX = arrow.x;
+    let arrowY = arrow.y;
+    return {
+      left: arrowX != null ? `${arrowX}px` : '',
+      top: arrowY != null ? `${arrowY}px` : '',
+      right: '',
+      bottom: '',
+      [staticSide]: '-4px',
+    }
+  } else {
+    return {}
+  }
+
+
+})
+
 const onShow = () => {
   show.value = true;
+  nextTick(()=>{
+    update();
+  })
 }
 const onHide = () => {
   show.value = false;
@@ -65,8 +95,8 @@ const onHide = () => {
       libero!</div> -->
     <button :ref="reference" @mouseenter="onShow" @mouseleave="onHide">drop</button>
     <div :ref="floating" class="t-floating" :style="tipStyle">
-      <div class="t-floating-arrow" ref="arrowEl">
-        ssdd
+      <div class="t-floating-arrow" ref="arrowEl" :style="arrowStyle">
+
       </div>
       tooltip content Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, esse velit magnam dolor nobis quod
       nihil enim totam debitis fugit.
@@ -78,7 +108,8 @@ const onHide = () => {
       <!-- {{ tipStyle }} -->
     </div>
     <div>
-      {{ middlewareData }}
+      test
+      {{ arrowStyle }}
     </div>
   </div>
 
@@ -96,13 +127,22 @@ const onHide = () => {
 
 .mt-40 {
   margin-top: 100px;
+
 }
 
 .t-floating {
-  /* position: absolute; */
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #999;
   color: white;
+  position: fixed;
+}
+
+.t-floating-arrow {
+  position: absolute;
+  background: #999;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
 }
 </style>
