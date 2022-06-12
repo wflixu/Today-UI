@@ -1,6 +1,6 @@
 {
   "name": "use-floating",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "using floating-ui with vue3 composition api",
   "main": "dist/use-floating.umd.js",
   "module": "dist/use-floating.es.js",

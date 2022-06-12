@@ -1,9 +1,8 @@
 
 
-export { useFloating } from './';
-export { arrow } from './';
 
-export type { UseFloatingReturn } from './';
+
+export type { UseFloatingReturn , MaybeRef} from './index';
 
 export * from '@floating-ui/dom';
 
@@ -33,6 +32,9 @@ export type {
   ComputePositionReturn,
   VirtualElement,
 } from '@floating-ui/dom';
+
+export { useFloating } from './index';
+export { arrow } from './index';
 
 
 

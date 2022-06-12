@@ -2,6 +2,7 @@
 import {createRouter,createWebHashHistory} from 'vue-router'
 
 import TooltipPlayVue from '../page/TooltipPlay.vue'
+import UseFloatingVue from '../page/UseFloating.vue'
 import Navi from './../page/Navi.vue'
 
 export const routes = [
@@ -14,6 +15,11 @@ export const routes = [
     path:'/tooltip',
     name:'tooltip',
     component: TooltipPlayVue
+  },
+  {
+    path:'/use-floating',
+    name:'use-floating',
+    component: UseFloatingVue
   },
 ]
 
