@@ -127,6 +127,7 @@ export default defineComponent({
     const mountContent = ref(false);
 
     onMounted(() => {
+      console.warn('onMounted',props.visible);
       mountContent.value = props.visible;
       props.forwardRef(triggerRef.value.$el);
     });
@@ -158,7 +159,7 @@ export default defineComponent({
     
     let defaultContent = this.$slots.default();
     let content = this.$slots.content && this.$slots.content();
-    debugger;
+    
     return (
       <Fragment>
         <Trigger

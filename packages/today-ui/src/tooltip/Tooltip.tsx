@@ -1,6 +1,6 @@
 
 import { computed, defineComponent, onMounted, ref } from "vue";
-import { useFloating, offset, flip, shift, type Placement } from "use-floating";
+import { useFloating, offset, flip, shift, type Placement, arrow } from "./../../../use-floating/src/index";
 import { renderTNodeJSX, renderContent } from '../shared/render-tnode';
 import Container from './container';
 import props from "./props";
@@ -12,25 +12,37 @@ export default defineComponent({
     name: "TTooltip",
     props,
     setup(props, { slots }) {
-       
+
         let defaultContent = slots.default();
         const open = ref(false);
 
         const triggerEl = ref<HTMLElement>(null);
+        const arrowEl = ref<HTMLElement>(null);
 
-        const { x, y, floating, reference } = useFloating({
+        const { x, y, floating, reference, middlewareData, update } = useFloating({
             placement: props.placement,
             strategy: 'fixed',
-            middleware: [flip(), offset(props.offset), shift()],
+            middleware: [flip(), offset(props.offset), shift(), arrow({
+                element: arrowEl,
+            })],
         });
 
         const tipStyle = computed(() => {
+
+
             return {
                 top: `${y.value}px`,
                 left: `${x.value}px`,
-                display: open.value ? 'block' : 'block'
+                display: open.value ? 'block' : 'none'
             }
         })
+        const arrowPosition = computed(() => {
+            console.warn('arrowPosition', middlewareData?.arrow);
+            debugger;
+            return middlewareData?.arrow;
+        })
+
+
         const onClick = () => {
             open.value = true;
         }
@@ -38,49 +50,72 @@ export default defineComponent({
         const onMouseleave = () => {
             open.value = false;
         }
-        function handleOpen(context: { trigger: string }) {
-            console.warn(context);
+        function handleOpen(_context: { trigger: string }) {
+
             open.value = true;
-            
+
+        }
+        function handleClose(context: { trigger: string }) {
+
+            open.value = false;
+
         }
         onMounted(() => {
             console.log('mounted');
-
-            console.log(defaultContent[0].el);
-            reference(defaultContent[0].el as Element);
             on(triggerEl.value, 'mouseenter', () => handleOpen({ trigger: 'trigger-element-hover' }));
+            on(triggerEl.value, 'mouseleave', () => handleClose({ trigger: 'trigger-element-hover' }));
 
         })
         const forwardRef = (ref: HTMLElement) => {
-            console.warn('forwardRef',ref);
-            
+
             reference(ref);
             triggerEl.value = ref;
         }
 
+        const setArrowRef = (ref: HTMLElement) => {
+            console.warn('setArrowRef', ref);
+            arrowEl.value = ref;
+            update();
+        }
+
         return {
             tipStyle,
-
+            arrowEl,
+            open,
+            arrowPosition,
+            setArrowRef,
             reference,
             floating,
-            forwardRef
+            forwardRef,
         }
     },
 
 
     render() {
-        const { tipStyle, reference, floating, forwardRef } = this;
+        const { tipStyle, reference, floating, forwardRef, open, arrowEl, setArrowRef, arrowPosition } = this;
+        const content = renderTNodeJSX(this, 'label');
+
+
         return (
             <Container
                 ref="containerRef"
                 forwardRef={(ref) => forwardRef(ref)}
+                onContentMounted={
+                    (el) => {
+                        console.log('onContentMounted', el);
+
+                    }
+                }
+                visible={open}
             >
                 {{
                     content: () => (
-                        <div ref={floating} class="t-tooltip-content" style={{
-                            ...tipStyle.value,
-                        }}>
-                            {props.label}
+                        <div ref={floating} class="t-tooltip-content" style={tipStyle}>
+                            {content}
+                            {arrowPosition}
+                            <div ref={setArrowRef} class="t-tooltip-arrow">
+                                test
+                            </div>
                         </div>
                     ),
                     default: () => renderContent(this, 'default', 'triggerElement'),

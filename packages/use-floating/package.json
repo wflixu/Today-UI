@@ -1,15 +1,14 @@
 {
   "name": "use-floating",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "using floating-ui with vue3 composition api",
-  "main": "dist/use-floating.js",
-  "module": "dist/use-floating.esm.js",
-  "unpkg": "dist/use-floating.global.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/use-floating.umd.js",
+  "module": "dist/use-floating.es.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/use-floating.esm.js",
-      "require": "./dist/use-floating.cjs"
+      "import": "./dist/use-floating.es.js",
+      "require": "./dist/use-floating.umd.js"
     },
     "./package.json": "./package.json",
     "./src/index.ts": "./src/index.ts"
@@ -21,8 +20,9 @@
     "index.d.ts"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=build rollup -c",
+    "test": "pnpm vite build",
+    "dev": "pnpm vite",
+    "build": "tsc -p ./tsconfig.type.json && pnpm vite build",
     "build:type": "tsc -p ./tsconfig.type.json"
   },
   "keywords": [
@@ -51,6 +51,8 @@
     "vue": "3.2.32"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "vite": "^2.9.12",
     "@rollup/plugin-alias": "^3.1.4",
     "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-node-resolve": "^13.0.5",

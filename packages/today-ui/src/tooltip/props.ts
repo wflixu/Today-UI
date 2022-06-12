@@ -13,7 +13,7 @@ export default {
     },
     placement: {
         type: String as PropType<TTooltipProps['placement']>,
-        default: 'top'
+        default: 'bottom'
     },
     label: {
         type: String,

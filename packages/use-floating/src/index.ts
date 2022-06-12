@@ -8,7 +8,8 @@ import {
   computePosition, arrow as arrowCore, Placement
 } from '@floating-ui/dom';
 
-import { reactive, ref, Ref, watchEffect, unref, isRef } from 'vue';
+import { ref, Ref, watchEffect, unref, isRef } from 'vue';
+
 
 
 export * from '@floating-ui/dom';
@@ -31,6 +32,7 @@ export type UseFloatingReturn = Data & {
   }
   reference: (ref: Element) => void;
   floating: (ref: Element) => void;
+  update: () => void;
 };
 
 export function useFloating({
@@ -39,7 +41,7 @@ export function useFloating({
   strategy,
 }: UseFloatingConfig = {
     strategy: 'absolute',
-    placement: 'bottom',
+    placement: 'top',
   }): UseFloatingReturn {
   const reference = ref<Element>();
   const floating = ref<Element>();
@@ -55,6 +57,23 @@ export function useFloating({
     }
   }
 
+  const update = async () => {
+ 
+    
+    if (!reference.value || !floating.value) {
+      return;
+    }
+    let { x, y, middlewareData } = await computePosition(reference.value, floating.value as HTMLElement, {
+      middleware: middleware,
+      placement: unref(placement),
+      strategy: unref(strategy),
+    });
+    returnData.x.value = x;
+    returnData.y.value = y;
+    console.log('use-float:update',middlewareData);
+    Object.assign(returnData.middlewareData,middlewareData)
+  };
+
   const returnData:UseFloatingReturn =
   {
     x: ref(0),
@@ -68,20 +87,9 @@ export function useFloating({
     },
     reference: setReference,
     floating: setFloating,
+    update,
   };
-  const update = async () => {
-    if (!reference.value || !floating.value) {
-      return;
-    }
-    let { x, y, middlewareData } = await computePosition(reference.value, floating.value as HTMLElement, {
-      middleware: middleware,
-      placement: unref(placement),
-      strategy: unref(strategy),
-    });
-    returnData.x.value = x;
-    returnData.y.value = y;
-    returnData.middlewareData = reactive(middlewareData);
-  };
+
   watchEffect(update);
   return returnData as unknown as UseFloatingReturn;
 }
@@ -93,9 +101,10 @@ export const arrow = (options: {
   element: Ref<HTMLElement | null> | HTMLElement;
   padding?: number | SideObject;
 }): Middleware => {
-  const { element, padding } = options;
+  const { element, padding = 0 } = options;
 
-
+  console.log('use-float:arrow',options);
+  
 
   return {
     name: 'arrow',
@@ -105,9 +114,9 @@ export const arrow = (options: {
         if (element.value != null) {
           return arrowCore({ element: element.value, padding }).fn(args);
         }
-
         return {};
       } else if (element) {
+       
         return arrowCore({ element, padding }).fn(args);
       }
       return {};
