@@ -8,7 +8,7 @@ import {
   computePosition, arrow as arrowCore, Placement, MiddlewareData
 } from '@floating-ui/dom';
 
-import { ref, Ref, watchEffect, unref, isRef, reactive, UnwrapNestedRefs } from 'vue';
+import { ref, type Ref, watchEffect, unref, isRef, UnwrapNestedRefs } from 'vue';
 
 
 export * from '@floating-ui/dom';
@@ -71,7 +71,7 @@ export function useFloating({
     returnData.x.value = x;
     returnData.y.value = y;
     console.log('use-float:update',middlewareData);
-    Object.assign(returnData.middlewareData,middlewareData)
+    returnData.middlewareData.value =middlewareData;
   };
 
   const returnData:UseFloatingReturn =
@@ -80,7 +80,7 @@ export function useFloating({
     y: ref(0),
     strategy: unref(strategy),
     placement: unref(placement),
-    middlewareData: reactive({}),
+    middlewareData: ref(null),
     refs:{
       reference,
       floating,

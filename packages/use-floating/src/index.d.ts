@@ -1,5 +1,6 @@
 import { ComputePositionConfig, ComputePositionReturn, Middleware, SideObject, Strategy, Placement, MiddlewareData } from '@floating-ui/dom';
-import { Ref, UnwrapNestedRefs } from 'vue';
+import { type Ref, UnwrapNestedRefs } from 'vue';
+export * from '@floating-ui/dom';
 export declare type MaybeRef<T> = Ref<T> | T;
 declare type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
     x: Ref<number>;
@@ -24,4 +25,3 @@ export declare const arrow: (options: {
     element: Ref<HTMLElement | undefined> | HTMLElement;
     padding?: number | SideObject;
 }) => Middleware;
-export {};

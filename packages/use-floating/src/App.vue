@@ -28,12 +28,12 @@ const tipStyle = computed(() => {
   }
 })
 
-console.log(middlewareData.arrow)
+console.log(middlewareData.value?.arrow)
 
 const arrowStyle = computed(() => {
 
-  if (middlewareData.arrow && placement) {
-    let arrow = middlewareData.arrow;
+  if (middlewareData.value?.arrow && placement) {
+    let arrow = middlewareData.value.arrow;
     console.log(arrow)
     const staticSide = ({
       top: 'bottom',
