@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev:r": "pnpm dev --filter=react-demo",
-    "dev": "pnpm -F vue-demo  dev",
+    "test": "pnpm -F=use-floating  dev",
+    "dev": "pnpm -F=vue-demo  dev",
     "dev:i": "pnpm install --filter=vue-demo",
     "build": "pnpm build --filter=today-ui",
     "build:base": "pnpm build --filter=use-floating",

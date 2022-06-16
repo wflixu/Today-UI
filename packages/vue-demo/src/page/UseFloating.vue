@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { computed, isReactive, nextTick, ref } from 'vue'
-import { useFloating, shift, flip, offset, Placement, arrow } from 'use-floating'
+import { computed, isReactive, nextTick, reactive, ref, toRef, toRefs, watchEffect } from 'vue'
+import { useFloating, shift, flip, offset, Placement, arrow } from 'use-floating/src/index.ts'
 
 
 const placement = ref<Placement>('right-start');
 const onChangePlacement = (e: any) => {
+  console.log(e.target.value);
   placement.value = e.target.value;
 }
 
 // 箭头
 const arrowEl = ref<HTMLElement>();
 
-const { x, y, floating, reference, middlewareData,update } = useFloating({
+const { x, y, floating, reference, middlewareData, update } = useFloating({
   placement: placement,
   strategy: 'fixed',
   middleware: [flip(), offset(5), shift(), arrow({ element: arrowEl })],
@@ -19,6 +20,7 @@ const { x, y, floating, reference, middlewareData,update } = useFloating({
 
 const show = ref(true);
 
+// const tipStyle =reactive({});
 const tipStyle = computed(() => {
   return {
     top: `${y.value}px`,
@@ -27,13 +29,14 @@ const tipStyle = computed(() => {
     position: 'fixed'
   }
 })
+const { arrow: arrowD } = toRefs(middlewareData);
+console.log(isReactive(middlewareData), middlewareData);
 
-console.log(isReactive(middlewareData));
 
+
+let arrowStyleb = reactive({});
 const arrowStyle = computed(() => {
-
-    console.log(middlewareData.arrow)
-  if (middlewareData.arrow && placement) {
+  if (placement.value && middlewareData.arrow) {
     let arrow = middlewareData.arrow;
     const staticSide = ({
       top: 'bottom',
@@ -43,25 +46,59 @@ const arrowStyle = computed(() => {
     })[placement.value.split('-')[0]] as string;
     let arrowX = arrow.x;
     let arrowY = arrow.y;
-    return {
+
+    return Object.assign(arrowStyleb, {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
       right: '',
       bottom: '',
       [staticSide]: '-4px',
-    }
+    })
+    console.log(arrowStyle)
   } else {
     return {}
   }
+});
 
 
+
+
+// watchEffect(() => {
+//   console.log('watchEffect', middlewareData.arrow, placement.value)
+//   if (middlewareData.arrow && placement.value) {
+//     let arrow = middlewareData.arrow;
+//     const staticSide = ({
+//       top: 'bottom',
+//       right: 'left',
+//       bottom: 'top',
+//       left: 'right',
+//     })[placement.value.split('-')[0]] as string;
+//     let arrowX = arrow.x;
+//     let arrowY = arrow.y;
+
+//     Object.assign(arrowStyle, {
+//       left: arrowX != null ? `${arrowX}px` : '',
+//       top: arrowY != null ? `${arrowY}px` : '',
+//       right: '',
+//       bottom: '',
+//       [staticSide]: '-4px',
+//     })
+//     console.log(arrowStyle)
+//   }
+// })
+
+watchEffect(() => {
+  console.log(arrowD);
 })
 
 const onShow = () => {
   show.value = true;
-  nextTick(()=>{
+  setTimeout(() => {
     update();
-  })
+  }, 1000);
+  // nextTick(() => {
+
+  // })
 }
 const onHide = () => {
   show.value = false;
@@ -104,12 +141,11 @@ const onHide = () => {
       Blanditiis, magni pariatur natus autem dolorum sapiente quae dolor adipisci.
     </div>
     <div class="mt-40">
-      x:{{ x }}
-      y:{{ y }}
-      <!-- {{ tipStyle }} -->
+      tipStyle:
+      {{ tipStyle }}
     </div>
     <div>
-      test
+      arrowStyle:
       {{ arrowStyle }}
     </div>
   </div>

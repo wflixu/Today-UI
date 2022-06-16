@@ -28,6 +28,8 @@ const tipStyle = computed(() => {
   }
 })
 
+console.log(middlewareData.arrow)
+
 const arrowStyle = computed(() => {
 
   if (middlewareData.arrow && placement) {
@@ -103,12 +105,11 @@ const onHide = () => {
       Blanditiis, magni pariatur natus autem dolorum sapiente quae dolor adipisci.
     </div>
     <div class="mt-40">
-      x:{{ x }}
-      y:{{ y }}
-      <!-- {{ tipStyle }} -->
+     tipStyle:
+      {{ tipStyle }}
     </div>
     <div>
-      test
+      arrowStyle:
       {{ arrowStyle }}
     </div>
   </div>

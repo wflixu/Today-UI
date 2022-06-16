@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     target: 'esnext',
+    external: ["vue"],
     lib: {
       entry: `./src/index`,
       name: "use-floating",
