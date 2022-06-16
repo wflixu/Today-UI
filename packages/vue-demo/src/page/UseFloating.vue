@@ -29,15 +29,12 @@ const tipStyle = computed(() => {
     position: 'fixed'
   }
 })
-const { arrow: arrowD } = toRefs(middlewareData);
-console.log(isReactive(middlewareData), middlewareData);
 
-
-
-let arrowStyleb = reactive({});
 const arrowStyle = computed(() => {
-  if (placement.value && middlewareData.arrow) {
-    let arrow = middlewareData.arrow;
+
+  if (middlewareData.value?.arrow && placement) {
+    let arrow = middlewareData.value.arrow;
+    console.log(arrow)
     const staticSide = ({
       top: 'bottom',
       right: 'left',
@@ -46,59 +43,24 @@ const arrowStyle = computed(() => {
     })[placement.value.split('-')[0]] as string;
     let arrowX = arrow.x;
     let arrowY = arrow.y;
-
-    return Object.assign(arrowStyleb, {
+    return {
       left: arrowX != null ? `${arrowX}px` : '',
       top: arrowY != null ? `${arrowY}px` : '',
       right: '',
       bottom: '',
       [staticSide]: '-4px',
-    })
-    console.log(arrowStyle)
+    }
   } else {
     return {}
   }
-});
-
-
-
-
-// watchEffect(() => {
-//   console.log('watchEffect', middlewareData.arrow, placement.value)
-//   if (middlewareData.arrow && placement.value) {
-//     let arrow = middlewareData.arrow;
-//     const staticSide = ({
-//       top: 'bottom',
-//       right: 'left',
-//       bottom: 'top',
-//       left: 'right',
-//     })[placement.value.split('-')[0]] as string;
-//     let arrowX = arrow.x;
-//     let arrowY = arrow.y;
-
-//     Object.assign(arrowStyle, {
-//       left: arrowX != null ? `${arrowX}px` : '',
-//       top: arrowY != null ? `${arrowY}px` : '',
-//       right: '',
-//       bottom: '',
-//       [staticSide]: '-4px',
-//     })
-//     console.log(arrowStyle)
-//   }
-// })
-
-watchEffect(() => {
-  console.log(arrowD);
 })
+
 
 const onShow = () => {
   show.value = true;
-  setTimeout(() => {
-    update();
-  }, 1000);
-  // nextTick(() => {
-
-  // })
+  nextTick(() => {
+         update();
+  })
 }
 const onHide = () => {
   show.value = false;

@@ -58,8 +58,6 @@ export function useFloating({
   }
 
   const update = async () => {
- 
-    
     if (!reference.value || !floating.value) {
       return;
     }
@@ -70,7 +68,8 @@ export function useFloating({
     });
     returnData.x.value = x;
     returnData.y.value = y;
-    console.log('use-float:update',middlewareData);
+    returnData.strategy = unref(strategy);
+    returnData.placement = unref(placement);
     returnData.middlewareData.value =middlewareData;
   };
 
@@ -102,10 +101,7 @@ export const arrow = (options: {
   padding?: number | SideObject;
 }): Middleware => {
   const { element, padding = 0 } = options;
-
-  console.log('use-float:arrow',options);
   
-
   return {
     name: 'arrow',
     options,
