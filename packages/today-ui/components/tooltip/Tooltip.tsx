@@ -1,6 +1,6 @@
 
 import { computed, defineComponent, onMounted, ref } from "vue";
-import { useFloating, offset, flip, shift, type Placement, arrow } from "./../../../use-floating/src/index";
+import { useFloating, offset, flip, shift, type Placement, arrow } from "../../../use-floating/src/index";
 import { renderTNodeJSX, renderContent } from '../shared/render-tnode';
 import Container from './container';
 import props from "./props";

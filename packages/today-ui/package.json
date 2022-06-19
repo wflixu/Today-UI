@@ -17,15 +17,13 @@
   "files": [
     "dist/",
     "index.d.ts",
-    "src/**/*",
-    "es/",
-    "lib/",
-    "dist/",
+    "components/**/*",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
+    "dev": "vite",
     "test": "vite build",
     "build": "cross-env NODE_ENV=production rollup -c ./rollup.config.js && pnpm build:type",
     "build:type": "tsc --emitDeclarationOnly -d --outDir es/  && tsc --emitDeclarationOnly -d --outDir lib/",
@@ -53,7 +51,9 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21",
-    "use-floating": "^0.0.8"
+    "use-floating": "^0.0.8",
+    "vue": "^3.2.37",
+    "vue-router": "^4.0.15"
   },
   "peerDependencies": {
     "vue": "^3.2.0"
@@ -73,6 +73,7 @@
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-url": "^6.1.0",
     "@types/lodash": "^4.14.182",
+    "@vitejs/plugin-vue": "^2.3.3",
     "@vue/babel-plugin-jsx": "^1.1.1",
     "@vue/compiler-sfc": "^3.2.33",
     "cross-env": "^7.0.3",

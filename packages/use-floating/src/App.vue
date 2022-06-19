@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
-import { useFloating, shift, flip, offset, Placement, arrow } from 'use-floating'
+import { useFloating, shift, flip, offset, Placement, arrow } from './index'
 
 
 const placement = ref<Placement>('right-start');

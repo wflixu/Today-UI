@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   less: ^4.1.2
-  pnpm: ^6.32.9
+  pnpm: ^7.3.0
   use-floating: ^0.0.8
 
 dependencies:
@@ -10,7 +10,7 @@ dependencies:
   use-floating: 0.0.8
 
 devDependencies:
-  pnpm: 6.32.21
+  pnpm: 7.3.0
 
 packages:
 
@@ -273,9 +273,9 @@ packages:
     dev: false
     optional: true
 
-  /pnpm/6.32.21:
-    resolution: {integrity: sha512-zkXvk5fO7csZ0jY9NNWbvlnOvJeyTLJn8K4n969MeHdUYa3g2JLA0rzQGpl3aFl62Px2j/JioFVixIwH0n9o1g==}
-    engines: {node: '>=12.17'}
+  /pnpm/7.3.0:
+    resolution: {integrity: sha512-HOXT6V+AznAyjL2Ay3TuuJQucsEguUiKjqyQq4WPPwOpaaILhkKvu8Nn1/OQWGi9V6T7OciyrctAKeYyCha6Ow==}
+    engines: {node: '>=14.6'}
     hasBin: true
     dev: true
 

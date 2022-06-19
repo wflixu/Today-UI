@@ -1,6 +1,6 @@
 import { type Placement } from "use-floating";
 
-import { AttachNode } from './../shared/type'
+import { AttachNode } from '../shared/type'
 
 
 export interface TTooltipProps {

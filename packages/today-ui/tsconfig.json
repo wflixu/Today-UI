@@ -7,7 +7,7 @@
       "scripthost"
     ],
     "target": "esnext",
-    "outDir": "lib",
+    "outDir": "components",
     "declaration": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -26,22 +26,36 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["src/*"],
-      "today-ui": ["src/*"],
+      "@src/*": [
+        "src/*"
+      ],
+      "today-ui": [
+        "src/*"
+      ],
     }
   },
   "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "src/**/*.vue",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "components/**/*.vue",
   ],
-  
   "exclude": [
     "node_modules",
     "dist",
-    "lib",
+    "components",
     "esm",
     "es"
   ],
-  "compileOnSave": false
+  "compileOnSave": false,
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

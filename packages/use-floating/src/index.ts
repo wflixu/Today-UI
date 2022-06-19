@@ -15,10 +15,11 @@ export * from '@floating-ui/dom';
 
 export type MaybeRef<T> = Ref<T> | T
 
+
 type Data = Omit<ComputePositionReturn, 'x' | 'y'> & {
   x: Ref<number>;
   y: Ref<number>;
-  middlewareData:UnwrapNestedRefs<MiddlewareData>;
+  middlewareData:Ref<MiddlewareData|null>;
 };
 type UseFloatingConfig = Omit<Partial<ComputePositionConfig>, 'platform' | 'placement' | 'strategy' | ''> & {
   placement: Ref<Placement> | Placement,
