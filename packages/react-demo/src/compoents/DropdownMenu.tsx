@@ -32,7 +32,9 @@ import React, {
     FloatingTree
   } from "@floating-ui/react-dom-interactions";
   import mergeRefs from "react-merge-refs";
-  
+  import './menu.css'
+
+
   export const MenuItem = forwardRef<
     HTMLButtonElement,
     { label: string; disabled?: boolean }

@@ -1,0 +1,17 @@
+nav {
+    padding: 40px;
+    display: flex;
+    height:80vh;
+
+}
+.link {
+  
+    border:1px solid #ddd;
+    padding: 10px 20px;
+    border-radus: 4px;
+    width:max-content;
+    margin-bottom: 10px;
+    margin-right:10px;
+    height: max-content
+
+}

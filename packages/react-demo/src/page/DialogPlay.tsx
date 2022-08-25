@@ -1,4 +1,5 @@
 import { useId } from "@floating-ui/react-dom-interactions";
+import { Link } from "react-router-dom";
 import { Dialog } from "../compoents/Dialog";
 
 export default function DialogPlay() {
@@ -8,6 +9,9 @@ export default function DialogPlay() {
     return (
       <div className="DialogPlay">
         <h1>Floating UI Modal Dialog</h1>
+        <div className="back">
+           <Link to="/">back</Link>
+        </div>
         <Dialog
           render={({ close, labelId, descriptionId }) => (
             <>

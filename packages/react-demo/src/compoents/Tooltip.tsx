@@ -18,6 +18,7 @@ import {
     useDismiss,
     arrow
 } from "@floating-ui/react-dom-interactions";
+import './tooltip.css';
 
 interface Props {
     label: string;

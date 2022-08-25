@@ -1,10 +1,15 @@
 <script setup lang="ts">
-
+import { useRouter, useRoute } from 'vue-router'
+const route = useRoute();
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <h1>test</h1>
+  <div class="navi">
+    <div class="back" v-if="route.name != 'navi'">
+      <router-link to="/">返回</router-link>
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
@@ -15,5 +20,10 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.back {
+  position: fixed;
+  top:20px;
+  right:20px;
 }
 </style>

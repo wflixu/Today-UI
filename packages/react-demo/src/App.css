@@ -41,7 +41,6 @@ button {
   font-size: calc(10px + 2vmin);
 }
 
-
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -94,3 +93,8 @@ button {
   color: white;
 }
 
+.back {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
