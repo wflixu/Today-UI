@@ -5,16 +5,19 @@
       "useDefineForClassFields": true,
       "module": "esnext",
       "moduleResolution": "node",
+      "outDir": "dist/",
       "strict": true,
       "jsx": "preserve",
       "sourceMap": true,
       "resolveJsonModule": true,
       "isolatedModules": true,
       "esModuleInterop": true,
+      "strictNullChecks": false,
+
       "lib": ["esnext", "dom"],
       "skipLibCheck": true
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/index.ts"]
+    "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"]
 
   }
   
