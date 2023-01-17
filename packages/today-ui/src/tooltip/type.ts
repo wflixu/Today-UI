@@ -1,5 +1,6 @@
-import { type Placement } from "use-floating";
 
+
+import { Placement } from '@floating-ui/vue';
 import { AttachNode } from '../shared/type'
 
 
