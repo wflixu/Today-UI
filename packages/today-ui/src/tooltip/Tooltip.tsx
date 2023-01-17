@@ -20,7 +20,7 @@ export default defineComponent({
 
         const { x, y, middlewareData, update } = useFloating(reference,floating, {
             placement: props.placement,
-            middleware: [flip(), offset(props.offset), shift(), arrow({
+            middleware: [flip(), shift(), offset(props.offset), arrow({
                 element: arrowEl,
             })],
         });

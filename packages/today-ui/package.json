@@ -1,6 +1,6 @@
 {
   "name": "today-ui",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "dropdown menu toolptip powered by vue3, floating-ui",
   "main": "dist/today-ui.umd.js",
   "module": "dist/today-ui.es.js",
@@ -11,7 +11,8 @@
       "require": "./dist/today-ui.umd.js"
     },
     "./package.json": "./package.json",
-    "./src/index.ts": "./src/index.ts"
+    "./src/index.ts": "./src/index.ts",
+    "./dist/style.css": "./dist/style.css"
   },
   "sideEffects": false,
   "files": [
@@ -24,7 +25,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && pnpm build:type",
-    "build:type": "tsc --emitDeclarationOnly -d  -p tsconfig.type.json"
+    "build:type": "tsc --emitDeclarationOnly   -p tsconfig.type.json"
   },
   "keywords": [
     "floating-ui",

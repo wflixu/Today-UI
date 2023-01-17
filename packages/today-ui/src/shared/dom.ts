@@ -20,8 +20,8 @@ export const isString = (input: any) => {
 
 export const on = ((): any => {
     return (element: Node, event: string, handler: EventListenerOrEventListenerObject): any => {
-      if (element && event && handler) {
-        (element as any).attachEvent(`on${event}`, handler);
-      }
-    };
+        if (element && event && handler) {
+          element.addEventListener(event, handler, false);
+        }
+      };
   })();
