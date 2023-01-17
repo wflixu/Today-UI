@@ -1,6 +1,7 @@
 import HomeView from '../views/HomeView.vue';
 import LayoutAdmin from '@/layout/admin/LayoutAdmin.vue';
 import { floatingRoute } from '@/views/floating/route';
+import { todayUIRoute } from '@/views/today-ui/route';
 
 
 export const routes = [
@@ -15,7 +16,8 @@ export const routes = [
           name: 'Home',
           component:HomeView
         },
-        floatingRoute
+        floatingRoute,
+        todayUIRoute
       ]
     }
 ]
