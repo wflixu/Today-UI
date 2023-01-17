@@ -26,6 +26,7 @@ function filterEmpty(children: VNode[] = []) {
 
 function isContentRectChanged(rect1: DOMRectReadOnly, rect2: DOMRectReadOnly) {
   if (!rect1 || !rect2) return;
+  // @ts-ignore
   if (['width', 'height', 'x', 'y'].some((k) => rect1[k] !== rect2[k])) {
     return true;
   }
@@ -34,6 +35,7 @@ function isContentRectChanged(rect1: DOMRectReadOnly, rect2: DOMRectReadOnly) {
 
 function observeResize(elm: HTMLElement, cb: (rect: DOMRectReadOnly) => void) {
   if (!window?.ResizeObserver || !elm) return;
+  // @ts-ignore
   let prevContentRect = null as DOMRectReadOnly;
   const ro = new ResizeObserver((entries = []) => {
     const { contentRect } = entries[0] || {};
@@ -79,9 +81,11 @@ const Trigger = defineComponent({
     });
   },
   unmounted() {
+    // @ts-ignore
     this.cleanOR();
   },
   render() {
+    // @ts-ignore
     const children = filterEmpty(this.$slots.default());
     if (children.length > 1 || children[0]?.type === Text) {
       return <span>{children}</span>;
@@ -96,6 +100,7 @@ const Content = defineComponent({
   setup(props, { emit }) {
     const el = ref(null);
     useObserveResize(
+      // @ts-ignore
       () => el.value.children[0],
       () => {
         emit('resize');
@@ -106,7 +111,7 @@ const Content = defineComponent({
   render() {
     return (
       <div ref="el" style="position: absolute; top: 0px; left: 0px; width: 100%">
-        {this.$slots.default()}
+        {this.$slots.default!()}
       </div>
     );
   },
@@ -151,13 +156,15 @@ export default defineComponent({
         emit('resize');
       },
       emitContentMounted: () => {
+     
+        
         emit('contentMounted');
       },
     };
   },
   render() {
     
-    let defaultContent = this.$slots.default();
+    let defaultContent = this.$slots.default!();
     let content = this.$slots.content && this.$slots.content();
     
     return (

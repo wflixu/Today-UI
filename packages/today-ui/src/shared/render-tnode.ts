@@ -56,6 +56,7 @@ export const renderTNodeJSX = (instance: ComponentPublicInstance, name: string, 
     // 处理 props 类型的Node
     let propsNode;
     if (name in instance) {
+        // @ts-ignore
         propsNode = instance[name];
     }
 
@@ -69,6 +70,7 @@ export const renderTNodeJSX = (instance: ComponentPublicInstance, name: string, 
     // propsNode 为 false 不渲染
     if (propsNode === false) return;
     if (propsNode === true && defaultNode) {
+        // @ts-ignore
         return handleSlots(instance, params, name) || defaultNode;
     }
 
@@ -77,6 +79,7 @@ export const renderTNodeJSX = (instance: ComponentPublicInstance, name: string, 
     const isPropsEmpty = [undefined, params, ''].includes(propsNode);
     // Props 为空，但插槽存在
     if (isPropsEmpty && (instance.$slots[camelCase(name)] || instance.$slots[kebabCase(name)])) {
+        // @ts-ignore
         return handleSlots(instance, params, name);
     }
     return propsNode;

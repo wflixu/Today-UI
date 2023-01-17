@@ -1,6 +1,5 @@
 import type { PropType, ExtractPropTypes } from 'vue';
 
-import type { Placement } from 'use-floating';
 
 import { TTooltipProps } from './type';
 
