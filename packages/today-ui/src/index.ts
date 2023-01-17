@@ -1,14 +1,19 @@
+
+
 import { App } from 'vue';
 import * as components from './components';
+import { version} from '../package.json';
 
 export function install(app: App, config?: Record<string, unknown>): void {
   Object.keys(components).forEach((key) => {
-    /plugin/i.test(key) ? app.use(components[key]) : app.use(components[key], config);
+     app.use(components[key as keyof typeof components], config);
   });
 }
 
-export * from './components';
-export default {
+const TodayUI = {
   install,
-  version: typeof PKG_VERSION === 'undefined' ? '' : PKG_VERSION, // eslint-disable-line
-};
+  version: version ?? '' , 
+}
+export * from './components';
+
+export default TodayUI ;

@@ -1,6 +1,7 @@
-import { type Placement } from "use-floating";
 
-import { AttachNode } from './../shared/type'
+
+import { Placement } from '@floating-ui/vue';
+import { AttachNode } from '../shared/type'
 
 
 export interface TTooltipProps {

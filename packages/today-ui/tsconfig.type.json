@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "composite": true,
+      "target": "esnext",
+      "useDefineForClassFields": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "outDir": "dist/",
+      "strict": true,
+      "jsx": "preserve",
+      "sourceMap": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "esModuleInterop": true,
+      "strictNullChecks": false,
+
+      "lib": ["esnext", "dom"],
+      "skipLibCheck": true
+    },
+    "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"]
+
+  }
+  

@@ -2,12 +2,9 @@
   "compilerOptions": {
     "lib": [
       "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
+      "dom"
     ],
     "target": "esnext",
-    "outDir": "lib",
     "declaration": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -23,25 +20,24 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "skipLibCheck": true,
+    "incremental": false,
     "jsx": "preserve",
-    "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"],
-      "today-ui": ["src/*"],
-    }
+    "baseUrl": "./"
   },
-  "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "src/**/*.vue",
-  ],
-  
   "exclude": [
     "node_modules",
-    "dist",
-    "lib",
-    "esm",
-    "es"
+    "dist"
   ],
-  "compileOnSave": false
+  "compileOnSave": false,
+  "references": [
+    {
+      "path": "./tsconfig.vite.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.type.json"
+    }
+  ]
 }

@@ -17,10 +17,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
-    "pnpm": "^6.32.9"
-  },
-  "dependencies": {
-    "less": "^4.1.2",
-    "use-floating": "^0.0.8"
+    "pnpm": "^7.9.0"
   }
 }

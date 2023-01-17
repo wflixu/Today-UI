@@ -1,5 +1,5 @@
 
-import { withInstall, type WithInstallType } from './../shared/withInstall';
+import { withInstall, type WithInstallType } from '../shared/withInstall';
 
 
 import _Tooltip from './Tooltip';
