@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev:r": "pnpm dev --filter=react-demo",
-    "test": "pnpm -F=use-floating  dev",
-    "dev": "pnpm -F=vue-demo  dev",
+    "dev": "pnpm -F=demo  dev",
     "dev:i": "pnpm install --filter=vue-demo",
     "build": "pnpm build --filter=today-ui",
     "build:base": "pnpm build --filter=use-floating",
@@ -18,5 +16,6 @@
   },
   "devDependencies": {
     "pnpm": "^7.9.0"
-  }
+  },
+  "dependencies": {}
 }
