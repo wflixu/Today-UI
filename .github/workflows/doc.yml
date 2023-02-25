@@ -1,0 +1,37 @@
+name: Deploy docs
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: dev
+          fetch-depth: 2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.27.1
+      - name: Install
+      - run: pnpm install
+      - name: Build
+        run: pnpm run sb:build
+      - uses: actions/configure-pages@v2
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: storybook-static/
+      - name: Deploy build page
+        id: deployment
+        uses: actions/deploy-pages@v1
