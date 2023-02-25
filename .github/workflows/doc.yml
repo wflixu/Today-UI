@@ -25,7 +25,7 @@ jobs:
         with:
           version: 7.27.1
       - name: Install
-      - run: pnpm install
+        run: pnpm install
       - name: Build
         run: pnpm run sb:build
       - uses: actions/configure-pages@v2
