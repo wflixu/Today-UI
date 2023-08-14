@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
+    "preserveSymlinks": false,
     "sourceMap": true,
     "resolveJsonModule": true,
     
@@ -27,6 +28,8 @@
     "allowJs": true,
     "skipLibCheck": true,
     "incremental": false,
+    "types": ["vite/client","node"],
+    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
     "baseUrl": "."
   },
   "types": ["./global.d.ts"],

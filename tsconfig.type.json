@@ -13,8 +13,9 @@
       "isolatedModules": true,
       "esModuleInterop": true,
       "strictNullChecks": false,
-
+      "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
       "lib": ["esnext", "dom"],
+      "types": ["vite/client","node"],
       "skipLibCheck": true
     },
     "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"]

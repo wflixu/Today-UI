@@ -9,11 +9,11 @@
 ## 计划
 
 <input type="checkbox" checked> 第一个组件tooltip ，测试发包。
+<input type="checkbox" checked> 组件dropdown ，测试发包。
 
 <input type="checkbox" > 完善组件和样式
 
 <input type="checkbox" > 添加测试用例
-
 
 <input type="checkbox" > 发布正式版
 
