@@ -17,9 +17,16 @@ const meta: Meta<typeof TTooltip> = {
       }
     }
   },
-  args: { label:'Tooltip content' }, // default value
-  render: () => ({
+  args: { label: 'Tooltip content' }, // default value
+  render: (args) => ({
     components: { TTooltip },
+    setup(){
+      console.warn('----');
+      
+      console.warn(args);
+      
+       return { args };
+    },
     template: `<TTooltip v-bind="args" >
           <button>trigger button</button>
     </TTooltip>`,
@@ -35,14 +42,14 @@ type Story = StoryObj<typeof TTooltip>;
  */
 export const Label: Story = {
   args: {
-    label: 'Button',
+    label: 'Buttondddd',
   },
   render:(args) =>({
     components: {
       TTooltip
     },
     setup() {
-      return args;
+      return {args};
     },
     template:`<TTooltip v-bind="args" >
          <button>trigger button</button>
@@ -50,23 +57,3 @@ export const Label: Story = {
   })
 };
 
-// export const Secondary: Story = {
-//   args: {
-//     primary: false,
-//     label: 'Button',
-//   },
-// };
-
-// export const Large: Story = {
-//   args: {
-//     label: 'Button',
-//     size: 'large',
-//   },
-// };
-
-// export const Small: Story = {
-//   args: {
-//     label: 'Button',
-//     size: 'small',
-//   },
-// };

@@ -1,12 +1,10 @@
 import { cloneVNode, defineComponent, withDirectives, inject } from "vue";
 import type { SetupContext, Ref, InjectionKey } from "vue";
-import { getFirstValidChild } from "./util";
-
-export const FLOAT_TRIGGER_TOKEN: InjectionKey<Ref> =
-  Symbol("floating-trigger");
+import { FLOAT_TRIGGER_TOKEN, getFirstValidChild } from "./util";
 
 export default defineComponent({
   name: "FloatTrigger",
+  inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     const { slots, attrs } = ctx;
     return () => {

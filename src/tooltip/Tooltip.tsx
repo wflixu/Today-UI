@@ -16,6 +16,7 @@ import "./style/tooltip.css";
 
 export default defineComponent({
   name: "TTooltip",
+  inheritAttrs: false,
   props,
   setup(props, { slots }) {
     const open = ref(false);
