@@ -1,0 +1,32 @@
+.t-dialog {
+  border: 1px solid #999;
+  display: grid;
+  grid-template-rows: 32px 1fr 32px;
+
+  .header {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 20px;
+  }
+
+  .footer {
+    display: flex;
+    padding: 0 16px;
+    height: 32px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.t-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  background-color: #00000080;
+  z-index: 1000;
+}

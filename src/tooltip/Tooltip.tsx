@@ -1,14 +1,5 @@
 // @ts-nocheck
-import {
-  computed,
-  defineComponent,
-  getCurrentInstance,
-  getCurrentScope,
-  onMounted,
-  ref,
-  render,
-  unref,
-} from "vue";
+import { computed, defineComponent, onMounted, ref, render, unref } from "vue";
 import {
   useFloating,
   offset,
@@ -20,11 +11,12 @@ import {
 import { renderTNodeJSX, renderContent } from "../shared/render-tnode";
 import Container from "./container";
 import props from "./props";
-import "./style";
 import { on } from "../shared/dom";
+import "./style/tooltip.css";
 
 export default defineComponent({
   name: "TTooltip",
+  inheritAttrs: false,
   props,
   setup(props, { slots }) {
     const open = ref(false);
