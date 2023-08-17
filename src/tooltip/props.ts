@@ -1,7 +1,7 @@
 import type { PropType, ExtractPropTypes } from 'vue';
 
 
-import { TTooltipProps } from './type';
+import { type TTooltipProps } from './type';
 
 
 export default {
