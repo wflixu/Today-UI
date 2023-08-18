@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.app.json",
+    "compilerOptions": {
+      "outDir": "dist/",
+      "strictNullChecks": false,
+      "types": ["vite/client","node"]
+    },
+    "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"],
+    "exclude": [
+      "node_modules",
+      "dist"
+    ]
+  }
+  

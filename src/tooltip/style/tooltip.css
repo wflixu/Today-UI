@@ -1,0 +1,20 @@
+.t-tooltip {
+  display: unset;
+}
+
+.t-tooltip-content {
+  padding: 4px;
+  position: absolute;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #666;
+  color: white;
+}
+
+.t-tooltip-arrow {
+  position: absolute;
+  background: #666;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+}
