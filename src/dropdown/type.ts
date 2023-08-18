@@ -3,7 +3,7 @@
 
 
 
-import { ExtractPropTypes, PropType } from "vue";
+import type { ExtractPropTypes, PropType } from "vue";
 
 
 export type TriggerType = 'click' | 'hover' | 'contextmenu'| 'manually';

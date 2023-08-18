@@ -1,6 +1,6 @@
 
 import { camelCase, isEmpty, isFunction, isObject, isString, kebabCase } from 'lodash';
-import { h, ComponentPublicInstance, VNode, isVNode } from 'vue';
+import { h, type ComponentPublicInstance, type VNode, isVNode } from 'vue';
 
 export interface JSXRenderContext {
     defaultNode?: VNode | string;

@@ -1,7 +1,4 @@
-import type { PropType, ExtractPropTypes } from 'vue';
 
-
-import { TDialogProps } from './type';
 
 
 export default {

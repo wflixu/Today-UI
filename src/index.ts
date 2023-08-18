@@ -1,12 +1,13 @@
 
 
-import { App } from 'vue';
+import { type App } from 'vue';
 import * as components from './components';
 import { version} from '../package.json';
 
 export function install(app: App, config?: Record<string, unknown>): void {
   Object.keys(components).forEach((key) => {
-     app.use(components[key as keyof typeof components], config);
+    // @ts-ignore
+     app.use(components[key as keyof typeof components] , config);
   });
 }
 
