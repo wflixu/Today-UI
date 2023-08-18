@@ -6,7 +6,7 @@ name: today-ui npm publish
 on:
   push:
     branches:
-      - release
+      - main
 
 jobs:
   publish-npm:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: release
+          ref: main
       - uses: pnpm/action-setup@v2.0.1
         with:
           version: 7.27.1
