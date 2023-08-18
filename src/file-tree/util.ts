@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { randomId } from "@/shared/util";
 import type { IInnerTreeNode, ITreeNode, UseNamespace } from "./type";
 import { computed, type ComputedRef } from "vue";
