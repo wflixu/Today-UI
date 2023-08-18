@@ -10,6 +10,7 @@
 
 <input type="checkbox" checked> 第一个组件tooltip ，测试发包。
 <input type="checkbox" checked> 组件dropdown ，测试发包。
+<input type="checkbox" checked> 组件tree ，测试发包。
 
 <input type="checkbox" > 完善组件和样式
 
@@ -65,6 +66,12 @@ export default defineComponent({
 </script>
 
 ```
+
+## 文档
+
+[文档链接](https://wflixu.github.io/Today-UI/?path=/docs/%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BB%8B%E7%BB%8D--docs)
+
+![Alt text](public/image.png)
 
 
 ## 参与

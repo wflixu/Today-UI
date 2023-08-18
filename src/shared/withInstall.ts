@@ -1,4 +1,4 @@
-import { App, Component, ComputedOptions, MethodOptions, Plugin } from 'vue';
+import type { App, Component, ComputedOptions, MethodOptions, Plugin } from 'vue';
 
 export type WithInstallType<T> = T & Plugin;
 

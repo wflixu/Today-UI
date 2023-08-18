@@ -1,10 +1,24 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { fileURLToPath, URL } from "node:url";
+
+import postcssImport from "postcss-import";
+import postcssNested from "postcss-nested";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), vueJsx()],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+  css: {
+    postcss: {
+      plugins: [postcssNested, postcssImport],
+    },
+  },
   build: {
     target: "esnext",
     lib: {

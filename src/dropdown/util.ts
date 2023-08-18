@@ -1,4 +1,4 @@
-import { h, Comment, Text, Fragment, InjectionKey, Ref } from 'vue';
+import { h, Comment, Text, Fragment, type InjectionKey, type Ref } from 'vue';
 import { isObject } from '@vue/shared';
 import type { ComponentPublicInstance, VNode } from 'vue';
 export const FLOAT_TRIGGER_TOKEN: InjectionKey<Ref> =

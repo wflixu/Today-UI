@@ -1,6 +1,17 @@
-import { defineComponent, onMounted, onUnmounted, ref, Fragment, Text, watch, PropType, VNode, Teleport } from 'vue';
-import { getAttach } from '../shared/dom';
-import props from './props';
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  Fragment,
+  Text,
+  watch,
+  type PropType,
+  type VNode,
+  Teleport,
+} from "vue";
+import { getAttach } from "../shared/dom";
+import props from "./props";
 
 function filterEmpty(children: VNode[] = []) {
   const vnodes: VNode[] = [];
@@ -19,15 +30,15 @@ function filterEmpty(children: VNode[] = []) {
         c &&
         (c.type === Comment ||
           (c.type === Fragment && c.children.length === 0) ||
-          (c.type === Text && (c.children as string).trim() === ''))
-      ),
+          (c.type === Text && (c.children as string).trim() === ""))
+      )
   );
 }
 
 function isContentRectChanged(rect1: DOMRectReadOnly, rect2: DOMRectReadOnly) {
   if (!rect1 || !rect2) return;
   // @ts-ignore
-  if (['width', 'height', 'x', 'y'].some((k) => rect1[k] !== rect2[k])) {
+  if (["width", "height", "x", "y"].some((k) => rect1[k] !== rect2[k])) {
     return true;
   }
   return false;
@@ -56,7 +67,10 @@ function observeResize(elm: HTMLElement, cb: (rect: DOMRectReadOnly) => void) {
   };
 }
 
-function useObserveResize(elm: () => HTMLElement, cb: Parameters<typeof observeResize>[1]) {
+function useObserveResize(
+  elm: () => HTMLElement,
+  cb: Parameters<typeof observeResize>[1]
+) {
   let cleanOR: ReturnType<typeof observeResize>;
   onMounted(() => {
     cleanOR = observeResize(elm(), cb);
@@ -68,7 +82,7 @@ function useObserveResize(elm: () => HTMLElement, cb: Parameters<typeof observeR
 
 // eslint-disable-next-line vue/one-component-per-file
 const Trigger = defineComponent({
-  emits: ['resize'],
+  emits: ["resize"],
   data() {
     return {
       cleanOR: null,
@@ -77,7 +91,7 @@ const Trigger = defineComponent({
   mounted() {
     // There is no better way to get the root element than `this.$el`
     this.cleanOR = observeResize(this.$el, () => {
-      this.$emit('resize');
+      this.$emit("resize");
     });
   },
   unmounted() {
@@ -96,21 +110,24 @@ const Trigger = defineComponent({
 
 // eslint-disable-next-line vue/one-component-per-file
 const Content = defineComponent({
-  emits: ['resize'],
+  emits: ["resize"],
   setup(props, { emit }) {
     const el = ref(null);
     useObserveResize(
       // @ts-ignore
       () => el.value.children[0],
       () => {
-        emit('resize');
-      },
+        emit("resize");
+      }
     );
     return { el };
   },
   render() {
     return (
-      <div ref="el" style="position: absolute; top: 0px; left: 0px; width: 100%">
+      <div
+        ref="el"
+        style="position: absolute; top: 0px; left: 0px; width: 100%"
+      >
         {this.$slots.default!()}
       </div>
     );
@@ -126,13 +143,13 @@ export default defineComponent({
     attach: props.attach,
     forwardRef: Function as PropType<(el: HTMLElement) => void>,
   },
-  emits: ['resize', 'contentMounted'],
+  emits: ["resize", "contentMounted"],
   setup(props, { emit }) {
     const triggerRef = ref<VNode & { $el: HTMLElement }>(null);
     const mountContent = ref(false);
 
     onMounted(() => {
-      console.warn('onMounted',props.visible);
+      console.warn("onMounted", props.visible);
       mountContent.value = props.visible;
       props.forwardRef(triggerRef.value.$el);
     });
@@ -143,7 +160,7 @@ export default defineComponent({
         if (visible) {
           mountContent.value = props.visible;
         }
-      },
+      }
     );
 
     return {
@@ -153,20 +170,17 @@ export default defineComponent({
         mountContent.value = false;
       },
       emitResize: () => {
-        emit('resize');
+        emit("resize");
       },
       emitContentMounted: () => {
-     
-        
-        emit('contentMounted');
+        emit("contentMounted");
       },
     };
   },
   render() {
-    
     let defaultContent = this.$slots.default!();
     let content = this.$slots.content && this.$slots.content();
-    
+
     return (
       <Fragment>
         <Trigger
@@ -180,7 +194,10 @@ export default defineComponent({
         </Trigger>
         {this.mountContent && (
           <Teleport to={getAttach(this.attach)}>
-            <Content onResize={this.emitResize} onVnodeMounted={this.emitContentMounted}>
+            <Content
+              onResize={this.emitResize}
+              onVnodeMounted={this.emitContentMounted}
+            >
               {content}
             </Content>
           </Teleport>

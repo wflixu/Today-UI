@@ -2,7 +2,11 @@ import { Teleport, defineComponent, provide, ref, toRefs, watch } from "vue";
 
 import FloatTrigger from "./FloatTrigger";
 import "./dropdown.css";
-import { type IDropdownProps, dropdownProps, IDropdownOption } from "./type";
+import {
+  type IDropdownProps,
+  dropdownProps,
+  type IDropdownOption,
+} from "./type";
 import { useFloating } from "@floating-ui/vue";
 import { FLOAT_TRIGGER_TOKEN, getElement, subscribeEvent } from "./util";
 
@@ -30,7 +34,7 @@ export default defineComponent({
     watch(
       [trigger, origin, dropdownRef],
       ([triggerVal, originVal, dropdownEl], ov, onInvalidate) => {
-        const originEl = getElement(originVal);
+        const originEl = getElement(originVal ?? null);
         const subscriptions: (() => void)[] = [];
         if (triggerVal === "click") {
           subscriptions.push(
@@ -55,7 +59,6 @@ export default defineComponent({
     };
 
     return () => {
-      console.log(props.options);
       return (
         <>
           <FloatTrigger>{slots.default?.()}</FloatTrigger>

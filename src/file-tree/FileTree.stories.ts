@@ -36,9 +36,50 @@ export const Basic: Story = {
      data: [
       {
         label: 'Parent node 1',
+       
         children: [
           {
             label: 'Parent node 1-1',
+          
+            children: [{ label: 'Leaf node 1-1-1' }],
+          },
+          { label: 'Leaf node 1-2' },
+        ],
+      },
+      { label: 'Leaf node 2' },
+    ]
+  },
+
+  render: (args) => ({
+    components: {
+      TFileTree,
+    },
+    setup() {
+      return { args };
+    },
+    template: `<TFileTree v-bind="args" >
+       
+      </TFileTree>`,
+  }),
+};
+
+
+export const ContextMenu: Story = {
+  args: {
+     data: [
+      {
+        label: 'Parent node 1',
+        contextMenu:[
+          { label: "Undo", key: "undo" },
+          { label: "Redo", key: "redo" },
+        ],
+        children: [
+          {
+            label: 'Parent node 1-1',
+            contextMenu:[
+              { label: "Undo", key: "undo" },
+              { label: "Redo", key: "redo" },
+            ],
             children: [{ label: 'Leaf node 1-1-1' }],
           },
           { label: 'Leaf node 1-2' },
