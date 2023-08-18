@@ -27,7 +27,6 @@
     "dev": "storybook dev -p 6006",
     "build": "vite build && pnpm build:type",
     "build:type": "vue-tsc --emitDeclarationOnly   -p tsconfig.type.json",
-    "publish": "pnpm build && pnpm publish",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
