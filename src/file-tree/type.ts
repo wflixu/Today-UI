@@ -18,7 +18,7 @@ export type ICheckStrategy = "upward" | "downward" | "both" | "none";
 
 export type ICheck = boolean | ICheckStrategy;
 
-export interface TreeContextMenu {
+export interface ITreeContextMenu {
   key:string;
   label: string;
   icon?: string;
@@ -40,7 +40,7 @@ export interface ITreeNode {
   isLeaf?: boolean;
 
   contextMenuType?: string;
-  contextMenu?: TreeContextMenu[]
+  contextMenu?: ITreeContextMenu[]
 }
 
 export interface IDropType {

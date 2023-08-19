@@ -12,6 +12,7 @@ import {
   type IInnerTreeNode,
   type TreeNodeProps,
   type IUseTree,
+  type ITreeContextMenu,
 } from "./type";
 import {
   useNamespace,
@@ -29,7 +30,8 @@ export default defineComponent({
   name: "TTreeNode",
   inheritAttrs: false,
   props: treeNodeProps,
-  setup(props: TreeNodeProps, { slots }) {
+  emits: ["operate"],
+  setup(props: TreeNodeProps, { slots, emit }) {
     const { data } = toRefs(props);
     const ns = useNamespace("file-tree");
     const {
@@ -48,6 +50,10 @@ export default defineComponent({
       TREE_INSTANCE
     ) as ComponentInternalInstance | null;
 
+    const handleOperate = (option: ITreeContextMenu, event: any) => {
+      emit("operate", option.key, data);
+    };
+
     return () => {
       return (
         <div class={nodeClass.value} style={nodeStyle.value}>
@@ -60,7 +66,11 @@ export default defineComponent({
             style={omit(nodeVLineStyles.value[0], ["height", "top"])}
           ></span>
           {data.value.contextMenu ? (
-            <TDropdown options={data.value.contextMenu} trigger="contextmenu">
+            <TDropdown
+              options={data.value.contextMenu}
+              trigger="contextmenu"
+              onSelect={handleOperate}
+            >
               <div
                 class={nodeContentClass.value}
                 onClick={() => {

@@ -7,7 +7,7 @@ import {
   dropdownProps,
   type IDropdownOption,
 } from "./type";
-import { useFloating } from "@floating-ui/vue";
+import { flip, shift, useFloating } from "@floating-ui/vue";
 import { FLOAT_TRIGGER_TOKEN, getElement, subscribeEvent } from "./util";
 
 export default defineComponent({
@@ -21,8 +21,11 @@ export default defineComponent({
     const origin = ref<HTMLElement | undefined>();
     const show = ref(false);
     const dropdownRef = ref<HTMLElement | undefined>();
-    useFloating(origin, dropdownRef, {
+
+    const { x, y, floatingStyles } = useFloating(origin, dropdownRef, {
       open: show,
+      placement: "bottom-start",
+      middleware: [flip(), shift()],
     });
     provide(FLOAT_TRIGGER_TOKEN, origin);
 
@@ -67,6 +70,7 @@ export default defineComponent({
               ref={dropdownRef}
               v-show={show.value}
               class="t-dropdown-menu"
+              style={floatingStyles.value}
               {...attrs}
             >
               {props.options?.map(({ label, key }) => {

@@ -27,6 +27,7 @@ import { useSelect } from "./use-select";
 export default defineComponent({
   name: "TFileTree",
   props: treeProps,
+  emits: ["operate"],
   setup(props: TreeProps, context: SetupContext) {
     const { slots, expose } = context;
     const treeInstance = getCurrentInstance();
@@ -48,13 +49,15 @@ export default defineComponent({
         data.value = formatBasicTree(newVal);
       }
     );
-
+    const onOperate = (key: string, data: any) => {
+      context.emit("operate", { key, node: data });
+    };
     expose({
       treeFactory,
     });
 
     const renderTreeNode = (treeNode: IInnerTreeNode) => (
-      <TTreeNode data={treeNode} key={treeNode.id}>
+      <TTreeNode data={treeNode} key={treeNode.id} onOperate={onOperate}>
         {{
           default: () =>
             slots.content ? (

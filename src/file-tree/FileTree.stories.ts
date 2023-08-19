@@ -15,10 +15,11 @@ const meta: Meta<typeof TFileTree> = {
     //   { label: "Undo", key: "undo" },
     //   { label: "Redo", key: "redo" },
     // ],
+    
   },
   argTypes: {
     // trigger: { control: 'select', options: ['click', 'hover', 'contextmenu'] },
-    // onSelect: {action: 'selected',}
+    // onOperate: { action: 'operate',}
   }
 
 
@@ -47,7 +48,7 @@ export const Basic: Story = {
         ],
       },
       { label: 'Leaf node 2' },
-    ]
+    ],
   },
 
   render: (args) => ({
@@ -55,9 +56,10 @@ export const Basic: Story = {
       TFileTree,
     },
     setup() {
-      return { args };
+     
+      return { args, };
     },
-    template: `<TFileTree v-bind="args" >
+    template: `<TFileTree v-bind="args"  >
        
       </TFileTree>`,
   }),
@@ -94,9 +96,12 @@ export const ContextMenu: Story = {
       TFileTree,
     },
     setup() {
-      return { args };
+      const handleOperate = (payload:any) => {
+        console.log('payload:',payload);
+      }
+      return { args ,handleOperate};
     },
-    template: `<TFileTree v-bind="args" >
+    template: `<TFileTree v-bind="args"  @operate="handleOperate">
        
       </TFileTree>`,
   }),
