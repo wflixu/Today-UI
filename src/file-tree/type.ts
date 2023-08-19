@@ -144,7 +144,7 @@ export type IUseTree = {
   treeData: Ref<IInnerTreeNode[]>;
 } & IUseCore &
   IUseToggle &
-  IUseSelect;
+  IUseSelect & IUseOperate;
 
 export interface IUseLazyLoad {
   lazyLoadNodes: (node: IInnerTreeNode) => void;
@@ -173,4 +173,11 @@ export interface IUseInitSelectCollection {
   setInitSelectedNode: (node: IInnerTreeNode) => void;
   getInitSelectedNodes: () => IInnerTreeNode[];
   clearInitSelectedNodes: () => void;
+}
+
+
+export interface IUseOperate {
+  insertBefore: (parentNode: IInnerTreeNode, node: ITreeNode, referenceNode?: ITreeNode) => void;
+  removeNode: (node: IInnerTreeNode) => void;
+  editNode: (node: IInnerTreeNode, label: string) => void;
 }
