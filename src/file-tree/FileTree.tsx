@@ -23,6 +23,7 @@ import TTreeNodeLoading from "./TreeNodeLoading";
 import "./file-tree.css";
 import { useTree } from "./use-tree";
 import { useSelect } from "./use-select";
+import { useOperate } from "./use-operate";
 
 export default defineComponent({
   name: "TFileTree",
@@ -34,7 +35,11 @@ export default defineComponent({
     const ns = useNamespace("file-tree");
     const data = ref<IInnerTreeNode[]>(formatBasicTree(props.data));
 
-    const treeFactory = useTree(data.value, [useSelect()], context);
+    const treeFactory = useTree(
+      data.value,
+      [useSelect(), useOperate()],
+      context
+    );
 
     const { setTree, getExpendedTree, toggleNode } = treeFactory;
 
