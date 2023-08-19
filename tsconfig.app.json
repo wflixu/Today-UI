@@ -15,6 +15,7 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
+    "outDir": "dist",
     "paths": {
       "@/*": [
         "./src/*"
