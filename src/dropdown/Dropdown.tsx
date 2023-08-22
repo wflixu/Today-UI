@@ -6,7 +6,7 @@ import {
   type IDropdownProps,
   dropdownProps,
   type IDropdownOption,
-} from "./type";
+} from "./props-type";
 import { flip, shift, useFloating } from "@floating-ui/vue";
 import { FLOAT_TRIGGER_TOKEN, getElement, subscribeEvent } from "./util";
 
@@ -64,7 +64,9 @@ export default defineComponent({
     return () => {
       return (
         <>
-          <FloatTrigger>{slots.default?.()}</FloatTrigger>
+          <FloatTrigger class="t-dropdown-ref">
+            {slots.default?.()}
+          </FloatTrigger>
           <Teleport to="body">
             <div
               ref={dropdownRef}
@@ -76,7 +78,7 @@ export default defineComponent({
               {props.options?.map(({ label, key }) => {
                 return (
                   <div
-                    class="MenuItem"
+                    class="t-dropdown-menu-item"
                     key={key}
                     onClick={(e) => onClickItem({ label, key }, e)}
                   >

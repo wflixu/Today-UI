@@ -8,21 +8,13 @@ const meta: Meta<typeof TFileTree> = {
   component: TFileTree,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/7.0/vue/writing-docs/docs-page
   tags: ["autodocs"],
-  args: {
-    // attach: "body",
-    // trigger: 'click',
-    // options: [
-    //   { label: "Undo", key: "undo" },
-    //   { label: "Redo", key: "redo" },
-    // ],
-    
-  },
+  args: {},
   argTypes: {
     // trigger: { control: 'select', options: ['click', 'hover', 'contextmenu'] },
-    // onOperate: { action: 'operate',}
-  }
-
-
+    onOperate: { action: "operate" },
+    onSelect: { action: "select" },
+    onNodeClick: { action: "node-click" },
+  },
 };
 
 export default meta;
@@ -34,20 +26,20 @@ type Story = StoryObj<typeof TFileTree>;
  */
 export const Basic: Story = {
   args: {
-     data: [
+    data: [
       {
-        label: 'Parent node 1',
-       
+        label: "Parent node 1",
+
         children: [
           {
-            label: 'Parent node 1-1',
-          
-            children: [{ label: 'Leaf node 1-1-1' }],
+            label: "Parent node 1-1",
+
+            children: [{ label: "Leaf node 1-1-1" }],
           },
-          { label: 'Leaf node 1-2' },
+          { label: "Leaf node 1-2" },
         ],
       },
-      { label: 'Leaf node 2' },
+      { label: "Leaf node 2" },
     ],
   },
 
@@ -56,8 +48,7 @@ export const Basic: Story = {
       TFileTree,
     },
     setup() {
-     
-      return { args, };
+      return { args };
     },
     template: `<TFileTree v-bind="args"  >
        
@@ -65,30 +56,29 @@ export const Basic: Story = {
   }),
 };
 
-
 export const ContextMenu: Story = {
   args: {
-     data: [
+    data: [
       {
-        label: 'Parent node 1',
-        contextMenu:[
+        label: "Parent node 1",
+        contextMenu: [
           { label: "Undo", key: "undo" },
           { label: "Redo", key: "redo" },
         ],
         children: [
           {
-            label: 'Parent node 1-1',
-            contextMenu:[
+            label: "Parent node 1-1",
+            contextMenu: [
               { label: "Undo", key: "undo" },
               { label: "Redo", key: "redo" },
             ],
-            children: [{ label: 'Leaf node 1-1-1' }],
+            children: [{ label: "Leaf node 1-1-1" }],
           },
-          { label: 'Leaf node 1-2' },
+          { label: "Leaf node 1-2" },
         ],
       },
-      { label: 'Leaf node 2' },
-    ]
+      { label: "Leaf node 2" },
+    ],
   },
 
   render: (args) => ({
@@ -96,12 +86,10 @@ export const ContextMenu: Story = {
       TFileTree,
     },
     setup() {
-      const handleOperate = (payload:any) => {
-        console.log('payload:',payload);
-      }
-      return { args ,handleOperate};
+      
+      return { args };
     },
-    template: `<TFileTree v-bind="args"  @operate="handleOperate">
+    template: `<TFileTree v-bind="args" >
        
       </TFileTree>`,
   }),

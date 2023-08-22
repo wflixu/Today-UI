@@ -6,7 +6,7 @@ export const FLOAT_TRIGGER_TOKEN: InjectionKey<Ref> =
 
 
 function wrapContent(content: string | VNode) {
-    return h('span', { class: "float-trigger-wrap" }, content);
+    return h('span', { class: "trigger-wrap" }, content);
   }
   
   export function getFirstValidChild(nodes: VNode[]): VNode | null {

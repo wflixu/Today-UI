@@ -28,7 +28,7 @@ import { useOperate } from "./use-operate";
 export default defineComponent({
   name: "TFileTree",
   props: treeProps,
-  emits: ["operate"],
+  emits: ["operate", "node-click", "select"],
   setup(props: TreeProps, context: SetupContext) {
     const { slots, expose } = context;
     const treeInstance = getCurrentInstance();
