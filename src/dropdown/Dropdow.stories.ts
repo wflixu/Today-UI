@@ -8,20 +8,19 @@ const meta: Meta<typeof TDropdown> = {
   component: TDropdown,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/7.0/vue/writing-docs/docs-page
   tags: ["autodocs"],
+
   args: {
-    attach: "body",
-    trigger: 'click',
+    trigger: "click",
     options: [
       { label: "Undo", key: "undo" },
       { label: "Redo", key: "redo" },
     ],
   },
   argTypes: {
-    trigger: { control: 'select', options: ['click', 'hover', 'contextmenu'] },
-    onSelect: {action: 'selected',}
-  }
-
-
+    trigger: { control: "select", options: ["click", "hover", "contextmenu"] },
+    onSelect: { action: "select" },
+    onToggle: { action: "toggle" },
+  },
 };
 
 export default meta;
@@ -31,32 +30,9 @@ type Story = StoryObj<typeof TDropdown>;
  * See https://storybook.js.org/docs/7.0/vue/api/csf
  * to learn how to use render functions.
  */
-export const Attach: Story = {
-  args: {
-    attach: "body",
-    options: [
-      { label: "Undo", key: "undo" },
-      { label: "Redo", key: "redo" },
-    ],
-  },
-
-  render: (args) => ({
-    components: {
-      TDropdown,
-    },
-    setup() {
-      console.log("args:", args);
-      return { args };
-    },
-    template: `<TDropdown v-bind="args" >
-         <button>trigger button</button>
-      </TDropdown>`,
-  }),
-};
 
 export const Menu: Story = {
   args: {
-    attach: "body",
     options: [
       { label: "Undo", key: "undo" },
       { label: "Redo", key: "redo" },
@@ -67,7 +43,7 @@ export const Menu: Story = {
       TDropdown,
     },
     setup() {
-      return {args};
+      return { args };
     },
     template: `<TDropdown v-bind="args" >
          <button>trigger button</button>
@@ -83,7 +59,6 @@ export const Menu: Story = {
 
 export const Trigger: Story = {
   args: {
-    attach: "body",
     trigger: "contextmenu",
     options: [
       { label: "Undo", key: "undo" },
@@ -99,6 +74,27 @@ export const Trigger: Story = {
     },
     template: `<TDropdown v-bind="args">
          <button>trigger button</button>
+       </TDropdown>`,
+  }),
+};
+// 
+export const ConmpoentEvents: Story = {
+  args: {
+    options: [
+      { label: "Undo", key: "undo" },
+      { label: "Redo", key: "redo" },
+    ],
+  },
+
+  render: (args) => ({
+    components: {
+      TDropdown,
+    },
+    setup() {
+      return { args };
+    },
+    template: `<TDropdown v-bind="args" >
+         trigger button
        </TDropdown>`,
   }),
 };

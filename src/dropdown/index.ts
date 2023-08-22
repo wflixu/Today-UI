@@ -1,11 +1,15 @@
 
-import { withInstall, type WithInstallType } from '../shared/withInstall';
+import type { App } from "vue";
+import Dropdown from "./Dropdown";
 
+export { Dropdown };
 
-import _Dropdown from './Dropdown';
+export * from "./props-type";
 
-
-export * from './type';
-
-export const Dropdown: WithInstallType<typeof _Dropdown> = withInstall(_Dropdown);
-export default Dropdown;
+export default {
+  title: "Dropdown 下拉菜单",
+  status: "50%",
+  install(app: App): void {
+    app.component(Dropdown.name, Dropdown);
+  },
+};

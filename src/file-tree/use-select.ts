@@ -63,13 +63,13 @@ export function useSelect() {
       }
 
       setNodeValue(node, "selected", true);
-      context.emit("select-change", node);
+      context.emit("select", node);
       prevActiveNode = node;
     };
 
     const deselectNode = (node: IInnerTreeNode): void => {
       setNodeValue(node, "selected", false);
-      context.emit("select-change", node);
+      context.emit("select", node);
     };
 
     const toggleSelectNode = (node: IInnerTreeNode): void => {
