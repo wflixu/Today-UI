@@ -7,6 +7,7 @@
     },
     "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"],
     "exclude": [
+      "src/**/*stories.ts",
       "node_modules",
       "dist"
     ]
