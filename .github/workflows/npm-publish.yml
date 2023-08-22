@@ -12,7 +12,7 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - name：CheckOut Code
+      - name: CheckOut Code
         uses: actions/checkout@master
         with:
           ref: main
@@ -20,7 +20,7 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 8.6.12
-      - name: Set Node 
+      - name: Set Node
         uses: actions/setup-node@v2
         with:
           node-version: 18
