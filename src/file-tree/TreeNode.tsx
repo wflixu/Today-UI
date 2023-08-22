@@ -8,7 +8,6 @@ import {
   type ComponentInternalInstance,
 } from "vue";
 import {
-  treeNodeProps,
   type IInnerTreeNode,
   type TreeNodeProps,
   type IUseTree,
@@ -25,6 +24,7 @@ import {
 import TTreeNodeToggle from "./TreeNodeToggle";
 
 import TDropdown from "../dropdown/Dropdown";
+import { treeNodeProps } from "./props";
 
 export default defineComponent({
   name: "TTreeNode",

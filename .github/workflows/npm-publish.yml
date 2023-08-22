@@ -12,17 +12,32 @@ jobs:
   publish-npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name：CheckOut Code
+        uses: actions/checkout@master
         with:
           ref: main
-      - uses: pnpm/action-setup@v2.0.1
+      - name: Set pnpm
+        uses: pnpm/action-setup@v2.0.1
         with:
           version: 8.6.12
-      - uses: actions/setup-node@v2
+      - name: Set Node 
+        uses: actions/setup-node@v2
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
           cache: "pnpm"
+
+      - name: Get package version
+        uses: tyankatsu0105/read-package-version-actions@v1
+        id: package-version
+
+      - name: Create a tag
+        uses: negz/create-tag@v1
+        with:
+          version: v${{ steps.package-version.outputs.version }}
+          message: "Release v${{ steps.package-version.outputs.version }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
         run: pnpm  install
       - name: build

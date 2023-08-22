@@ -8,7 +8,7 @@ import {
   getCurrentInstance,
   watch,
 } from "vue";
-import { type IInnerTreeNode, type TreeProps, treeProps } from "./type";
+import { type IInnerTreeNode, type TreeProps } from "./type";
 import {
   TREE_INSTANCE,
   USE_TREE_TOKEN,
@@ -24,6 +24,7 @@ import "./file-tree.css";
 import { useTree } from "./use-tree";
 import { useSelect } from "./use-select";
 import { useOperate } from "./use-operate";
+import { treeProps } from "./props";
 
 export default defineComponent({
   name: "TFileTree",

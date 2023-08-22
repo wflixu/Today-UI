@@ -1,5 +1,5 @@
 import { cloneVNode, defineComponent, withDirectives, inject } from "vue";
-import type { SetupContext, Ref, InjectionKey } from "vue";
+import type { SetupContext, Ref } from "vue";
 import { FLOAT_TRIGGER_TOKEN, getFirstValidChild } from "./util";
 
 export default defineComponent({

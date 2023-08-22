@@ -6,6 +6,8 @@ import { version} from '../package.json';
 
  function install(app: App, config?: Record<string, unknown>): void {
   Object.entries(components).forEach(([key, comp]) => {
+    console.log('install -------------');
+    console.log(key, comp);
      app.use(comp as Plugin , config);
   });
 }

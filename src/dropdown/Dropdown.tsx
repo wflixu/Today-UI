@@ -2,13 +2,10 @@ import { Teleport, defineComponent, provide, ref, toRefs, watch } from "vue";
 
 import FloatTrigger from "./FloatTrigger";
 import "./dropdown.css";
-import {
-  type IDropdownProps,
-  dropdownProps,
-  type IDropdownOption,
-} from "./props-type";
+import { type IDropdownProps, type IDropdownOption } from "./type";
 import { flip, shift, useFloating } from "@floating-ui/vue";
 import { FLOAT_TRIGGER_TOKEN, getElement, subscribeEvent } from "./util";
+import { dropdownProps } from "./props";
 
 export default defineComponent({
   name: "TDropdown",
@@ -24,6 +21,7 @@ export default defineComponent({
 
     const { x, y, floatingStyles } = useFloating(origin, dropdownRef, {
       open: show,
+      strategy: "fixed",
       placement: "bottom-start",
       middleware: [flip(), shift()],
     });

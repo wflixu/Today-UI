@@ -1,19 +1,11 @@
-import type { App } from "vue";
 
-import FileTree from "./FileTree";
-export { FileTree };
+import { withInstall, type WithInstallType } from '../shared/withInstall';
+import _FileTree from "./FileTree";
 
-export * from "./type";
+export * from './type';
 
-export default {
-    title: "FileTree 下拉菜单",
-    status: "50%",
-    install(app: App): void {
-      app.component(FileTree.name, FileTree);
-    },
-  };
-  
+export const FileTree: WithInstallType<typeof _FileTree> = withInstall(_FileTree);
+export default FileTree;
 
-// export const FileTree: WithInstallType<typeof _FileTree> =
-//   withInstall(_FileTree);
-// export default FileTree;
+
+

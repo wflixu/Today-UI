@@ -26,14 +26,19 @@ export default defineConfig({
       name: "today-ui",
       fileName: (format) => `today-ui.${format}.js`,
     },
+    minify: false,
     rollupOptions: {
-      external: ["vue", "lodash"],
+      external: [
+        "vue",
+        "lodash",
+      ],
       output: {
         name: "todayUI",
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
           vue: "Vue",
-          lodash: "Lodash",
+          lodash: "Lodash",// TODO 删除依赖
+          // "@floating-ui/vue": "FloatingUIVue",
         },
       },
     },
