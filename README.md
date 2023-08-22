@@ -73,7 +73,7 @@ export default defineComponent({
 
 [文档链接](https://wflixu.github.io/Today-UI/?path=/docs/%E7%BB%84%E4%BB%B6%E5%BA%93%E4%BB%8B%E7%BB%8D--docs)
 
-![Alt text](public/image.png)
+![Alt text](src/assets/img/doc.png)
 
 
 ## 参与
