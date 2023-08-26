@@ -1,5 +1,5 @@
 import type { StorybookConfig } from "@storybook/vue3-vite";
-import pluginVueJsx from '@vitejs/plugin-vue-jsx'
+
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
@@ -13,15 +13,6 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: "tag",
-  },
-  async viteFinal(config) {
-    config.plugins = [
-      ...config.plugins.filter(p => !Array.isArray(p)),
-      pluginVueJsx({
-        exclude: [/\.stories\.(t|j)sx?$/, /node_modules/],
-      }),
-    ];
-    return config;
   },
 };
 export default config;

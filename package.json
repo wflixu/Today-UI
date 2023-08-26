@@ -85,15 +85,20 @@
     "vue": "^3.3.4"
   },
   "keywords": [
+    "vue3",
+    "vue",
+    "Vue.js",
+    "fluent design",
+    "fluent",
     "floating-ui",
     "@floating-ui/dom",
-    "vue3",
     "composition api",
     "tooltip",
     "menu",
     "dropdown",
     "contextmenu",
-    "modal"
+    "modal",
+    "file-tree"
   ],
   "repository": {
     "type": "git",
