@@ -2,7 +2,7 @@
 
 想单独使用vue3 相关弹框类组件（tooltip,dropdown, menu, context,modal,confirm），不想引入一整个组件库,可以使用本组件库，本组件库准备做小而美的关于弹出层 vue3 组件库。
 
-Today-UI 主要样式规范按照 微软的 Fluent Design 来做的，[文档链接]()
+Today-UI 样式按 Fluent Design 实现的，[Fluent Design](https://fluent2.microsoft.design/get-started/design) 是微软出的设计规范，更适合桌面应用开发。
 
 ## 依赖
 
