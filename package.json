@@ -1,6 +1,6 @@
 {
   "name": "today-ui",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "dropdown menu toolptip powered by vue3, floating-ui",
   "main": "dist/today-ui.umd.js",
   "module": "dist/today-ui.es.js",
@@ -25,7 +25,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "vite build && pnpm build:type",
-    "build:type": "vue-tsc --emitDeclarationOnly   -p tsconfig.type.json",
+    "build:type": "vue-tsc  -p tsconfig.type.json",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
