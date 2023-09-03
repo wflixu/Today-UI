@@ -33,7 +33,8 @@ export default defineConfig({
         "lodash",
       ],
       output: {
-        name: "todayUI",
+        exports: 'named',
+        name: "TodayUI",
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
           vue: "Vue",

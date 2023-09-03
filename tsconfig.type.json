@@ -1,10 +1,12 @@
 {
     "extends": "./tsconfig.app.json",
     "compilerOptions": {
-      "outFile": "dist/today-ui.d.ts",
+      "outDir": "dist/",
       "declaration": true,
       "emitDeclarationOnly": true,
       "verbatimModuleSyntax": false,
+      // "tsBuildInfoFile": ".tsbuildinfo",
+      "incremental": false,
       "strictNullChecks": false
     },
     "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"],
