@@ -47,6 +47,7 @@ export default defineComponent({
     provide(USE_TREE_TOKEN, treeFactory);
     provide(TREE_INSTANCE, treeInstance);
     // 外部同步内部
+    // @ts-ignore
     watch(data, setTree);
 
     watch(
