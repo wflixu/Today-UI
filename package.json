@@ -1,11 +1,16 @@
 {
   "name": "today-ui",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "dropdown menu toolptip powered by vue3, floating-ui",
   "main": "dist/today-ui.umd.js",
   "module": "dist/today-ui.es.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/today-ui.d.ts",
   "exports": {
+    ".": {
+      "types": "./dist/today-ui.d.ts",
+      "import": "./dist/today-ui.es.js",
+      "require": "./dist/today-ui.umd.js"
+    },
     "./package.json": "./package.json",
     "./src/index.ts": "./src/index.ts",
     "./dist/style.css": "./dist/style.css"
