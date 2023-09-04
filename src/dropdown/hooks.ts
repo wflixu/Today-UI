@@ -57,7 +57,14 @@ export const useDropdownEvent = ({ id, isOpen, origin, dropdownRef, props, emit 
         subscriptions.push(
           subscribeEvent(originEl, 'click', () => toggle(!isOpen.value)),
         );
-      } else if (triggerVal === 'hover') {
+      } else if(triggerVal === 'contextmenu') {
+        subscriptions.push(
+          subscribeEvent(originEl, 'contextmenu', (e) => {
+            e.preventDefault();
+            toggle(!isOpen.value)
+          })
+        );
+      }else if (triggerVal === 'hover') {
         subscriptions.push(
           subscribeEvent(originEl, 'mouseenter', () => {
             originEnter = true;
