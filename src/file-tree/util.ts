@@ -103,7 +103,7 @@ export const formatBasicTree = (trees: ITreeNode[], keyName = 'id', childrenName
   }
   const ns = useNamespace('file-tree');
   export function useTreeNode(data: ComputedRef<IInnerTreeNode>): IUseTreeNode {
-    const nodeClass = computed(() => [ns.e('node'), data.value?.expanded && ns.em('node', 'open')]);
+    const nodeClass = computed(() => [ns.e('node'), data.value?.expanded && ns.em('node', 'open'), data.value?.selected && 'active']);
     const nodeStyle = computed(() => {
       return { paddingLeft: `${NODE_INDENT * (data.value?.level - 1)}px` };
     });
@@ -124,7 +124,7 @@ export const formatBasicTree = (trees: ITreeNode[], keyName = 'id', childrenName
     });
     const nodeHLineClass = computed(() => [data.value?.level !== 1 && ns.e('node-hline')]);
   
-    const nodeContentClass = computed(() => [ns.e('node-content'), data.value?.selected && 'active']);
+    const nodeContentClass = computed(() => [ns.e('node-content'), ]);
   
     const nodeTitleClass = computed(() => [ns.e('node-title'), data.value?.disableSelect && 'select-disabled']);
   

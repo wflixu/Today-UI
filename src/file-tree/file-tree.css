@@ -11,6 +11,16 @@
     text-wrap: nowrap;
     font-size: 0;
     position: relative;
+    &.active {
+      background-color: var(--to-list-item-selected-bg, #0f6cbd);
+      color: #fff;
+      text-decoration: none;
+      border-color: transparent;
+    }
+    &:not(.active):hover {
+      background-color: var(--to-list-item-hover-bg, #f2f2f3);
+      transition: background-color 0.5s ease 0s;
+    }
     &-content {
       display: inline-flex;
       align-items: center;
@@ -20,16 +30,7 @@
       padding-left: 6px;
       cursor: pointer;
       border-radius: var(--to-border-radius, 2px);
-      &.active {
-        background-color: var(--to-list-item-selected-bg, #0f6cbd);
-        color: #fff;
-        text-decoration: none;
-        border-color: transparent;
-      }
-      &:not(.active):hover {
-        background-color: var(--to-list-item-hover-bg, #f2f2f3);
-        transition: background-color 0.5s ease 0s;
-      }
+      user-select: none;
       &--value-wrapper {
         display: inline-flex;
         user-select: none;

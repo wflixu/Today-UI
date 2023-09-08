@@ -89,14 +89,10 @@ export default defineComponent({
                   class={ns.em("node-content", "value-wrapper")}
                   style={{ height: `${NODE_HEIGHT}px` }}
                 >
-                  {slots.icon ? (
-                    renderSlot(useSlots(), "icon", {
-                      nodeData: data,
-                      toggleNode,
-                    })
-                  ) : (
-                    <TTreeNodeToggle data={data.value} />
-                  )}
+                  <TTreeNodeToggle data={data.value} />
+                  {renderSlot(useSlots(), "icon", {
+                    nodeData: data,
+                  })}
                   <span class={nodeTitleClass.value}>{data.value?.label}</span>
                 </div>
               </div>
@@ -113,11 +109,11 @@ export default defineComponent({
                 class={ns.em("node-content", "value-wrapper")}
                 style={{ height: `${NODE_HEIGHT}px` }}
               >
-                {slots.icon ? (
-                  renderSlot(useSlots(), "icon", { nodeData: data, toggleNode })
-                ) : (
-                  <TTreeNodeToggle data={data.value} />
-                )}
+                <TTreeNodeToggle data={data.value} />
+                {renderSlot(useSlots(), "icon", {
+                  nodeData: data,
+                })}
+
                 <span class={nodeTitleClass.value}>{data.value?.label}</span>
               </div>
             </div>

@@ -73,14 +73,12 @@ export default defineComponent({
               <TTreeNodeContent data={treeNode} />
             ),
           icon: () =>
-            slots.icon ? (
-              renderSlot(useSlots(), "icon", {
-                nodeData: treeNode,
-                toggleNode,
-              })
-            ) : (
-              <TTreeNodeToggle data={treeNode} />
-            ),
+            slots.icon
+              ? renderSlot(useSlots(), "icon", {
+                  nodeData: treeNode,
+                  toggleNode,
+                })
+              : null,
           loading: () =>
             slots.loading ? (
               renderSlot(useSlots(), "loading", { nodeData: treeNode })
