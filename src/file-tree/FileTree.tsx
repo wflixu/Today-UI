@@ -29,7 +29,7 @@ import { treeProps } from "./props";
 export default defineComponent({
   name: "TFileTree",
   props: treeProps,
-  emits: ["operate", "node-click", "select"],
+  emits: ["operate", "node-click", "select", "dbclick", "toggle", "lazy-load"],
   setup(props: TreeProps, context: SetupContext) {
     const { slots, expose } = context;
     const treeInstance = getCurrentInstance();

@@ -12,8 +12,11 @@ const meta: Meta<typeof TFileTree> = {
   argTypes: {
     // trigger: { control: 'select', options: ['click', 'hover', 'contextmenu'] },
     onOperate: { action: "operate" },
+    onDbclick: { action: "dbclick" },
     onSelect: { action: "select" },
     onNodeClick: { action: "node-click" },
+    onToggle: { action: "toggle" },
+    onLazyLoad: { action: "lazy-load" },
   },
 };
 
@@ -29,11 +32,9 @@ export const Basic: Story = {
     data: [
       {
         label: "Parent node 1",
-
         children: [
           {
-            label: "Parent node 1-1",
-
+            label: "Leaf node 1-1",
             children: [{ label: "Leaf node 1-1-1" }],
           },
           { label: "Leaf node 1-2" },
@@ -86,7 +87,6 @@ export const ContextMenu: Story = {
       TFileTree,
     },
     setup() {
-      
       return { args };
     },
     template: `<TFileTree v-bind="args" >
@@ -95,3 +95,44 @@ export const ContextMenu: Story = {
   }),
 };
 
+export const LazyLoad: Story = {
+  args: {
+    data: [
+      {
+        label: "Parent node 1",
+        isLeaf:false,
+        children: [
+        ],
+      },
+      { label: "Leaf node 2" },
+    ],
+  },
+
+  render: (args) => ({
+    components: {
+      TFileTree,
+    },
+    setup() {
+      const lazyLoad = (node, callback) => {
+        console.log(node, callback)
+        setTimeout(() => {
+          callback({
+            treeItems: [
+              {
+                label: "child node 1-1",
+              },
+              {
+                label: "child node 1-2",
+              },
+            ],
+            node,
+          });
+        }, 500);
+      };
+      return { args, lazyLoad };
+    },
+    template: `<TFileTree v-bind="args"  @lazy-load="lazyLoad" >
+       
+      </TFileTree>`,
+  }),
+};

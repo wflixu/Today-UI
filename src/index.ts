@@ -15,5 +15,5 @@ const TodayUI = {
   version: version ?? '' , 
 }
 export * from './components';
-
+export * from './icon/';
 export default TodayUI ;

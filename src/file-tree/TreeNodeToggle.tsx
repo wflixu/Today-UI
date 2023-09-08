@@ -27,6 +27,7 @@ export default defineComponent({
           ]}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();
+
             if (toggleNode) {
               toggleNode(data.value as IInnerTreeNode);
             }

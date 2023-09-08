@@ -23,7 +23,7 @@ export function useToggle() {
       }
 
       setNodeValue(node, "expanded", true);
-      context.emit("toggle-change", node);
+      context.emit("toggle", node);
     };
 
     const collapseNode = (node: IInnerTreeNode): void => {
@@ -31,7 +31,7 @@ export function useToggle() {
         return;
       }
       setNodeValue(node, "expanded", false);
-      context.emit("toggle-change", node);
+      context.emit("toggle", node);
     };
 
     const toggleNode = (node: IInnerTreeNode): void => {

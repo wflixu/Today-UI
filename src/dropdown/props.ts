@@ -7,6 +7,9 @@ export const dropdownProps = {
     type: Boolean,
     default: false,
   },
+  /**
+   * 触发条件
+   */
   trigger: {
     type: String as PropType<TriggerType>,
     default: "click",

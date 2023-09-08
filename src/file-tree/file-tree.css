@@ -21,7 +21,8 @@
       cursor: pointer;
       border-radius: var(--to-border-radius, 2px);
       &.active {
-        background-color: var(--to-list-item-selected-bg, #f2f5fc);
+        background-color: var(--to-list-item-selected-bg, #0f6cbd);
+        color: #fff;
         text-decoration: none;
         border-color: transparent;
       }
@@ -31,6 +32,7 @@
       }
       &--value-wrapper {
         display: inline-flex;
+        user-select: none;
         align-items: center;
         height: 30px;
         overflow: hidden;
@@ -39,7 +41,6 @@
     &-folder {
       cursor: pointer;
       display: inline-block;
-      vertical-align: middle;
       user-select: none;
       font-size: var(--to-font-size-icon, 16px);
       height: 16px;

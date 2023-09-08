@@ -53,10 +53,17 @@ export default defineComponent({
     const handleOperate = (option: ITreeContextMenu, event: any) => {
       emit("operate", option.key, data);
     };
+    const handleDbClick = (event: MouseEvent) => {
+      treeInstance?.emit("dbclick", data.value, event);
+    };
 
     return () => {
       return (
-        <div class={nodeClass.value} style={nodeStyle.value}>
+        <div
+          class={nodeClass.value}
+          style={nodeStyle.value}
+          onDblclick={handleDbClick}
+        >
           {nodeVLineStyles.value.map((item: any) => (
             <span class={nodeVLineClass.value} style={item}></span>
           ))}

@@ -1,4 +1,4 @@
-import { defineComponent, getCurrentInstance } from "vue";
+import { defineComponent, getCurrentInstance, getCurrentScope } from "vue";
 import { useNamespace } from "./util";
 
 export default defineComponent({

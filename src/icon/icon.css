@@ -1,0 +1,15 @@
+.svg {
+  height: 100%;
+  fill: currentColor;
+  vertical-align: top;
+  forced-color-adjust: auto;
+}
+
+.t-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  speak: none;
+  width: 1em;
+  height: 1em;
+}
