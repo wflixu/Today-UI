@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
 import TFileTree from "./FileTree";
+import PlugDisconnectedFilledIcon from "@/icon/components/PlugDisconnectedFilledIcon";
+import DatabaseFilledIcon from "@/icon/components/DatabaseFilledIcon";
+import { CubeTreeFilledIcon, TableEditFilledIcon } from "..";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/vue/writing-stories/introduction
 const meta: Meta<typeof TFileTree> = {
@@ -100,9 +103,8 @@ export const LazyLoad: Story = {
     data: [
       {
         label: "Parent node 1",
-        isLeaf:false,
-        children: [
-        ],
+        isLeaf: false,
+        children: [],
       },
       { label: "Leaf node 2" },
     ],
@@ -114,7 +116,7 @@ export const LazyLoad: Story = {
     },
     setup() {
       const lazyLoad = (node, callback) => {
-        console.log(node, callback)
+        console.log(node, callback);
         setTimeout(() => {
           callback({
             treeItems: [
@@ -127,12 +129,67 @@ export const LazyLoad: Story = {
             ],
             node,
           });
-        }, 500);
+        }, 3000);
       };
       return { args, lazyLoad };
     },
     template: `<TFileTree v-bind="args"  @lazy-load="lazyLoad" >
        
+      </TFileTree>`,
+  }),
+};
+
+export const CustomIcon: Story = {
+  args: {
+    data: [
+      {
+        id: "1-1",
+        label: "Parent node 1",
+        contextMenu: [
+          { label: "Undo", key: "undo" },
+          { label: "Redo", key: "redo" },
+        ],
+        children: [
+          {
+            id: "1-1-1",
+            label: "Parent node 1-1",
+            contextMenu: [
+              { label: "Undo", key: "undo" },
+              { label: "Redo", key: "redo" },
+            ],
+            children: [{ label: "Leaf node 1-1-1", id: "1-1-1-1" }],
+          },
+          { label: "Leaf node 1-2", id: "1-1-2" },
+        ],
+      },
+      { label: "Leaf node 2", id: "1-2" },
+    ],
+  },
+
+  render: (args) => ({
+    components: {
+      TFileTree,
+    },
+    setup() {
+      const calcIconType = (id: string) => {
+        let len = id.split("-").length;
+
+        if (len == 1) {
+          return PlugDisconnectedFilledIcon;
+        } else if (len == 2) {
+          return DatabaseFilledIcon;
+        } else if (len == 3) {
+          return CubeTreeFilledIcon;
+        } else {
+          return TableEditFilledIcon;
+        }
+      };
+      return { args, calcIconType };
+    },
+    template: `<TFileTree v-bind="args"   >
+          <template #icon="{ nodeData }">
+          <component :is="calcIconType(nodeData.id)"></component>
+        </template>
       </TFileTree>`,
   }),
 };

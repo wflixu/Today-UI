@@ -1,3 +1,9 @@
+@keyframes toggle-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .t-file-tree {
   box-sizing: border-box;
   /* border: 1px solid #aaa; */
@@ -37,19 +43,33 @@
         align-items: center;
         height: 30px;
         overflow: hidden;
+        & > .t-icon {
+          font-size: 18px;
+          margin-left: 4px;
+        }
       }
     }
-    &-folder {
+    &-toggle {
       cursor: pointer;
       display: inline-block;
+      display: inline-flex;
+      justify-content: center;
       user-select: none;
       font-size: var(--to-font-size-icon, 16px);
       height: 16px;
-      line-height: 16px;
+      width: 16px;
+      align-items: center;
+      &.loading {
+        transform: rotate(45deg);
+        animation-name: toggle-spin;
+        animation-duration: 1.2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
     }
     &-title {
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: 4px;
       display: inline-block;
       max-width: 100%;
       border-width: 1px;

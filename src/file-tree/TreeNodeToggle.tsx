@@ -9,7 +9,7 @@ export default defineComponent({
   name: "TTreeNodeToggle",
   props: {
     data: {
-      type: Object as PropType<ITreeNode>,
+      type: Object as PropType<IInnerTreeNode>,
       default: () => ({}),
     },
   },
@@ -22,8 +22,9 @@ export default defineComponent({
       return (
         <span
           class={[
-            ns.e("node-folder"),
+            ns.e("node-toggle"),
             data.value?.disableToggle && "toggle-disabled",
+            data.value?.loading && "loading",
           ]}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();
@@ -36,7 +37,10 @@ export default defineComponent({
           {data.value.isLeaf ? (
             <span class={ns.e("node-indent")} />
           ) : (
-            <IconToggle expanded={data.value.expanded} />
+            <IconToggle
+              expanded={data.value.expanded}
+              loading={data.value.loading}
+            />
           )}
         </span>
       );
