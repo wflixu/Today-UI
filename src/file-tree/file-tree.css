@@ -32,14 +32,11 @@
       align-items: center;
       font-size: var(--to-font-size, 12px);
       padding-right: 10px;
-      width: 100%;
       padding-left: 6px;
       cursor: pointer;
       border-radius: var(--to-border-radius, 2px);
-      user-select: none;
       &--value-wrapper {
         display: inline-flex;
-        user-select: none;
         align-items: center;
         height: 30px;
         overflow: hidden;
@@ -69,6 +66,7 @@
     }
     &-title {
       cursor: pointer;
+      user-select: none;
       margin-left: 4px;
       display: inline-block;
       max-width: 100%;

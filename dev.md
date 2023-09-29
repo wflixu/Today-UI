@@ -15,27 +15,6 @@
 
 
 
-vps ip
-
-156.247.10.185
-
-ssh -i ~/.ssh/vpn-server root@156.247.10.185
-ssh -i ~/.ssh/vpn-server vpn-server-admin@156.247.10.185
-
-
-vpn-server-admin
-
-226t2Ub08hzTuOB+jegJITtM+RqSRpuy
-
-vpn666
-
-
-root password
-
-7b4Z4sMBAa6N
-
-
-systemctl status dnsmasq
 
 
 
