@@ -17,6 +17,8 @@
     text-wrap: nowrap;
     font-size: 0;
     position: relative;
+    display: flex;
+    width: 100%;
     &.active {
       background-color: var(--to-list-item-selected-bg, #0f6cbd);
       color: #fff;

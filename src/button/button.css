@@ -1,0 +1,61 @@
+@import "./../style/base.css";
+
+.t-button {
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  text-decoration-line: none;
+  vertical-align: middle;
+  margin: 0px;
+  overflow: hidden;
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  font-family: var(--fontFamilyBase);
+  outline-style: none;
+  padding: 5px var(--spacingHorizontalM);
+  min-width: 96px;
+  border-radius: var(--borderRadiusMedium);
+  font-size: var(--fontSizeBase300);
+  font-weight: var(--fontWeightSemibold);
+  line-height: var(--lineHeightBase300);
+  transition-duration: var(--durationFaster);
+  transition-property: background, border, color;
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorNeutralBackground1Hover);
+    border-color: var(--colorNeutralStroke1Hover);
+    color: var(--colorNeutralForeground1Hover);
+    cursor: pointer;
+  }
+  &[disabled] {
+    background-color: var(--colorNeutralBackgroundDisabled);
+    color: var(--colorNeutralForegroundDisabled);
+    border-color: var(--colorNeutralStrokeDisabled);
+  }
+  &[disabled]:hover {
+    cursor: not-allowed;
+  }
+
+  &.shape-square {
+    border-radius: var(--borderRadiusNone);
+  }
+  &.shape-circular {
+    border-radius: var(--borderRadiusCircular);
+  }
+  &:not([disabled]) {
+    &.type-primary {
+      background-color: var(--colorBrandBackground);
+      color: var(--colorNeutralForegroundOnBrand);
+      border-color: transparent;
+      &:hover {
+        color: var(--colorNeutralForegroundOnBrand);
+        background-color: var(--colorBrandBackgroundHover);
+      }
+    }
+    &.type-outline {
+      background-color: var(--colorTransparentBackground);
+    }
+  }
+}
