@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
 import TButton  from "./Button";
-
+import {ZoomToFitIcon} from './../icon'
 const meta:Meta<typeof TButton> = {
     title:"Today-UI/Button",
     tags:['autodocs'],
@@ -76,6 +76,30 @@ export const Appearance: Story = {
       },
       template: `<TButton v-bind="args"  >
          basic
+        </TButton>`,
+    }),
+  };
+
+export const IconSlot: Story = {
+    args: {
+        type: 'default',
+        shape: 'circular',
+        disabled: false
+    },
+  
+    render: (args) => ({
+      components: {
+        TButton,
+        ZoomToFitIcon
+      },
+      setup() {
+        return { args };
+      },
+      template: `<TButton v-bind="args"  >
+            test
+            <template #icon> 
+              <ZoomToFitIcon/>
+            </template>
         </TButton>`,
     }),
   };

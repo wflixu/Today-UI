@@ -54,6 +54,7 @@
       display: inline-flex;
       justify-content: center;
       user-select: none;
+      -webkit-user-select: none;
       font-size: var(--to-font-size-icon, 16px);
       height: 16px;
       width: 16px;
@@ -69,6 +70,7 @@
     &-title {
       cursor: pointer;
       user-select: none;
+      -webkit-user-select: none; /* Safari */
       margin-left: 4px;
       display: inline-block;
       max-width: 100%;
