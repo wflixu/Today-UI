@@ -37,17 +37,25 @@ type Story = StoryObj<typeof TDialog>;
 export const Title: Story = {
     args: {
       title: 'custom dialog title',
-      show: true,
+      show: false,
     },
     render:(args) =>({
       components: {
         TDialog
       },
       setup() {
-        return args;
+        
+        return {args};
       },
-      template:`<t-dialog v-bind="args" >
+      template:`<t-dialog v-bind="args" v-model:show="args.show" >
            <button>trigger button</button>
+           <template #content>
+
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+            exercitationem cumque repellendus eaque est dolor eius expedita
+            nulla ullam? Tenetur reprehenderit aut voluptatum impedit voluptates
+            in natus iure cumque eaque?
+           </template>
         </t-dialog>`
     })
   };
@@ -62,7 +70,7 @@ export const Visible: Story = {
         TDialog
       },
       setup() {
-        return args;
+        return {args};
       },
       template:`<t-dialog v-bind="args" >
            <button>trigger button</button>
