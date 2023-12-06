@@ -45,7 +45,7 @@ devDependencies:
     version: 7.3.0(@vue/compiler-core@3.3.4)(vue@3.3.4)
   '@storybook/vue3-vite':
     specifier: ^7.3.0
-    version: 7.3.0(@vue/compiler-core@3.3.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.6)(vue@3.3.4)
+    version: 7.3.0(@vue/compiler-core@3.3.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.12)(vue@3.3.4)
   '@tsconfig/node18':
     specifier: ^18.2.0
     version: 18.2.0
@@ -69,10 +69,10 @@ devDependencies:
     version: 18.2.7
   '@vitejs/plugin-vue':
     specifier: ^4.2.3
-    version: 4.2.3(vite@4.4.6)(vue@3.3.4)
+    version: 4.2.3(vite@4.4.12)(vue@3.3.4)
   '@vitejs/plugin-vue-jsx':
     specifier: ^3.0.1
-    version: 3.0.1(vite@4.4.6)(vue@3.3.4)
+    version: 3.0.1(vite@4.4.12)(vue@3.3.4)
   '@vue/compiler-core':
     specifier: ^3.3.4
     version: 3.3.4
@@ -126,7 +126,7 @@ devDependencies:
     version: 5.1.6
   vite:
     specifier: ^4.4.6
-    version: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+    version: 4.4.12(@types/node@18.17.0)(less@4.1.3)
   vitest:
     specifier: ^0.33.0
     version: 0.33.0(jsdom@22.1.0)(less@4.1.3)
@@ -2992,7 +2992,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-vite@7.3.0(typescript@5.1.6)(vite@4.4.6):
+  /@storybook/builder-vite@7.3.0(typescript@5.1.6)(vite@4.4.12):
     resolution: {integrity: sha512-XVjzqJSvOV9fBG4GpYOGPZsMKgN9v6AQthpe9+bxtvY32tkP3CkKt3fuD1Qh48v7Q63lWdZX9qq3tQ76CvS9Cw==}
     peerDependencies:
       '@preact/preset-vite': '*'
@@ -3027,7 +3027,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.28.0
       typescript: 5.1.6
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -3706,7 +3706,7 @@ packages:
       file-system-cache: 2.3.0
     dev: true
 
-  /@storybook/vue3-vite@7.3.0(@vue/compiler-core@3.3.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.6)(vue@3.3.4):
+  /@storybook/vue3-vite@7.3.0(@vue/compiler-core@3.3.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)(vite@4.4.12)(vue@3.3.4):
     resolution: {integrity: sha512-MfGVJLfj5f3SRG+2Itjb9sYQ3QkgMR1YLnWiKdCpr3NcwLrJ/gXOvoOMFPuQauY4KplR5rHLSf+4jBRglRIXPQ==}
     engines: {node: ^14.18 || >=16}
     peerDependencies:
@@ -3714,14 +3714,14 @@ packages:
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@storybook/builder-vite': 7.3.0(typescript@5.1.6)(vite@4.4.6)
+      '@storybook/builder-vite': 7.3.0(typescript@5.1.6)(vite@4.4.12)
       '@storybook/core-server': 7.3.0
       '@storybook/vue3': 7.3.0(@vue/compiler-core@3.3.4)(vue@3.3.4)
-      '@vitejs/plugin-vue': 4.2.3(vite@4.4.6)(vue@3.3.4)
+      '@vitejs/plugin-vue': 4.2.3(vite@4.4.12)(vue@3.3.4)
       magic-string: 0.30.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
       vue-docgen-api: 4.74.0(vue@3.3.4)
     transitivePeerDependencies:
       - '@preact/preset-vite'
@@ -3752,7 +3752,7 @@ packages:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.3.4
-      vue-component-type-helpers: 1.8.19
+      vue-component-type-helpers: 1.8.25
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -4063,7 +4063,7 @@ packages:
       '@types/yargs-parser': 21.0.0
     dev: true
 
-  /@vitejs/plugin-vue-jsx@3.0.1(vite@4.4.6)(vue@3.3.4):
+  /@vitejs/plugin-vue-jsx@3.0.1(vite@4.4.12)(vue@3.3.4):
     resolution: {integrity: sha512-+Jb7ggL48FSPS1uhPnJbJwWa9Sr90vQ+d0InW+AhBM22n+cfuYqJZDckBc+W3QSHe1WDvewMZfa4wZOtk5pRgw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -4073,20 +4073,20 @@ packages:
       '@babel/core': 7.22.10
       '@babel/plugin-transform-typescript': 7.22.10(@babel/core@7.22.10)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.22.10)
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
       vue: 3.3.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue@4.2.3(vite@4.4.6)(vue@3.3.4):
+  /@vitejs/plugin-vue@4.2.3(vite@4.4.12)(vue@3.3.4):
     resolution: {integrity: sha512-R6JDUfiZbJA9cMiguQ7jxALsgiprjBeHL5ikpXfJCH62pPHtI+JdJ5xWj6Ev73yXSlYl86+blXn1kZHQ7uElxw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
       vue: 3.3.4
     dev: true
 
@@ -9714,7 +9714,7 @@ packages:
       mlly: 1.4.0
       pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -9726,8 +9726,8 @@ packages:
       - terser
     dev: true
 
-  /vite@4.4.6(@types/node@18.17.0)(less@4.1.3):
-    resolution: {integrity: sha512-EY6Mm8vJ++S3D4tNAckaZfw3JwG3wa794Vt70M6cNJ6NxT87yhq7EC8Rcap3ahyHdo8AhCmV9PTk+vG1HiYn1A==}
+  /vite@4.4.12(@types/node@18.17.0)(less@4.1.3):
+    resolution: {integrity: sha512-KtPlUbWfxzGVul8Nut8Gw2Qe8sBzWY+8QVc5SL8iRFnpnrcoCaNlzO40c1R6hPmcdTwIPEDkq0Y9+27a5tVbdQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -9816,7 +9816,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.5.0
       tinypool: 0.6.0
-      vite: 4.4.6(@types/node@18.17.0)(less@4.1.3)
+      vite: 4.4.12(@types/node@18.17.0)(less@4.1.3)
       vite-node: 0.33.0(@types/node@18.17.0)(less@4.1.3)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
@@ -9842,8 +9842,8 @@ packages:
     resolution: {integrity: sha512-8TEXQxlldWAuIODdukIb+TR5s+9Ds40eSJrw+1iDDA9IFORPjMELarNQE3myz5XIkWWpdprmJjm1/SxMlWOC8A==}
     dev: true
 
-  /vue-component-type-helpers@1.8.19:
-    resolution: {integrity: sha512-1OANGSZK4pzHF4uc86usWi+o5Y0zgoDtqWkPg6Am6ot+jHSAmpOah59V/4N82So5xRgivgCxGgK09lBy1XNUfQ==}
+  /vue-component-type-helpers@1.8.25:
+    resolution: {integrity: sha512-NCA6sekiJIMnMs4DdORxATXD+/NRkQpS32UC+I1KQJUasx+Z7MZUb3Y+MsKsFmX+PgyTYSteb73JW77AibaCCw==}
     dev: true
 
   /vue-component-type-helpers@1.8.4:
