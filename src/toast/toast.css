@@ -1,0 +1,25 @@
+@import "./../style/base.css";
+
+.t-toast-provider {
+  position: fixed;
+  width: 292px;
+  pointer-events: none;
+  bottom: 16px;
+  right: 20px;
+}
+.t-toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  padding: 12px;
+  border-radius: var(--borderRadiusMedium);
+
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--colorTransparentStroke);
+  box-shadow: var(--shadow8);
+  font-size: var(--fontSizeBase300);
+  line-height: 20px;
+  font-weight: var(--fontWeightSemibold);
+  color: var(--colorNeutralForeground1);
+  background-color: var(--colorNeutralBackground1);
+}
