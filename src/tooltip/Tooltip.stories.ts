@@ -1,31 +1,26 @@
+import type { Meta, StoryObj } from "@storybook/vue3";
 
-import type { Meta, StoryObj } from '@storybook/vue3';
-
-import TTooltip from './Tooltip';
+import TTooltip from "./Tooltip";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/vue/writing-stories/introduction
 const meta: Meta<typeof TTooltip> = {
-  title: 'Today-UI/Tooltip',
+  title: "Today-UI/Tooltip",
   component: TTooltip,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/7.0/vue/writing-docs/docs-page
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     label: {
-      name:'label',
+      name: "label",
       control: {
-        type: 'text'
-      }
-    }
+        type: "text",
+      },
+    },
   },
-  args: { label: 'Tooltip content' }, // default value
+  args: { label: "Tooltip content" }, // default value
   render: (args) => ({
     components: { TTooltip },
-    setup(){
-      console.warn('----');
-      
-      console.warn(args);
-      
-       return { args };
+    setup() {
+      return { args };
     },
     template: `<TTooltip v-bind="args" >
           <button>trigger button</button>
@@ -42,18 +37,17 @@ type Story = StoryObj<typeof TTooltip>;
  */
 export const Label: Story = {
   args: {
-    label: 'Buttondddd',
+    label: "Buttondddd",
   },
-  render:(args) =>({
+  render: (args) => ({
     components: {
-      TTooltip
+      TTooltip,
     },
     setup() {
-      return {args};
+      return { args };
     },
-    template:`<TTooltip v-bind="args" >
+    template: `<TTooltip v-bind="args" >
          <button>trigger button</button>
-      </TTooltip>`
-  })
+      </TTooltip>`,
+  }),
 };
-

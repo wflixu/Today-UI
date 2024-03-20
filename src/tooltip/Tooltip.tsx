@@ -37,7 +37,6 @@ export default defineComponent({
     });
 
     const tipStyle = computed(() => {
-      console.warn(x.value, y.value);
 
       return {
         top: `${y.value}px`,
@@ -48,7 +47,7 @@ export default defineComponent({
 
     const arrowStyle = computed(() => {
       const { x, y } = middlewareData.value.arrow ?? { x: 0, y: 0 };
-      console.warn("arrowStyle", x);
+
       const staticSide = {
         top: "bottom",
         right: "left",
@@ -66,12 +65,9 @@ export default defineComponent({
     });
 
     function handleOpen(_context: { trigger: string }) {
-      console.warn("handleOpen");
-
       open.value = true;
     }
     function handleClose(_context: { trigger: string }) {
-      console.warn("handleClose");
       open.value = false;
     }
 
@@ -90,7 +86,6 @@ export default defineComponent({
     };
 
     const setArrowRef = (ref: HTMLElement) => {
-      console.warn("setArrowRef", ref === arrowEl.value);
       if (ref === arrowEl.value) return;
 
       arrowEl.value = ref;
@@ -108,7 +103,6 @@ export default defineComponent({
       if (ref === floating.value) {
         return;
       }
-      console.warn("setFloatingRef");
       floating.value = ref;
       update();
     };
