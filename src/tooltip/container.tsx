@@ -148,9 +148,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const triggerRef = ref<VNode & { $el: HTMLElement }>(null);
     const mountContent = ref(false);
-
     onMounted(() => {
-      console.warn("onMounted", props.visible);
       mountContent.value = props.visible;
       props.forwardRef(triggerRef.value.$el);
     });
