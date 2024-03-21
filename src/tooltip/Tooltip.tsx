@@ -72,7 +72,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      console.log("mounted");
       on(reference.value, "mouseenter", () =>
         handleOpen({ trigger: "trigger-element-hover" })
       );
@@ -136,7 +135,7 @@ export default defineComponent({
         ref="containerRef"
         forwardRef={(ref) => forwardRef(ref)}
         onContentMounted={(el) => {
-          console.log("onContentMounted", el);
+          
         }}
         visible={open}
       >

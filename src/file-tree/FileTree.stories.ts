@@ -116,7 +116,6 @@ export const LazyLoad: Story = {
     },
     setup() {
       const lazyLoad = (node, callback) => {
-        console.log(node, callback);
         setTimeout(() => {
           callback({
             treeItems: [

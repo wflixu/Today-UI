@@ -16,9 +16,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "moduleResolution": "Node",
     "paths": {
       "@/*": [
         "./src/*"

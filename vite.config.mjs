@@ -26,7 +26,7 @@ export default defineConfig({
       name: "today-ui",
       fileName: (format) => `today-ui.${format}.js`,
     },
-    // minify: false,
+    minify: false,
     rollupOptions: {
       external: [
         "vue",

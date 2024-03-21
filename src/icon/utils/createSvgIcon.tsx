@@ -17,7 +17,6 @@ const createSvgIcon = ({ svg, displayName }: SvgIconCreateFnParams) => {
     },
     setup(props, { attrs }) {
       const { size, color } = toRefs(props);
-      console.log(size.value, color.value);
       const styleObj = computed(() => {
         let res: { width?: string; height?: string; color?: string } = {};
         if (size.value) {

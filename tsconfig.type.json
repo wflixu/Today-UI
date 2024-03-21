@@ -5,7 +5,6 @@
       "declaration": true,
       "emitDeclarationOnly": true,
       "verbatimModuleSyntax": false,
-      // "tsBuildInfoFile": ".tsbuildinfo",
       "incremental": false,
       "strictNullChecks": false
     },

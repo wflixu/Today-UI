@@ -15,7 +15,7 @@ export default defineComponent({
   props: dropdownProps,
   emits: ["toggle", "select"],
   setup(props: IDropdownProps, { attrs, slots, emit }) {
-    console.log(props.options);
+
     const { trigger, visible } = toRefs(props);
     const origin = ref<HTMLElement | undefined>();
     const show = ref(false);
