@@ -12,7 +12,7 @@ import {
   Teleport,
 } from "vue";
 import { getAttach } from "../shared/dom";
-import props from "./props";
+import {tooltipProps} from "./props";
 
 function filterEmpty(children: VNode[] = []) {
   const vnodes: VNode[] = [];
@@ -141,7 +141,7 @@ export default defineComponent({
   props: {
     parent: Object,
     visible: Boolean,
-    attach: props.attach,
+    attach: tooltipProps.attach,
     forwardRef: Function as PropType<(el: HTMLElement) => void>,
   },
   emits: ["resize", "contentMounted"],

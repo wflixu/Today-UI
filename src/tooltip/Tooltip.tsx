@@ -1,23 +1,22 @@
 // @ts-nocheck
-import { computed, defineComponent, onMounted, ref, render, unref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import {
   useFloating,
   offset,
   flip,
   shift,
-  type Placement,
   arrow,
 } from "@floating-ui/vue";
 import { renderTNodeJSX, renderContent } from "../shared/render-tnode";
 import Container from "./container";
-import props from "./props";
+import {tooltipProps} from "./props";
 import { on } from "../shared/dom";
 import "./style/tooltip.css";
 
 export default defineComponent({
   name: "TTooltip",
   inheritAttrs: false,
-  props,
+  props: tooltipProps,
   setup(props, { slots }) {
     const open = ref(false);
     const reference = ref<HTMLElement>(null);
@@ -125,7 +124,6 @@ export default defineComponent({
       arrowStyle,
       forwardRef,
       open,
-      arrowEl,
       setArrowRef,
       setFloatingRef,
     } = this;
