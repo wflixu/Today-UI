@@ -1,4 +1,4 @@
-import { computed, defineComponent, toRefs, type PropType, unref } from "vue";
+import { computed, defineComponent, toRefs, type PropType, unref, } from "vue";
 import { ICONS } from "./icons";
 
 export default defineComponent({
@@ -9,12 +9,12 @@ export default defineComponent({
   setup(props, { attrs }) {
     const { name } = toRefs(props);
 
-    const content = computed<JSX.Element | null>(() => {
+    const content = computed(() => {
       let value = unref(name);
       if (!value) {
         return null;
       } else {
-        return ICONS[value];
+        return ICONS[value as 'copy'|'paste'];
       }
     });
     return () => {

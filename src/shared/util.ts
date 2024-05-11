@@ -1,5 +1,8 @@
-import { isObject } from "lodash";
 import { Fragment, h, type VNode } from "vue";
+
+export function isObject(val: any): val is object {
+  return val !== null && typeof val === "object";
+}
 
 export function randomId(n = 8): string {
   // 生成n位长度的字符串
@@ -11,11 +14,9 @@ export function randomId(n = 8): string {
   return result;
 }
 
-
 function wrapContent(content: string | VNode) {
   return h("span", { class: "trigger-wrap" }, content);
 }
-
 
 export function getFirstValidChild(nodes: VNode[]): VNode | null {
   for (const child of nodes) {

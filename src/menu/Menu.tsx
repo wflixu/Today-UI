@@ -5,7 +5,7 @@ import { menuProps } from "./props";
 import type { MenuProps } from "./type";
 import "./menu.css";
 import { useMeun } from "./hook";
-import type { IDropdownOption } from "..";
+import type { IDropdownOption } from "../dropdown/type";
 
 export default defineComponent({
   name: "TMenu",

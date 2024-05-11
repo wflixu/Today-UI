@@ -77,7 +77,7 @@ export const Trigger: Story = {
        </TDropdown>`,
   }),
 };
-// 
+//
 export const ConmpoentEvents: Story = {
   args: {
     options: [

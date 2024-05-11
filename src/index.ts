@@ -1,5 +1,4 @@
 import { type App, type Plugin } from "vue";
-import "vue/jsx";
 
 import * as components from "./components";
 import { version } from "../package.json";

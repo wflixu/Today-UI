@@ -1,27 +1,26 @@
+import type { Meta, StoryObj } from "@storybook/vue3";
 
-import type { Meta, StoryObj } from '@storybook/vue3';
-
-import TDialog from './Dialog';
+import TDialog from "./Dialog";
 
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/vue/writing-stories/introduction
 const meta: Meta<typeof TDialog> = {
-  title: 'Today-UI/Dialog',
+  title: "Today-UI/Dialog",
   component: TDialog,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/7.0/vue/writing-docs/docs-page
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     title: {
-      name:'title',
+      name: "title",
       control: {
-        type: 'text'
-      }
+        type: "text",
+      },
     },
     show: {
-      name:'show',
+      name: "show",
       default: false,
-    }
+    },
   },
-  args: { title:'Dialog' }, // default value
+  args: { title: "Dialog" }, // default value
   render: () => ({
     components: { TDialog },
     template: `<t-dialog v-bind="args" >
@@ -33,21 +32,19 @@ const meta: Meta<typeof TDialog> = {
 export default meta;
 type Story = StoryObj<typeof TDialog>;
 
-
 export const Title: Story = {
-    args: {
-      title: 'custom dialog title',
-      show: false,
+  args: {
+    title: "custom dialog title",
+    show: false,
+  },
+  render: (args) => ({
+    components: {
+      TDialog,
     },
-    render:(args) =>({
-      components: {
-        TDialog
-      },
-      setup() {
-        
-        return {args};
-      },
-      template:`<t-dialog v-bind="args" v-model:show="args.show" >
+    setup() {
+      return { args };
+    },
+    template: `<t-dialog v-bind="args" v-model:show="args.show" >
            <button>trigger button</button>
            <template #content>
 
@@ -56,25 +53,24 @@ export const Title: Story = {
             nulla ullam? Tenetur reprehenderit aut voluptatum impedit voluptates
             in natus iure cumque eaque?
            </template>
-        </t-dialog>`
-    })
-  };
-  
+        </t-dialog>`,
+  }),
+};
+
 export const Visible: Story = {
-    args: {
-      title: 'custom dialog title',
-      show: true,
+  args: {
+    title: "custom dialog title",
+    show: true,
+  },
+  render: (args) => ({
+    components: {
+      TDialog,
     },
-    render:(args) =>({
-      components: {
-        TDialog
-      },
-      setup() {
-        return {args};
-      },
-      template:`<t-dialog v-bind="args" >
+    setup() {
+      return { args };
+    },
+    template: `<t-dialog v-bind="args" >
            <button>trigger button</button>
-        </t-dialog>`
-    })
-  };
-  
+        </t-dialog>`,
+  }),
+};

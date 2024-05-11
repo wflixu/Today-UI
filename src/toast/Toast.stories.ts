@@ -6,29 +6,27 @@ const meta: Meta<typeof TToast> = {
   component: TToast,
   tags: ["autodocs"],
   args: {},
-  argTypes: {
-
-  }
+  argTypes: {},
 };
 
 export default meta;
 
-type Story = StoryObj<typeof TToast>
+type Story = StoryObj<typeof TToast>;
 
-export const Timeout:Story = {
-    args:{
-      timeout: 2000,
+export const Timeout: Story = {
+  args: {
+    timeout: 2000,
+  },
+  render: (args) => ({
+    components: {
+      TToast,
     },
-    render:(args) => ({
-        components: {
-            TToast,
-          },
-          setup() {
-            return { args };
-          },
-          template: `
+    setup() {
+      return { args };
+    },
+    template: `
               <TToast v-bind="args"  >
               </TToast>
             `,
-    })
-}
+  }),
+};

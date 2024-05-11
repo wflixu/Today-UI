@@ -428,4 +428,13 @@
   --shadow16Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
   --shadow28Brand: 0 0 8px rgba(0, 0, 0, 0.3), 0 14px 28px rgba(0, 0, 0, 0.25);
   --shadow64Brand: 0 0 8px rgba(0, 0, 0, 0.3), 0 32px 64px rgba(0, 0, 0, 0.25);
+
+
+
+  --color-primary: #1d4ed8;
+  --color-secondary: #f97316;
+  --color-info: #0000ff;
+  --color-success: #00ff00;
+  --color-warning: #00ff00;
+  --color-error: #ff0000;
 }

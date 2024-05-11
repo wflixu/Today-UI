@@ -33,4 +33,4 @@ const paste = (
 export const ICONS = {
   copy,
   paste,
-} as { [key: string]: JSX.Element };
+} 
