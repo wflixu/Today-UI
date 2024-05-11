@@ -1,7 +1,7 @@
 import { type Ref, ref } from 'vue';
 
 import type { IInnerTreeNode, ITreeNode, IUseCore, IUseOperate } from './type';
-import { randomId } from '@/shared/util';
+import { randomId } from '../shared/util';
 
 export function useOperate() {
   return function useOperateFn(data: Ref<IInnerTreeNode[]>, core: IUseCore): IUseOperate {

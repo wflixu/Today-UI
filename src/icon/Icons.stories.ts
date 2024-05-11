@@ -11,6 +11,8 @@ import DatabaseFilledIcon from "./components/DatabaseFilledIcon";
 import TableFilledIcon from "./components/TableFilledIcon";
 import TableEditFilledIcon from "./components/TableEditFilledIcon";
 import CubeTreeFilledIcon from "./components/CubeTreeFilledIcon";
+import DismissFilled from "./components/DismissFilled";
+
 // More on how to set up stories at: https://storybook.js.org/docs/7.0/vue/writing-stories/introduction
 const meta: Meta<typeof ZoomToFitIcon> = {
   title: "Today-UI/Icons",
@@ -87,6 +89,7 @@ export const ListAll: Story = {
       TableFilledIcon,
       TableEditFilledIcon,
       CubeTreeFilledIcon,
+      DismissFilled
     },
     setup() {
       return { args };
@@ -104,6 +107,7 @@ export const ListAll: Story = {
       <TableFilledIcon v-bind="args"></TableFilledIcon>
       <TableEditFilledIcon v-bind="args"></TableEditFilledIcon>
       <CubeTreeFilledIcon v-bind="args"></CubeTreeFilledIcon>
+      <DismissFilled v-bind="args"></DismissFilled>
     </div>
     `,
   }),

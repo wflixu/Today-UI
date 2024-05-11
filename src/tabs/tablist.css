@@ -1,0 +1,72 @@
+.t-tablist {
+    --tab-border-color: #d1d1d1;
+    --tab-radius: .5rem;
+    display: grid;
+    align-items: flex-end;
+
+    .t-tablist-tab {
+        position: relative;
+        grid-row-start: 1;
+        display: inline-flex;
+        height: 2rem;
+        cursor: pointer;
+        appearance: none;
+        user-select: none;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        line-height: 2;
+        border: 1px solid transparent;
+        border-width: 0 0 1px;
+        border-start-start-radius: 1em;
+        border-start-end-radius: 1em;
+        border-bottom-color: #d1d1d1;
+        color: #161616;
+
+        &:is(.t-tab-active, [aria-selected=true]):not(.tab-disabled):not([disabled]) {
+            background-color: #fff;
+            border-width: 1px 1px 0;
+            border-inline-start-color: var(--tab-border-color);
+            border-inline-end-color: var(--tab-border-color);
+            border-top-color: var(--tab-border-color);
+        }
+
+        &:is(.t-tab-active, [aria-selected=true]):not(.tab-disabled):not([disabled]):before {
+            z-index: 1;
+            content: "";
+            display: block;
+            position: absolute;
+            width: calc(100% + var(--tab-radius, .5rem)* 2);
+            height: var(--tab-radius, .5rem);
+            bottom: 0;
+            background-size: var(--tab-radius, .5rem);
+            background-position: top left, top right;
+            background-repeat: no-repeat;
+            --tab-grad: calc(69% - 1px);
+            --radius-start: radial-gradient(circle at top left, transparent var(--tab-grad), var(--tab-border-color) calc(var(--tab-grad) + .25px), var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)), var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + .25px));
+            --radius-end: radial-gradient(circle at top right, transparent var(--tab-grad), var(--tab-border-color) calc(var(--tab-grad) + .25px), var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)), var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + .25px));
+            background-image: var(--radius-start), var(--radius-end);
+        }
+
+        .tab-close {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: var(--colorBrandForeground1);
+                color: white;
+            }
+        }
+    }
+
+}

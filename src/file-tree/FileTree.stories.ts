@@ -14,6 +14,7 @@ const meta: Meta<typeof TFileTree> = {
   args: {},
   argTypes: {
     // trigger: { control: 'select', options: ['click', 'hover', 'contextmenu'] },
+    // @ts-ignore
     onOperate: { action: "operate" },
     onDbclick: { action: "dbclick" },
     onSelect: { action: "select" },
@@ -115,7 +116,7 @@ export const LazyLoad: Story = {
       TFileTree,
     },
     setup() {
-      const lazyLoad = (node, callback) => {
+      const lazyLoad = (node: any, callback: any) => {
         setTimeout(() => {
           callback({
             treeItems: [
