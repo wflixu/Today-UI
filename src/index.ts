@@ -15,4 +15,5 @@ const TodayUI = {
 };
 export * from "./components";
 export * from "./icon/";
+export type * from "./shared/type";
 export default TodayUI;

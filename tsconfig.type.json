@@ -1,12 +1,12 @@
 {
     "extends": "./tsconfig.app.json",
     "compilerOptions": {
-      "outDir": "dist/",
+      "verbatimModuleSyntax": false,
+      "noEmit": false,
       "declaration": true,
       "emitDeclarationOnly": true,
-      "verbatimModuleSyntax": false,
       "incremental": false,
-      "strictNullChecks": false
+      "strictNullChecks": false,
     },
     "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"],
     "exclude": [
