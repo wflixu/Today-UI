@@ -6,7 +6,7 @@ name: npm package publish
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   publish-npm:
