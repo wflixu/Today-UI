@@ -86,17 +86,14 @@ devDependencies:
     specifier: ^2.4.5
     version: 2.4.5
   '@vue/tsconfig':
-    specifier: ^0.4.0
-    version: 0.4.0
+    specifier: ^0.5.1
+    version: 0.5.1
   '@vuedx/typescript-plugin-vue':
     specifier: ^0.7.6
     version: 0.7.6
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
-  i:
-    specifier: ^0.3.7
-    version: 0.3.7
   jsdom:
     specifier: ^22.1.0
     version: 22.1.0
@@ -4372,8 +4369,8 @@ packages:
       vue-component-type-helpers: 2.0.7
     dev: true
 
-  /@vue/tsconfig@0.4.0:
-    resolution: {integrity: sha512-CPuIReonid9+zOG/CGTT05FXrPYATEqoDGNrEaqS4hwcw5BUNM2FguC0mOwJD4Jr16UpRVl9N0pY3P+srIbqmg==}
+  /@vue/tsconfig@0.5.1:
+    resolution: {integrity: sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==}
     dev: true
 
   /@vuedx/compiler-sfc@0.7.2:
@@ -6553,11 +6550,6 @@ packages:
   /human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
-    dev: true
-
-  /i@0.3.7:
-    resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
-    engines: {node: '>=0.4'}
     dev: true
 
   /iconv-lite@0.4.24:

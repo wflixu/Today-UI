@@ -19,6 +19,7 @@ export default defineConfig({
       plugins: [postcssNested, postcssImport],
     },
   },
+  publicDir: false,
   build: {
     target: "esnext",
     lib: {
