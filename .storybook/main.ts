@@ -5,9 +5,8 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
+    "@chromatic-com/storybook",
     "@storybook/addon-interactions",
-    "@storybook/addon-mdx-gfm",
-    "@chromatic-com/storybook"
   ],
   framework: {
     name: "@storybook/vue3-vite",
