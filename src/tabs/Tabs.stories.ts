@@ -1,9 +1,11 @@
-import { on } from './../shared/dom';
+
 import type { Meta, StoryObj } from "@storybook/vue3";
+
 
 import TTabs from "./Tabs";
 
 const meta: Meta<typeof TTabs> = {
+  component: TTabs,
   title: "Today-UI/Tabs",
   tags: ["autodocs"],
   args: {},
