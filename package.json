@@ -64,7 +64,6 @@
     "@vue/tsconfig": "^0.5.1",
     "cross-env": "^7.0.3",
     "jsdom": "^22.1.0",
-    "less": "^4.2.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.38",
     "postcss-import": "^15.1.0",
