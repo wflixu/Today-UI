@@ -15,7 +15,7 @@ jobs:
       - name: CheckOut Code
         uses: actions/checkout@master
         with:
-          ref: main
+          ref: release
       - name: Set pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
