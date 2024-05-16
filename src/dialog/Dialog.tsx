@@ -8,7 +8,7 @@ import {
   watch,
 } from "vue";
 import props from "./props";
-import "./style.less";
+import "./style.css";
 import { DIALOG_TRIGGER_TOKEN } from "./util";
 import DialogTrigger from "./DialogTrigger";
 import TButton from "./../button/Button";

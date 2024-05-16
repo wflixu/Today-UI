@@ -22,15 +22,15 @@ export const Basic: Story = {
   args: {
     options: [
       {
-        id: "tab1",
+        key: "tab1",
         title: "复制",
       },
       {
-        id: "tab2",
+        key: "tab2",
         title: "tab2",
       },
       {
-        id: "tab3",
+        key: "tab3",
         title: "tab3",
       },
     ],
@@ -44,7 +44,7 @@ export const Basic: Story = {
     setup() {
       const onClose = (id: string) => {
         console.log('close', id)
-        args.options = args.options?.filter((item) => item.id !== id);
+        args.options = args.options?.filter((item) => item.key !== id);
       }
       return { args, onClose };
     },
@@ -52,3 +52,32 @@ export const Basic: Story = {
          </TTabs>`,
   }),
 };
+
+
+export const One: Story = {
+  args: {
+    options: [
+      {
+        key: "tab1",
+        title: "复制",
+      },
+    ],
+    activeKey: "tab1",
+  },
+
+  render: (args) => ({
+    components: {
+      TTabs,
+    },
+    setup() {
+      const onClose = (id: string) => {
+        console.log('close', id)
+        args.options = args.options?.filter((item) => item.key !== id);
+      }
+      return { args, onClose };
+    },
+    template: `<TTabs :options="args.options" v-model:active-key="args.activeKey"   @close="onClose" >
+         </TTabs>`,
+  }),
+};
+
