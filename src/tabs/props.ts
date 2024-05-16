@@ -14,3 +14,6 @@ export const tabsProps = {
         default: ""
     }
 }
+
+export const TABS_OPTIONS_KEY = 'TABS_OPTIONS_KEY'
+export const TAB_ACTIVE_KEY = 'TAB_ACTIVE_KEY'
