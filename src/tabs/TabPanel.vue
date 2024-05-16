@@ -13,7 +13,12 @@ const tabOpitons = inject<ITabOption[]>(TABS_OPTIONS_KEY)
 const activeKey = inject<Ref<string>>(TAB_ACTIVE_KEY)
 
 
-const props = defineProps<{title:string}>()
+const props =  defineProps<{
+    /**
+     *  tab title
+     */
+    title:string
+}>()
 const inst = getCurrentInstance()
 const key = inst?.vnode.key  as string
 console.log('setup:',props.title, activeKey)
