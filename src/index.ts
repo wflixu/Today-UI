@@ -14,6 +14,7 @@ const TodayUI = {
   version: version ?? "",
 };
 export * from "./components";
+export type * from "./interface";
 export * from "./icon/";
 export type * from "./shared/type";
 export default TodayUI;

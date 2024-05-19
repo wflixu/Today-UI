@@ -5,6 +5,7 @@ import Tablist from "./Tablist.vue";
 import TabPanel from "./TabPanel.vue";
 const meta: Meta<typeof Tablist> = {
   component: Tablist,
+  subcomponents: { TabPanel },
   title: "Today-UI/Tablist",
   tags: ["autodocs"],
   args: {},

@@ -16,6 +16,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
+    "verbatimModuleSyntax": false,
+    "strictNullChecks": false,
     "paths": {
       "@/*": [
         "./src/*"
