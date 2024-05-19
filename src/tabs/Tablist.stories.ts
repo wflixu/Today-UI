@@ -1,8 +1,8 @@
 
 import type { Meta, StoryObj } from "@storybook/vue3";
 
-import Tablist from "./Tablist.vue";
-import TabPanel from "./TabPanel.vue";
+import Tablist from "./Tablist";
+import TabPanel from "./TabPanel";
 const meta: Meta<typeof Tablist> = {
   component: Tablist,
   subcomponents: { TabPanel },

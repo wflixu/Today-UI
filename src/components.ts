@@ -15,4 +15,5 @@ export { default as Menu } from "./menu/";
 export { default as Tooltip } from "./tooltip/";
 
 
-export { default as Tabs } from "./tabs";
+export { default as Tabs, Tablist, TabPanel } from "./tabs";
+
