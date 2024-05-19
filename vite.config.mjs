@@ -31,7 +31,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "vue",
-        "lodash",
+        "radash",
       ],
       output: {
         exports: 'named',
@@ -39,7 +39,7 @@ export default defineConfig({
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
           vue: "Vue",
-          lodash: "Lodash",// TODO 删除依赖
+          radash: "Radash",// TODO 删除依赖
           // "@floating-ui/vue": "FloatingUIVue",
         },
       },

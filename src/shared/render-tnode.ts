@@ -1,4 +1,5 @@
-import { camelCase, isEmpty, isFunction, isString, kebabCase } from "lodash";
+
+import { camel, dash, isString, isFunction, isEmpty } from 'radash'
 import { h, type ComponentPublicInstance, type VNode, isVNode } from "vue";
 import { isObject } from "./util";
 
@@ -21,10 +22,10 @@ export function handleSlots(
   name: string
 ) {
   // 检查是否存在 驼峰命名 的插槽
-  let node = instance.$slots[camelCase(name)]?.(params);
+  let node = instance.$slots[camel(name)]?.(params);
   if (node) return node;
   // 检查是否存在 中划线命名 的插槽
-  node = instance.$slots[kebabCase(name)]?.(params);
+  node = instance.$slots[dash(name)]?.(params);
   if (node) return node;
   return null;
 }
@@ -85,7 +86,7 @@ export const renderTNodeJSX = (
   // Props 为空，但插槽存在
   if (
     isPropsEmpty &&
-    (instance.$slots[camelCase(name)] || instance.$slots[kebabCase(name)])
+    (instance.$slots[camel(name)] || instance.$slots[dash(name)])
   ) {
     // @ts-ignore
     return handleSlots(instance, params, name);
