@@ -15,18 +15,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: dev
+          ref: main
           fetch-depth: 2
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 8.6.12
+          version: 9.6.0
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: "pnpm"
 
       - name: Install
-        run: pnpm install  --no-frozen-lockfile
+        run: pnpm install 
       - name: Build
         run: pnpm run story:build
       - uses: actions/configure-pages@v2
