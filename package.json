@@ -27,10 +27,9 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "story:dev": "histoire dev",
-    "story:build": "histoire build",
+    "doc": "histoire build",
     "story:preview": "histoire preview",
-    "dev": "storybook dev -p 6006",
+    "dev": "histoire dev",
     "dts": "api-extractor run --local",
     "build": "vite build && vue-tsc -p tsconfig.type.json  && pnpm dts && rm -rf dist/src",
     "bd": " vue-tsc -p tsconfig.type.json",
@@ -40,9 +39,7 @@
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "storybook": "storybook dev -p 6006",
-    "sb:build": "storybook build"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.17.17",
