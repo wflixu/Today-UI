@@ -27,6 +27,9 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview",
     "dev": "storybook dev -p 6006",
     "dts": "api-extractor run --local",
     "build": "vite build && vue-tsc -p tsconfig.type.json  && pnpm dts && rm -rf dist/src",
@@ -42,6 +45,7 @@
     "sb:build": "storybook build"
   },
   "devDependencies": {
+    "@histoire/plugin-vue": "^0.17.17",
     "@microsoft/api-extractor": "^7.43.4",
     "@storybook/addon-essentials": "^8.1.1",
     "@storybook/addon-links": "^8.1.1",
@@ -62,8 +66,10 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
     "cross-env": "^7.0.3",
+    "histoire": "^0.17.17",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
+    "pinia": "^2.2.1",
     "postcss": "^8.4.38",
     "postcss-import": "^15.1.0",
     "postcss-nested": "^6.0.1",

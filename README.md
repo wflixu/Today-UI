@@ -10,17 +10,17 @@ Today-UI 样式按 Fluent Design 实现的，[Fluent Design](https://fluent2.mic
 
 ## 计划
 
-[-]  第一个组件tooltip ，测试发包。
+- [x]  第一个组件tooltip ，测试发包。
 
-[-] 组件dropdown ，测试发包。
+- [x] 组件dropdown ，测试发包。
 
-[-] 组件 file-tree ，测试发包。
+- [x] 组件 file-tree ，测试发包。
 
-[x] 完善组件和样式
+- [ ] 完善组件和样式
 
-[x] 添加测试用例
+- [ ] 添加测试用例
 
-[x] 发布正式版
+- [ ] 发布正式版
 
 
 

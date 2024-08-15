@@ -1,7 +1,9 @@
+
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { fileURLToPath, URL } from "node:url";
+import { HstVue } from '@histoire/plugin-vue'
 
 import postcssImport from "postcss-import";
 import postcssNested from "postcss-nested";
@@ -13,6 +15,15 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
+  },
+  histoire: {
+    setupFile: 'src/histoire.setup.ts',
+    storyMatch: [
+      '**/*.story.vue',
+    ],
+    plugins: [
+      HstVue(),
+    ],
   },
   css: {
     postcss: {

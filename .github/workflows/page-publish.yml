@@ -28,11 +28,11 @@ jobs:
       - name: Install
         run: pnpm install
       - name: Build
-        run: pnpm run sb:build
+        run: pnpm run story:build
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: storybook-static/
+          path: .histoire/dist/
       - name: Deploy build page
         id: deployment
         uses: actions/deploy-pages@v1
