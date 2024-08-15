@@ -21,6 +21,9 @@ export default defineConfig({
     storyMatch: [
       '**/*.story.vue',
     ],
+    vite: {
+      base: '/Today-UI/'
+    },
     plugins: [
       HstVue(),
     ],
