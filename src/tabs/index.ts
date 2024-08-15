@@ -4,10 +4,9 @@ import { withInstall, type WithInstallType } from '../shared/withInstall';
 
 
 import _Tabs from './Tabs';
-import _Tablist from './Tablist.vue';
-import _TabPanel from './TabPanel.vue';
+import _TabPanel from './TabPanel';
+import _Tablist from './Tablist';
 
-export * from './type';
 
 export const Tabs: WithInstallType<typeof _Tabs> = withInstall(_Tabs);
 export const Tablist: WithInstallType<typeof _Tablist> = withInstall(_Tablist);

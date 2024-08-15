@@ -1,11 +1,11 @@
 
 import type { Meta, StoryObj } from "@storybook/vue3";
 
-
-import Tablist from "./Tablist.vue";
-import TabPanel from "./TabPanel.vue";
+import Tablist from "./Tablist";
+import TabPanel from "./TabPanel";
 const meta: Meta<typeof Tablist> = {
   component: Tablist,
+  subcomponents: { TabPanel },
   title: "Today-UI/Tablist",
   tags: ["autodocs"],
   args: {},
@@ -31,7 +31,7 @@ export const Basic: Story = {
       return { args };
     },
     template: `<Tablist v-bind="args"  v-model="args.modelValue" >
-          <TabPanel key="tab1" title="复制">  
+          <TabPanel key="tab1" title="复制 开始就肯德基啊 案例四大皆空啊三等奖卡机深刻的啊三等奖k">  
               <div>内容1</div>
           </TabPanel>
           <TabPanel key="tab2" title="粘贴">  

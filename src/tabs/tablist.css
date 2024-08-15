@@ -1,0 +1,65 @@
+@import "./../style/base.css";
+
+.tablist {
+    .btns-box {
+        .btns {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--colorCompoundBrandStroke);
+
+            .btn {
+                display: inline-flex;
+                height: 36px;
+                align-items: center;
+                justify-content: space-between;
+                border-width: 1px;
+                position: relative;
+                border-top-left-radius: var(--borderRadiusMedium);
+                border-top-right-radius: var(--borderRadiusMedium);
+                border-style: solid;
+                gap: 4px;
+                border-color: transparent;
+                padding: 0 8px;
+                max-width: 12em;
+                min-width: 3em;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0px;
+                    right: 0px;
+                    bottom: -2px;
+                    height: 1px;
+                    background-color: var(--colorCompoundBrandStroke);
+                }
+
+                &.active {
+                    border-color: var(--colorCompoundBrandStroke);
+                    border-bottom-color: transparent;
+
+                    &::after {
+                        background-color: var(--colorNeutralForegroundOnBrand);
+                    }
+                }
+
+                .title {
+                    flex: 1;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                .close {
+                    width: 18px;
+                    display: inline-flex;
+                    align-items: center;
+
+                    &:hover {
+                        color: var(--colorCompoundBrandStroke);
+                    }
+                }
+            }
+        }
+    }
+
+}
