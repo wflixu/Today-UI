@@ -8,7 +8,7 @@
     "src/**/*.tsx",
     "src/**/*.ts",
     "package.json"
-  ],
+, "src/file-tree/FileTree.story.vue"  ],
   "exclude": [
     "src/**/__tests__/*",
     "src/**/*stories.ts"

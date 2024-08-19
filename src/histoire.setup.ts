@@ -9,3 +9,4 @@ export const setupVue3 = defineSetupVue3(({ app, story, variant }) => {
     app.use(pinia) // Add Pinia store
     app.use(TodayUI) // Add TodayUI plugin
 })
+

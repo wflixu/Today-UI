@@ -8,7 +8,7 @@
       "incremental": false,
       "strictNullChecks": false,
     },
-    "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json"],
+    "include": ["src/**/*.ts",  "src/**/*.tsx", "src/**/*.vue", "src/*.ts", "package.json", "src/file-tree/FileTree.story.vue"],
     "exclude": [
       "src/**/*stories.ts",
       "node_modules",

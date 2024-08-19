@@ -2,7 +2,7 @@ import type { PropType } from "vue";
 
 type ButtonType = "default" | "primary" | "outline" | "subtle" | "transparent";
 type ButtonShape = "rounded" | "circular" | "square";
-type ButtonSize  = "small" | "medium" | "large";
+type ButtonSize = "small" | "medium" | "large";
 
 export const buttonProps = {
   type: {
@@ -19,6 +19,6 @@ export const buttonProps = {
   },
   disabled: {
     type: Boolean as PropType<boolean>,
-    default:false
+    default: false
   }
 };
