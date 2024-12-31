@@ -6,13 +6,10 @@ import DatabaseFilledIcon from "../icon/components/DatabaseFilledIcon";
 import { CubeTreeFilledIcon, TableEditFilledIcon } from "..";
 import { logEvent } from 'histoire/client'
 
-
 const state = reactive({
   disabled: false,
 
 })
-
-
 
 const basicData = [
   {
