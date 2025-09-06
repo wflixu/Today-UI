@@ -20,9 +20,9 @@ export default defineConfig({
     theme: {
       title:"TodayUI",
       logo: {
-        square: './img/square.png',
-        light: './img/light.png',
-        dark: './img/dark.png'
+        square: './public/icon/logo.png',
+        light: './public/icon/logo.png',
+        dark: './public/icon/logo.png'
       },
     },
     setupFile: 'src/histoire.setup.ts',
