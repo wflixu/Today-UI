@@ -1,37 +1,13 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dprint.dprint",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-      "source.fixAll.stylelint": "explicit"
+    "chat.promptFilesRecommendations": {
+        "speckit.constitution": true,
+        "speckit.specify": true,
+        "speckit.plan": true,
+        "speckit.tasks": true,
+        "speckit.implement": true
     },
-    "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass", "html"],
-    "[markdown]": {
-      "editor.formatOnSave": false
-    },
-    "[javascript]": {
-      "editor.formatOnSave": false
-    },
-    "[json]": {
-      "editor.formatOnSave": false
-    },
-    "[jsonc]": {
-      "editor.formatOnSave": false
-    },
-    "files.watcherExclude": {
-      "**/.git/*/**": true,
-      "**/node_modules/*/**": true,
-      "**/dist/*/**": true,
-      "**/coverage/*/**": true
-    },
-    "files.associations": {
-      "*.json": "jsonc",
-      ".prettierrc": "jsonc",
-      ".stylelintrc": "jsonc"
-    },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "[vue]": {
-      "editor.defaultFormatter": "Vue.volar"
-    },
-  }
-  
+    "chat.tools.terminal.autoApprove": {
+        ".specify/scripts/bash/": true,
+        ".specify/scripts/ps/": true
+    }
+}
