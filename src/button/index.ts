@@ -1,7 +1,6 @@
-
-import { withInstall, type WithInstallType } from '../shared/withInstall';
-import _Button from "./Button";
-
-
-export const Button: WithInstallType<typeof _Button> = withInstall(_Button);
-export default Button;
+export { Button } from './Button';
+// Explicit exports to omit ButtonCommons
+// export type { ButtonProps, ButtonSlots, ButtonState } from './Button.types';
+// export { renderButton_unstable } from './renderButton';
+// export { useButton_unstable } from './useButton';
+// export { buttonClassNames, useButtonStyles_unstable } from './useButtonStyles.styles';

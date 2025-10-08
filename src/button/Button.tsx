@@ -1,47 +1,32 @@
-import { defineComponent, toRefs, watch } from "vue";
-import { buttonProps } from "./props";
-import "./button.css";
-export default defineComponent({
-  name: "TButton",
-  props: buttonProps,
-  emits: ["click"],
-  setup(props, { slots, emit }) {
-    const { disabled, shape, type } = toRefs(props);
-    let shapeCls = "";
-    let typeCls = "";
-    const onClick = (e: MouseEvent) => {
-      emit("click", e);
-    };
 
-    watch(
-      () => shape.value,
-      (val) => {
-        shapeCls = val == "rounded" ? "" : `shape-${val}`;
-      },
-      {
-        immediate: true,
-      }
-    );
-    watch(
-      () => type.value,
-      (val) => {
-        typeCls = val == "default" ? "" : `type-${val}`;
-      },
-      {
-        immediate: true,
-      }
-    );
-    return () => {
-      return (
-        <button
-          class={["t-button", shapeCls, typeCls]}
-          disabled={disabled.value}
-          onClick={onClick}
-        >
-          {slots.icon ? slots.icon() : null}
-          <span class="t-button-content">{slots.default?.()}</span>
-        </button>
-      );
-    };
-  },
+import { renderButton_unstable } from './renderButton';
+import { useButtonStyles_unstable } from './useButtonStyles.styles';
+import { buttonProps, type ButtonProps, type ButtonSize, type ButtonSlots } from './Button.types';
+import type { ForwardRefComponent } from '@fluentui/react-utilities';
+import { useCustomStyleHook_unstable } from '@fluentui/react-shared-contexts';
+
+import { defineComponent, PropType, ref, SlotsType } from 'vue';
+import { useButton } from './useButton';
+// import { renderButton } from './renderButton';
+// import { useButtonStyles } from './useButtonStyles';
+// import type { ButtonProps } from './Button.types';
+// import { useCustomStyleHook } from '@fluentui/vue-shared-contexts';
+
+export const Button = defineComponent({
+  name: 'Button',
+  props: buttonProps,
+  slots: Object as SlotsType<ButtonSlots>,
+  setup(props: ButtonProps, { expose, slots }) {
+    const rootRef = ref<HTMLElement | null>(null);
+    const state = useButton(props);
+
+    useButtonStyles(state);
+    useCustomStyleHook('useButtonStyles')(state);
+
+    expose({
+      // 暴露可能需要的方法或属性
+    });
+
+    return () => renderButton(state);
+  }
 });
