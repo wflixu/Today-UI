@@ -1,6 +1,7 @@
 import { ExtractPropTypes, PropType, Slot } from 'vue';
 
 export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonAppearance = 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent';
 
 // Props 定义
 export const buttonProps = {
@@ -15,8 +16,22 @@ export const buttonProps = {
      * @default 'secondary'
      */
     appearance: {
-        type: String as PropType<'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent'>,
+        type: String as PropType<ButtonAppearance>,
         default: 'secondary'
+    },
+
+    /**
+     * @deprecated Use 'appearance' prop instead. This prop is kept for backward compatibility.
+     */
+    type: {
+        type: String as PropType<ButtonAppearance>,
+        default: undefined as undefined,
+        validator: (value: string) => {
+            if (value) {
+                console.warn('[Today-UI Button]: "type" prop is deprecated. Use "appearance" instead.');
+            }
+            return true;
+        }
     },
 
     /**
@@ -79,6 +94,14 @@ export const buttonProps = {
     as: {
         type: String,
         default: 'button'
+    },
+
+    /**
+     * Click event handler
+     */
+    onClick: {
+        type: Function as PropType<(event: MouseEvent) => void>,
+        default: undefined as undefined
     }
 };
 
@@ -136,8 +159,19 @@ export interface ButtonState {
      * A button can contain only an icon.
      */
     iconOnly: boolean;
+
     /**
      * The icon element attributes.
      */
     icon?: Record<string, any>;
+
+    /**
+     * Root element configuration for rendering.
+     */
+    root: Record<string, any>;
+
+    /**
+     * The element type to render as (button, a, etc.)
+     */
+    as: NonNullable<ButtonProps['as']>;
 }
