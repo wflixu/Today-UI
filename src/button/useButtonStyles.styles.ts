@@ -1,4 +1,6 @@
 import type { ButtonState } from './Button.types';
+import { useButtonStyles as useGriffelStyles } from './button.styles';
+import { mergeClasses } from '@/shared/griffel/mergeClasses';
 
 // 类名常量
 export const buttonClassNames = {
@@ -8,36 +10,40 @@ export const buttonClassNames = {
 
 /**
  * Button 样式钩子函数
- * 基于 CSS 变量系统生成类名
+ * 使用 griffel-vue 生成样式，同时保留语义化类名
  */
 export const useButtonStyles_unstable = (state: ButtonState) => {
+    // 获取 Griffel 样式
+    const styles = useGriffelStyles();
     const { appearance, shape, size, disabled, iconOnly } = state;
 
-    // 生成根元素类名
+    // 合并语义化类名和 Griffel 原子化类名
     const rootClasses = [
-        buttonClassNames.root,
-        appearance !== 'secondary' ? `${buttonClassNames.root}-appearance-${appearance}` : '',
-        shape !== 'rounded' ? `${buttonClassNames.root}-shape-${shape}` : '',
-        size !== 'medium' ? `${buttonClassNames.root}-size-${size}` : '',
-        iconOnly ? `${buttonClassNames.root}-icon-only` : '',
-        disabled ? `${buttonClassNames.root}-disabled` : '',
-    ].filter(Boolean);
-
-    // 生成图标类名
-    const iconClasses = [
-        buttonClassNames.icon,
+        buttonClassNames.root,           // 保留语义化类名
+        styles.root,                      // Griffel 基础样式
+        appearance === 'primary' && styles.primary,
+        appearance === 'outline' && styles.outline,
+        appearance === 'subtle' && styles.subtle,
+        appearance === 'transparent' && styles.transparent,
+        shape === 'square' && styles.square,
+        shape === 'circular' && styles.circular,
+        size === 'small' && styles.small,
+        size === 'large' && styles.large,
+        iconOnly && styles.iconOnly,
+        disabled && styles.disabled,
     ].filter(Boolean);
 
     // 应用类名到状态
     state.root = {
         ...state.root,
-        className: rootClasses.join(' '),
+        className: mergeClasses(...rootClasses),
     };
 
-    if (iconOnly) {
+    // 处理图标样式
+    if (iconOnly && state.icon) {
         state.icon = {
             ...state.icon,
-            className: iconClasses.join(' '),
+            className: mergeClasses(buttonClassNames.icon, styles.icon),
         };
     }
 };

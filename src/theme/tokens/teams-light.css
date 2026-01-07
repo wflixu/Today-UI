@@ -1,0 +1,22 @@
+/**
+ * Fluent Design Teams Light Theme Tokens
+ * 基于 @fluentui/tokens 的 teamsLightTheme
+ */
+
+:root[data-theme="teams-light"] {
+  /* Teams 品牌色 */
+  --colorBrandForeground1: #6264a7;
+  --colorBrandForeground2: #5c5fc0;
+  --colorBrandForeground2Hover: #6264a7;
+  --colorBrandForeground2Pressed: #464775;
+
+  --colorBrandBackground: #6264a7;
+  --colorBrandBackgroundHover: #5c5fc0;
+  --colorBrandBackgroundPressed: #464775;
+  --colorBrandBackgroundSelected: #6264a7;
+
+  --colorBrandStroke1: #6264a7;
+  --colorBrandStroke2: #c8c8e3;
+  --colorBrandStroke2Hover: #6264a7;
+  --colorBrandStroke2Pressed: #6264a7;
+}

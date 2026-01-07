@@ -1,11 +1,18 @@
-import { type App, type Plugin } from "vue";
+import { type App } from "vue";
 
 import * as components from "./components";
 import { version } from "../package.json";
 
-function install(app: App, config?: Record<string, unknown>): void {
-  Object.entries(components).forEach(([key, comp]) => {
-    app.use(comp as Plugin, config);
+function install(app: App): void {
+  // 注册所有组件到全局
+  Object.entries(components).forEach(([, component]) => {
+    // 类型守卫：确保 component 不为 null 且有 name 属性
+    if (component) {
+      const comp = component as { name?: string };
+      if (comp.name) {
+        app.component(comp.name, component);
+      }
+    }
   });
 }
 

@@ -10,7 +10,12 @@
       "Bash(pnpm build:types:*)",
       "Bash(pnpm typecheck)",
       "Bash(pnpm test --run)",
-      "Bash(pnpm lint:check:*)"
+      "Bash(pnpm lint:check:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(printf:*)",
+      "Bash(pnpm install)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,95 @@
+/**
+ * Fluent Design Dark Theme Tokens
+ * 基于 @fluentui/tokens 的 webDarkTheme
+ */
+
+:root[data-theme="dark"] {
+  /* 覆盖为暗色主题的关键颜色 */
+  --colorNeutralForeground1: #ffffff;
+  --colorNeutralForeground1Hover: #ffffff;
+  --colorNeutralForeground1Pressed: #ffffff;
+  --colorNeutralForeground1Selected: #ffffff;
+
+  --colorNeutralForeground2: #d6d6d6;
+  --colorNeutralForeground2Hover: #ffffff;
+  --colorNeutralForeground2Pressed: #ffffff;
+  --colorNeutralForeground2Selected: #ffffff;
+
+  --colorNeutralForeground3: #a8a8a8;
+  --colorNeutralForeground3Hover: #d6d6d6;
+  --colorNeutralForeground3Pressed: #d6d6d6;
+  --colorNeutralForeground3Selected: #d6d6d6;
+
+  --colorNeutralForeground4: #8f8f8f;
+  --colorNeutralForegroundDisabled: #575757;
+
+  --colorNeutralBackground1: #1b1b1b;
+  --colorNeutralBackground1Hover: #292929;
+  --colorNeutralBackground1Pressed: #323232;
+  --colorNeutralBackground1Selected: #262626;
+
+  --colorNeutralBackground2: #242424;
+  --colorNeutralBackground2Hover: #323232;
+  --colorNeutralBackground2Pressed: #3c3c3c;
+  --colorNeutralBackground2Selected: #2d2d2d;
+
+  --colorNeutralBackground3: #292929;
+  --colorNeutralBackground3Hover: #262626;
+  --colorNeutralBackground3Pressed: #323232;
+  --colorNeutralBackground3Selected: #2d2d2d;
+
+  --colorNeutralBackground4: #2d2d2d;
+  --colorNeutralBackground4Hover: #242424;
+  --colorNeutralBackground4Pressed: #292929;
+  --colorNeutralBackground4Selected: #1b1b1b;
+
+  --colorNeutralBackground5: #262626;
+  --colorNeutralBackground5Hover: #292929;
+  --colorNeutralBackground5Pressed: #2d2d2d;
+  --colorNeutralBackground5Selected: #242424;
+
+  --colorNeutralBackground6: #2d2d2d;
+
+  --colorNeutralBackgroundInverted: #ffffff;
+  --colorNeutralBackgroundStatic: #ffffff;
+
+  --colorBrandForeground1: #479ef5;
+  --colorBrandForeground2: #62abf5;
+  --colorBrandForeground2Hover: #479ef5;
+  --colorBrandForeground2Pressed: #1893f7;
+
+  --colorBrandBackground: #479ef5;
+  --colorBrandBackgroundHover: #62abf5;
+  --colorBrandBackgroundPressed: #1893f7;
+  --colorBrandBackgroundSelected: #3aa1f9;
+
+  --colorBrandForegroundInverted: #0f6cbd;
+  --colorBrandForegroundInvertedHover: #115ea3;
+  --colorBrandForegroundInvertedPressed: #0a2e4a;
+
+  --colorNeutralStrokeAccessible: #b8b8b8;
+  --colorNeutralStrokeAccessibleHover: #c8c8c8;
+  --colorNeutralStrokeAccessiblePressed: #d8d8d8;
+
+  --colorNeutralStroke1: #5c5c5c;
+  --colorNeutralStroke1Hover: #6e6e6e;
+  --colorNeutralStroke1Pressed: #828282;
+
+  --colorNeutralStroke2: #4b4b4b;
+  --colorNeutralStroke3: #3c3c3c;
+
+  --colorNeutralStrokeOnBrand: #ffffff;
+  --colorNeutralStrokeOnBrand2: #ffffff;
+  --colorNeutralStrokeOnBrand2Hover: #ffffff;
+  --colorNeutralStrokeOnBrand2Pressed: #ffffff;
+  --colorNeutralStrokeOnBrand2Selected: #ffffff;
+
+  --colorNeutralStrokeDisabled: #3c3c3c;
+  --colorNeutralStrokeInvertedDisabled: rgba(0, 0, 0, 0.4);
+
+  --colorNeutralShadowAmbient: rgba(0, 0, 0, 0.36);
+  --colorNeutralShadowKey: rgba(0, 0, 0, 0.42);
+
+  --colorBrandShadowAmbient: rgba(0, 0, 0, 0.4);
+  --colorBrandShadowKey: rgba(0, 0, 0, 0.3);
+}
