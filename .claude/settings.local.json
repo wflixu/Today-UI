@@ -15,7 +15,10 @@
       "Bash(ls:*)",
       "Bash(mkdir:*)",
       "Bash(printf:*)",
-      "Bash(pnpm install)"
+      "Bash(pnpm install)",
+      "Bash(pnpm b)",
+      "Bash(pnpm build:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

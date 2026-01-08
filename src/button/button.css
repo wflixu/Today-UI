@@ -205,6 +205,71 @@
     height: 20px;
     width: 20px;
     flex-shrink: 0;
+    /* CSS 变量用于图标间距 */
+    --fui-Button-icon-spacing: var(--spacingHorizontalSNudge);
+  }
+
+  /* 图标尺寸变体 */
+  &.size-small .t-button__icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    --fui-Button-icon-spacing: var(--spacingHorizontalXS);
+  }
+
+  &.size-large .t-button__icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+    --fui-Button-icon-spacing: var(--spacingHorizontalSNudge);
+  }
+
+  /* 图标位置间距 */
+  .t-button__icon--before {
+    margin-right: var(--fui-Button-icon-spacing);
+  }
+
+  .t-button__icon--after {
+    margin-left: var(--fui-Button-icon-spacing);
+  }
+
+  /* ========== Loading 状态 ========== */
+  &.loading {
+    position: relative;
+    cursor: wait;
+  }
+
+  /* Spinner 容器 */
+  &__spinner-wrapper {
+    display: inline-flex;
+    align-items: center;
+    margin-right: var(--spacingHorizontalXS);
+  }
+
+  /* Icon-only 优化 */
+  &.icon-only.size-small {
+    padding: 1px;
+    min-width: 24px;
+    max-width: 24px;
+  }
+
+  &.icon-only.size-medium {
+    padding: 5px;
+    min-width: 32px;
+    max-width: 32px;
+  }
+
+  &.icon-only.size-large {
+    padding: 7px;
+    min-width: 40px;
+    max-width: 40px;
+  }
+
+  /* Primary 按钮特殊焦点样式 */
+  &.appearance-primary:focus-visible {
+    outline: var(--strokeWidthThick) solid var(--colorNeutralForegroundOnBrand);
+    outline-offset: -2px;
+    box-shadow: var(--shadow2), 0 0 0 1px var(--colorStrokeFocus2) inset;
   }
 }
 

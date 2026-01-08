@@ -36,3 +36,5 @@ pnpm-debug.log*
 .tsbuildinfo
 
 *storybook.log
+
+react-components

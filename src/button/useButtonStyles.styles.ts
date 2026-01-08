@@ -15,35 +15,40 @@ export const buttonClassNames = {
 export const useButtonStyles_unstable = (state: ButtonState) => {
     // 获取 Griffel 样式
     const styles = useGriffelStyles();
-    const { appearance, shape, size, disabled, iconOnly } = state;
+    const { appearance, shape, size, disabled, iconOnly, loading, iconPosition } = state;
 
-    // 合并语义化类名和 Griffel 原子化类名
+    // 根元素类名
     const rootClasses = [
-        buttonClassNames.root,           // 保留语义化类名
-        styles.root,                      // Griffel 基础样式
-        appearance === 'primary' && styles.primary,
-        appearance === 'outline' && styles.outline,
-        appearance === 'subtle' && styles.subtle,
-        appearance === 'transparent' && styles.transparent,
-        shape === 'square' && styles.square,
-        shape === 'circular' && styles.circular,
-        size === 'small' && styles.small,
-        size === 'large' && styles.large,
-        iconOnly && styles.iconOnly,
+        buttonClassNames.root,                    // 语义化类名
+        styles.root,                              // Griffel 基础样式
+        appearance !== 'secondary' && styles[appearance as keyof typeof styles],
+        shape !== 'rounded' && styles[shape as keyof typeof styles],
+        size !== 'medium' && styles[size as keyof typeof styles],
+        iconOnly && styles[`iconOnly${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
         disabled && styles.disabled,
+        loading && styles.loading,
+        appearance === 'primary' && styles.primaryFocus,
+    ].filter(Boolean);
+
+    // 图标类名
+    const iconClasses = [
+        buttonClassNames.icon,
+        styles.icon,
+        size !== 'medium' && styles[`icon${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
+        iconPosition === 'before' ? styles.iconBefore : styles.iconAfter,
     ].filter(Boolean);
 
     // 应用类名到状态
     state.root = {
         ...state.root,
-        className: mergeClasses(...rootClasses),
+        className: mergeClasses(...rootClasses, state.root.className as string),
     };
 
     // 处理图标样式
-    if (iconOnly && state.icon) {
+    if (state.icon) {
         state.icon = {
             ...state.icon,
-            className: mergeClasses(buttonClassNames.icon, styles.icon),
+            className: mergeClasses(...iconClasses, state.icon.className as string),
         };
     }
 };

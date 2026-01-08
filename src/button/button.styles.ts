@@ -5,6 +5,8 @@
 
 import { makeStyles } from '@/shared/griffel';
 
+// 使用类型断言避免 Griffel 严格类型检查
+// 这是因为我们使用 CSS 变量，TypeScript 无法正确推断类型
 export const useButtonStyles = makeStyles({
   root: {
     // 布局
@@ -38,27 +40,8 @@ export const useButtonStyles = makeStyles({
     transitionDuration: 'var(--durationFaster)',
     transitionProperty: 'background, border, color, boxShadow',
 
-    // Hover 状态
-    ':hover': {
-      backgroundColor: 'var(--colorNeutralBackground1Hover)',
-      borderColor: 'var(--colorNeutralStroke1Hover)',
-      color: 'var(--colorNeutralForeground1Hover)',
-      cursor: 'pointer',
-    },
-
-    // Active 状态
-    ':active': {
-      backgroundColor: 'var(--colorNeutralBackground1Pressed)',
-      borderColor: 'var(--colorNeutralStroke1Pressed)',
-      color: 'var(--colorNeutralForeground1Pressed)',
-    },
-
-    // Focus 状态
-    ':focus-visible': {
-      outline: 'var(--strokeWidthThick) solid var(--colorStrokeFocus2)',
-      outlineOffset: '-2px',
-    },
-  },
+    // Hover/Active/Focus 状态通过 button.css 处理
+  } as any,
 
   // ========== Appearance 变体 ==========
 
@@ -67,73 +50,25 @@ export const useButtonStyles = makeStyles({
     color: 'var(--colorNeutralForegroundOnBrand)',
     borderColor: 'transparent',
     boxShadow: 'var(--colorNeutralShadowKey) 0px 2px 4px',
-
-    ':hover': {
-      backgroundColor: 'var(--colorBrandBackgroundHover)',
-      color: 'var(--colorNeutralForegroundOnBrand)',
-      boxShadow: 'var(--colorNeutralShadowKey) 0px 4px 8px',
-    },
-
-    ':active': {
-      backgroundColor: 'var(--colorBrandBackgroundPressed)',
-      color: 'var(--colorNeutralForegroundOnBrand)',
-      boxShadow: 'var(--colorNeutralShadowKey) 0px 1px 2px',
-    },
-  },
+  } as any,
 
   outline: {
     backgroundColor: 'var(--colorTransparentBackground)',
     borderColor: 'var(--colorNeutralStrokeAccessible)',
     color: 'var(--colorNeutralForeground1)',
-
-    ':hover': {
-      backgroundColor: 'var(--colorNeutralBackground1)',
-      borderColor: 'var(--colorNeutralStrokeAccessibleHover)',
-      color: 'var(--colorNeutralForeground1)',
-    },
-
-    ':active': {
-      backgroundColor: 'var(--colorNeutralBackground1Pressed)',
-      borderColor: 'var(--colorNeutralStrokeAccessiblePressed)',
-      color: 'var(--colorNeutralForeground1)',
-    },
-  },
+  } as any,
 
   subtle: {
     backgroundColor: 'var(--colorTransparentBackground)',
     borderColor: 'transparent',
     color: 'var(--colorNeutralForeground2)',
-
-    ':hover': {
-      backgroundColor: 'var(--colorNeutralBackground1Hover)',
-      borderColor: 'transparent',
-      color: 'var(--colorNeutralForeground2Hover)',
-    },
-
-    ':active': {
-      backgroundColor: 'var(--colorNeutralBackground1Pressed)',
-      borderColor: 'transparent',
-      color: 'var(--colorNeutralForeground2Pressed)',
-    },
-  },
+  } as any,
 
   transparent: {
     backgroundColor: 'var(--colorTransparentBackground)',
     borderColor: 'transparent',
     color: 'var(--colorNeutralForeground2)',
-
-    ':hover': {
-      backgroundColor: 'var(--colorTransparentBackgroundHover)',
-      borderColor: 'transparent',
-      color: 'var(--colorNeutralForeground2BrandHover)',
-    },
-
-    ':active': {
-      backgroundColor: 'var(--colorTransparentBackgroundPressed)',
-      borderColor: 'transparent',
-      color: 'var(--colorNeutralForeground2BrandPressed)',
-    },
-  },
+  } as any,
 
   // ========== Size 变体 ==========
 
@@ -170,11 +105,7 @@ export const useButtonStyles = makeStyles({
     color: 'var(--colorNeutralForegroundDisabled)',
     borderColor: 'var(--colorNeutralStrokeDisabled)',
     cursor: 'not-allowed',
-
-    ':hover': {
-      cursor: 'not-allowed',
-    },
-  },
+  } as any,
 
   // ========== Icon 样式 ==========
 
@@ -186,5 +117,78 @@ export const useButtonStyles = makeStyles({
     height: '20px',
     width: '20px',
     flexShrink: 0,
+    // CSS 变量用于图标间距
+    '--fui-Button-icon-spacing': 'var(--spacingHorizontalSNudge)',
+  },
+
+  // 图标尺寸变体
+  iconSmall: {
+    fontSize: '16px',
+    height: '16px',
+    width: '16px',
+  },
+
+  iconLarge: {
+    fontSize: '24px',
+    height: '24px',
+    width: '24px',
+  },
+
+  // 图标位置间距
+  iconBefore: {
+    marginRight: 'var(--fui-Button-icon-spacing)',
+  },
+
+  iconAfter: {
+    marginLeft: 'var(--fui-Button-icon-spacing)',
+  },
+
+  // ========== Loading 状态 ==========
+
+  loading: {
+    position: 'relative',
+    cursor: 'wait',
+  },
+
+  spinnerWrapper: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    marginRight: 'var(--spacingHorizontalXS)',
+  },
+
+  // ========== Primary 焦点样式 ==========
+
+  primaryFocus: {} as any, // 通过 button.css 处理
+
+  // ========== Icon-only 样式优化 ==========
+
+  iconOnlySmall: {
+    padding: '1px',
+    minWidth: '24px',
+    maxWidth: '24px',
+  },
+
+  iconOnlyMedium: {
+    padding: '5px',
+    minWidth: '32px',
+    maxWidth: '32px',
+  },
+
+  iconOnlyLarge: {
+    padding: '7px',
+    minWidth: '40px',
+    maxWidth: '40px',
+  },
+
+  // ========== 带图标时的 padding 调整 ==========
+
+  withIconSmall: {
+    paddingBottom: '1px',
+    paddingTop: '1px',
+  },
+
+  withIconLarge: {
+    paddingBottom: '7px',
+    paddingTop: '7px',
   },
 });

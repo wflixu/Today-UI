@@ -102,7 +102,93 @@ export const buttonProps = {
     onClick: {
         type: Function as PropType<(event: MouseEvent) => void>,
         default: undefined as undefined
-    }
+    },
+
+    /**
+     * 显示加载状态，禁用按钮并显示 Spinner
+     *
+     * @default false
+     */
+    loading: {
+        type: Boolean,
+        default: false
+    },
+
+    /**
+     * 加载时的文本提示
+     */
+    loadingText: {
+        type: String,
+        default: undefined as undefined
+    },
+
+    // ========== ARIA 属性 ==========
+
+    /**
+     * 标识按钮的用途
+     */
+    ariaLabel: {
+        type: String,
+        default: undefined as undefined
+    },
+
+    /**
+     * 标识包含按钮文本的元素
+     */
+    ariaLabelledby: {
+        type: String,
+        default: undefined as undefined
+    },
+
+    /**
+     * 标识描述按钮的元素
+     */
+    ariaDescribedby: {
+        type: String,
+        default: undefined as undefined
+    },
+
+    /**
+     * 标识按钮控制的元素状态（对于切换按钮）
+     */
+    ariaPressed: {
+        type: Boolean,
+        default: undefined as undefined
+    },
+
+    /**
+     * 标识按钮控制的弹出元素状态
+     */
+    ariaExpanded: {
+        type: Boolean,
+        default: undefined as undefined
+    },
+
+    /**
+     * 标识按钮是否有弹出菜单
+     */
+    ariaHaspopup: {
+        type: [Boolean, String] as PropType<boolean | 'false' | 'true' | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog'>,
+        default: undefined as undefined
+    },
+
+    // ========== 键盘事件 ==========
+
+    /**
+     * 键盘按下事件
+     */
+    onKeyDown: {
+        type: Function as PropType<(event: KeyboardEvent) => void>,
+        default: undefined as undefined
+    },
+
+    /**
+     * 键盘抬起事件
+     */
+    onKeyUp: {
+        type: Function as PropType<(event: KeyboardEvent) => void>,
+        default: undefined as undefined
+    },
 };
 
 // 提取 Props 类型
@@ -174,4 +260,19 @@ export interface ButtonState {
      * The element type to render as (button, a, etc.)
      */
     as: NonNullable<ButtonProps['as']>;
+
+    /**
+     * Whether the button is in loading state
+     */
+    loading: boolean;
+
+    /**
+     * Loading text to display
+     */
+    loadingText?: string;
+
+    /**
+     * Whether to show the spinner
+     */
+    showSpinner: boolean;
 }
