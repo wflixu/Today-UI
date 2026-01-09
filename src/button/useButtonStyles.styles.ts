@@ -19,15 +19,21 @@ export const useButtonStyles_unstable = (state: ButtonState) => {
 
     // 根元素类名
     const rootClasses = [
-        buttonClassNames.root,                    // 语义化类名
+        buttonClassNames.root,                    // 语义化类名 .t-button
+        appearance !== 'secondary' && `appearance-${appearance}`,  // BEM 修饰符 .appearance-outline
+        shape !== 'rounded' && `shape-${shape}`,  // BEM 修饰符 .shape-circular
+        size !== 'medium' && `size-${size}`,      // BEM 修饰符 .size-small
+        disabled && 'disabled',                   // BEM 修饰符 .disabled
+        loading && 'loading',                     // BEM 修饰符 .loading
+        iconOnly && 'icon-only',                  // BEM 修饰符 .icon-only
         styles.root,                              // Griffel 基础样式
-        appearance !== 'secondary' && styles[appearance as keyof typeof styles],
-        shape !== 'rounded' && styles[shape as keyof typeof styles],
-        size !== 'medium' && styles[size as keyof typeof styles],
-        iconOnly && styles[`iconOnly${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],
-        disabled && styles.disabled,
-        loading && styles.loading,
-        appearance === 'primary' && styles.primaryFocus,
+        appearance !== 'secondary' && styles[appearance as keyof typeof styles],            // Griffel 外观样式
+        shape !== 'rounded' && styles[shape as keyof typeof styles],                      // Griffel 形状样式
+        size !== 'medium' && styles[size as keyof typeof styles],                          // Griffel 尺寸样式
+        iconOnly && styles[`iconOnly${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles],  // Griffel icon-only 样式
+        disabled && styles.disabled,                              // Griffel 禁用样式
+        loading && styles.loading,                                // Griffel 加载样式
+        appearance === 'primary' && styles.primaryFocus,          // Griffel primary 焦点样式
     ].filter(Boolean);
 
     // 图标类名

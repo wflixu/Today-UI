@@ -35,8 +35,7 @@ export function getNativeProps<T extends Record<string, any>>(
       const isNativeProp =
         (!isArray && (allowedPropNames as Record<string, number>)[key]) ||
         (isArray && (allowedPropNames as string[]).indexOf(key) >= 0) ||
-        key.indexOf('data-') === 0 ||
-        key.indexOf('aria-') === 0;
+        key.indexOf('data-') === 0;
   
       if (isNativeProp && (!excludedPropNames || excludedPropNames?.indexOf(key) === -1)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -156,7 +155,6 @@ export const baseElementEvents = toObjectMap([
    * @public
    */
   export const baseElementProperties = toObjectMap([
-    'accessKey', // global
     'children', // global
     'className', // global
     'contentEditable', // global
@@ -167,9 +165,7 @@ export const baseElementEvents = toObjectMap([
     'id', // global
     'lang', // global
     'ref', // global
-    'role', // global
     'style', // global
-    'tabIndex', // global
     'title', // global
     'translate', // global
     'spellCheck', // global

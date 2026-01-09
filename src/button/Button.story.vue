@@ -54,15 +54,6 @@ const handleLoad = async () => {
     loading.value = false
   }, 2000)
 }
-
-// 键盘事件测试
-const handleKeyDown = (event: KeyboardEvent) => {
-  console.log('Key down:', event.key)
-}
-
-const handleKeyUp = (event: KeyboardEvent) => {
-  console.log('Key up:', event.key)
-}
 </script>
 
 <template>
@@ -149,50 +140,6 @@ const handleKeyUp = (event: KeyboardEvent) => {
       </div>
     </Variant>
 
-    <Variant title="无障碍性">
-      <div style="display: flex; gap: 12px; flex-direction: column; align-items: flex-start;">
-        <div style="display: flex; gap: 12px; align-items: center;">
-          <TButton aria-label="关闭对话框">
-            仅有图标的按钮
-          </TButton>
-          <TButton aria-label="保存文件">
-            <template #icon>💾</template>
-          </TButton>
-        </div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-          <TButton aria-describedby="save-desc">
-            保存文件
-          </TButton>
-          <span id="save-desc" style="font-size: 12px; color: #666;">
-            (这将保存到本地存储)
-          </span>
-        </div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-          <TButton aria-expanded="false" aria-haspopup="true">
-            下拉菜单
-          </TButton>
-          <TButton aria-pressed="false">
-            切换按钮
-          </TButton>
-        </div>
-      </div>
-    </Variant>
-
-    <Variant title="键盘事件">
-      <div style="display: flex; gap: 12px; flex-direction: column; align-items: flex-start;">
-        <TButton
-          @keydown="handleKeyDown"
-          @keyup="handleKeyUp"
-          @click="consoleLog('键盘事件测试')"
-        >
-          按键测试（查看控制台）
-        </TButton>
-        <div style="font-size: 12px; color: #666; margin-top: 4px;">
-          提示：按 Enter 或 Space 键触发点击，查看控制台输出
-        </div>
-      </div>
-    </Variant>
-
     <Variant title="点击事件">
       <div style="display: flex; gap: 12px; flex-direction: column; align-items: flex-start;">
         <TButton @click="showAlert('Primary clicked!')" appearance="primary">
@@ -233,12 +180,6 @@ const handleKeyUp = (event: KeyboardEvent) => {
 | `disabled-focusable` | `boolean` | `false` | 禁用但可聚焦（用于保持 tab 顺序） |
 | `loading` | `boolean` | `false` | 是否显示加载状态 |
 | `loading-text` | `string` | `undefined` | 加载时显示的文本 |
-| `aria-label` | `string` | `undefined` | 无障碍标签 |
-| `aria-labelledby` | `string` | `undefined` | 无障碍标签引用 |
-| `aria-describedby` | `string` | `undefined` | 无障碍描述引用 |
-| `aria-expanded` | `boolean` | `undefined` | 无障碍展开状态 |
-| `aria-haspopup` | `boolean` | `undefined` | 无障碍弹出菜单标记 |
-| `aria-pressed` | `boolean` | `undefined` | 无障碍按下状态 |
 | `as` | `string` | `'button'` | 渲染的元素类型 |
 
 ### Slots
@@ -295,17 +236,6 @@ const handleKeyUp = (event: KeyboardEvent) => {
 <TButton loading loading-text="正在处理">
   提交
 </TButton>
-
-<!-- 无障碍性 -->
-<TButton aria-label="关闭对话框">
-  <template #icon>✕</template>
-</TButton>
-<TButton aria-describedby="save-desc">保存</TButton>
-
-<!-- 键盘事件 -->
-<TButton @keydown="handleKey" @keyup="handleKey">
-  按键测试
-</TButton>
 ```
 
 ## Loading 状态
@@ -314,23 +244,6 @@ const handleKeyUp = (event: KeyboardEvent) => {
 - 按钮自动变为禁用状态，无法点击
 - 显示旋转的加载指示器（除非是仅图标按钮）
 - 可以通过 `loading-text` 属性显示加载文本
-- 自动设置 `aria-busy="true"` 以支持屏幕阅读器
-
-## 无障碍性
-
-Button 组件完全支持 WAI-ARIA 规范：
-
-- **aria-label**: 为按钮提供无障碍标签，特别是对于仅图标按钮
-- **aria-labelledby**: 通过其他元素的 ID 引用作为标签
-- **aria-describedby**: 引用提供额外描述的元素
-- **aria-expanded**: 标记下拉菜单等展开状态
-- **aria-haspopup**: 标记按钮触发弹出菜单
-- **aria-pressed**: 标记切换按钮的按下状态
-
-## 键盘交互
-
-- **Enter / Space**: 触发按钮点击
-- **keydown / keyup 事件**: 可通过 `@keydown` 和 `@keyup` 监听键盘事件
 
 ## 向后兼容
 

@@ -37,15 +37,14 @@ export const renderButton = (state: ButtonState, slots: ButtonSlots) => {
         children.push(slots.icon());
     }
 
+    // 提取所有 root 属性
+    const { className, onClick, ...otherRootProps } = state.root;
+
     return h(rootElement, {
-        class: state.root.className,
+        class: className,
         disabled: state.disabled,
-        'aria-disabled': state.root['aria-disabled'],
-        'aria-busy': state.root['aria-busy'],
-        onClick: state.root.onClick,
-        onKeyDown: state.root.onKeyDown,
-        onKeyUp: state.root.onKeyUp,
-        ...state.root,
+        onClick,
+        ...otherRootProps,
     }, children);
 };
 

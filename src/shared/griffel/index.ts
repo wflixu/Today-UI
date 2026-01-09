@@ -10,7 +10,7 @@ export {
   makeStaticStyles,
   mergeClasses as griffelMergeClasses,
   RendererProvider,
-  useRenderer,
+  useRenderer_unstable,
   TextDirectionProvider,
 } from 'griffel-vue';
 

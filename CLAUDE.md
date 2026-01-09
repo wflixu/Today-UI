@@ -37,6 +37,8 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - **@floating-ui/vue** - 弹出层组件的核心定位引擎
 - **griffel-vue** - CSS-in-JS 样式解决方案（Fluent Design 实现）
 - **TypeScript 5.x** - 完整的类型安全支持
+- **pnpm** - 使用pnpm 作为包管理器
+- **Vitest** -单元测试框架
 
 ### 组件开发模式
 每个组件遵循一致的结构模式：
@@ -96,3 +98,25 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 3. 将 React hooks 转换为 Vue 3 Composition API
 4. 将 JSX 转换为 TSX 语法
 5. 保持组件行为和视觉效果的一致性
+
+## 开发规范
+
+### 无障碍性（Accessibility）
+
+**本组件库不处理无障碍性相关功能。**
+
+- **不实现 ARIA 属性**：不添加 aria-label、aria-describedby、aria-expanded 等 WAI-ARIA 属性
+- **不实现键盘导航**：除了浏览器默认行为外，不添加自定义键盘事件处理（如 onKeyDown、onKeyUp）
+- **不处理屏幕阅读器**：不考虑屏幕阅读器兼容性
+- **不实现 role 和 tabIndex**：不设置这些无障碍性相关属性
+
+#### 原因
+- 本项目为个人组件库，专注于实现 Fluent Design 的视觉效果和基础交互功能
+- 无障碍性实现复杂且需要大量测试和维护
+- 如需无障碍性支持，用户可以在应用层自行添加相关属性和逻辑
+
+#### 注意事项
+如果 @fluentui/react-components 源码中包含无障碍性相关 props 或逻辑，**不要转录**这些部分。只关注：
+- 视觉样式（颜色、尺寸、形状等）
+- 基础交互（点击、禁用、加载状态等）
+- 组件的核心功能
