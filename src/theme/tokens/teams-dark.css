@@ -1,0 +1,38 @@
+/**
+ * Fluent Design Teams Dark Theme Tokens
+ * 基于 @fluentui/tokens 的 teamsDarkTheme
+ */
+
+:root[data-theme="teams-dark"] {
+  /* Teams 暗色主题 */
+  --colorNeutralForeground1: #ffffff;
+  --colorNeutralForeground1Hover: #ffffff;
+  --colorNeutralForeground1Pressed: #ffffff;
+  --colorNeutralForeground1Selected: #ffffff;
+
+  --colorNeutralForeground2: #d6d6d6;
+  --colorNeutralForeground2Hover: #ffffff;
+  --colorNeutralForeground2Pressed: #ffffff;
+  --colorNeutralForeground2Selected: #ffffff;
+
+  --colorNeutralBackground1: #1b1b1b;
+  --colorNeutralBackground1Hover: #292929;
+  --colorNeutralBackground1Pressed: #323232;
+  --colorNeutralBackground1Selected: #262626;
+
+  /* Teams 品牌色 */
+  --colorBrandForeground1: #9f9fdf;
+  --colorBrandForeground2: #b4b6ef;
+  --colorBrandForeground2Hover: #9f9fdf;
+  --colorBrandForeground2Pressed: #8789ce;
+
+  --colorBrandBackground: #9f9fdf;
+  --colorBrandBackgroundHover: #b4b6ef;
+  --colorBrandBackgroundPressed: #8789ce;
+  --colorBrandBackgroundSelected: #9f9fdf;
+
+  --colorBrandStroke1: #9f9fdf;
+  --colorBrandStroke2: #9f9fdf;
+  --colorBrandStroke2Hover: #9f9fdf;
+  --colorBrandStroke2Pressed: #9f9fdf;
+}

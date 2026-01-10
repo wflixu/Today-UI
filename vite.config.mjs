@@ -17,6 +17,14 @@ export default defineConfig({
     },
   },
   histoire: {
+    theme: {
+      title:"TodayUI",
+      logo: {
+        square: './public/icon/logo.png',
+        light: './public/icon/logo.png',
+        dark: './public/icon/logo.png'
+      },
+    },
     setupFile: 'src/histoire.setup.ts',
     storyMatch: [
       '**/*.story.vue',

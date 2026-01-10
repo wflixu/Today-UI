@@ -1,0 +1,16 @@
+/**
+ * Fluent Design Theme Tokens
+ * 导入所有主题变量
+ */
+
+/* 默认亮色主题 */
+@import "./light.css";
+
+/* 暗色主题 */
+@import "./dark.css";
+
+/* Teams 亮色主题 */
+@import "./teams-light.css";
+
+/* Teams 暗色主题 */
+@import "./teams-dark.css";

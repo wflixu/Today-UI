@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(rm:*)",
+      "Bash(node:*)",
+      "Bash(pnpm bt:*)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm build:lib)",
+      "Bash(pnpm build:types:*)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm test --run)",
+      "Bash(pnpm lint:check:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(printf:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm b)",
+      "Bash(pnpm build:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
