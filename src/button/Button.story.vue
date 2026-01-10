@@ -21,6 +21,12 @@ const state = reactive({
   size: 'medium' as ButtonProps['size']
 })
 
+const initState = () => {
+  return {
+    ...state
+  }
+}
+
 const appearanceOptions = {
   'secondary': 'secondary',
   'primary': 'primary',
@@ -57,8 +63,8 @@ const handleLoad = async () => {
 </script>
 
 <template>
-  <Story title="Basic/Button">
-    <template #controls>
+  <Story title="Basic/Button" :initState="initState">
+    <template #controls="{ state }">
       <HstSelect v-model="state.appearance" title="appearance" :options="appearanceOptions" />
       <HstSelect v-model="state.shape" title="shape" :options="shapeOptions" />
       <HstSelect v-model="state.size" title="size" :options="sizeOptions" />
@@ -67,10 +73,13 @@ const handleLoad = async () => {
       <HstCheckbox v-model="state.disabledFocusable" title="Disabled Focusable" />
     </template>
 
-    <Variant title="基础按钮">
-      <TButton :appearance="state.appearance" :shape="state.shape" :size="state.size" :disabled="state.disabled">
-        基础按钮
-      </TButton>
+    <Variant title="基础按钮" :initState="initState">
+      <template #default="{ state }">
+        <TButton :appearance="state.appearance" :shape="state.shape" :size="state.size"
+          :icon-position="state.iconPosition" :disabled="state.disabled" :disabled-focusable="state.disabledFocusable">
+          基础按钮
+        </TButton>
+      </template>
     </Variant>
 
     <Variant title="外观变体">

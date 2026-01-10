@@ -273,6 +273,13 @@
   }
 }
 
+/* ========== Spinner 动画 ========== */
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* High contrast mode support */
 @media (forced-colors: active) {
   .t-button {

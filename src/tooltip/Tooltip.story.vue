@@ -10,8 +10,8 @@ const args = reactive({
 
 <template>
   <Story title="Basic/Tooltip">
-    <template #controls>
-      <HstText v-model="state.label" :title="label" />
+    <template #controls="{ state }">
+      <HstText v-model="state.label" title="label" />
     </template>
     <Variant title="默认">
       <TTooltip v-bind="args">
@@ -29,6 +29,4 @@ const args = reactive({
 }
 </style>
 
-<docs lang="md">
-    # My documentation
-</docs>
+<docs lang="md"># My documentation</docs>
