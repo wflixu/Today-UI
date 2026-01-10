@@ -13,12 +13,10 @@ export const useSpinnerStyles = makeStyles({
   },
 
   svg: {
-    animation: 'spin 1s linear infinite',
-    '@keyframes spin': {
-      '100%': {
-        transform: 'rotate(360deg)',
-      },
-    },
+    animationName: 'spin',
+    animationDuration: '1s',
+    animationTimingFunction: 'linear',
+    animationIterationCount: 'infinite',
   },
 
   circle: {
