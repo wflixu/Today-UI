@@ -46,8 +46,9 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - `.tsx` 文件 - 主要组件逻辑，使用 TSX 语法
 - `props.ts` - 组件 props 定义
 - `type.ts` - TypeScript 类型和接口定义
-- `.story.vue` - Histoire 文档和示例
+- `.story.vue` - Histoire示例 和文档
 - `style/` 文件夹 - 组件特定样式（需要时）
+- `spec.md` - 组件设计规格和实现细节
 
 ### 主要组件类型
 - **Tooltip** - 工具提示功能

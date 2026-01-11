@@ -28,7 +28,8 @@
       "Bash(pnpm info:*)",
       "Bash(pnpm dlx tsdown:*)",
       "Bash(pnpm add:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": [],
     "ask": []

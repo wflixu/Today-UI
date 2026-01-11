@@ -1,5 +1,7 @@
 import { defineConfig } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
   plugins: [HstVue()],
@@ -8,16 +10,20 @@ export default defineConfig({
   theme: {
     title: 'TodayUI',
     logo: {
-      square: './public/icon/logo.png',
-      light: './public/icon/logo.png',
-      dark: './public/icon/logo.png',
+      square: './src/assets/icons/logo.png',
+      light: './src/assets/icons/logo.png',
+      dark: './src/assets/icons/logo.png',
     },
   },
   vite: {
     // Histoire 专用的 Vite 配置
+    plugins: [
+      vue(),
+      vueJsx(),
+    ],
     resolve: {
       alias: {
-      '@': '/src',
+        '@': '/src',
       },
     },
     css: {
