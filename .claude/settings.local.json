@@ -21,7 +21,9 @@
       "Bash(curl:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git log:*)",
+      "Bash(pnpm run bt:*)"
     ],
     "deny": [],
     "ask": []

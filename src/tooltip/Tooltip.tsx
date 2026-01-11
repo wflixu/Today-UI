@@ -1,160 +1,100 @@
-// @ts-nocheck
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref, SlotsType, computed, onUnmounted, watch } from 'vue';
 import {
   useFloating,
   offset,
   flip,
   shift,
   arrow,
-} from "@floating-ui/vue";
-import { renderTNodeJSX, renderContent } from "../shared/render-tnode";
-import Container from "./container";
-import {tooltipProps} from "./props";
-import { on } from "../shared/dom";
-import "./style/tooltip.css";
+  type Placement,
+} from '@floating-ui/vue';
+import { renderTooltip } from './renderTooltip';
+import { useTooltipGriffelStyles, applyTooltipStyles } from './useTooltipStyles';
+import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
+import { useTooltip } from './useTooltip';
+import './tooltip.css';
 
-export default defineComponent({
-  name: "TTooltip",
-  inheritAttrs: false,
+export const Tooltip = defineComponent({
+  name: 'Tooltip',
   props: tooltipProps,
-  setup(props, { slots }) {
-    const open = ref(false);
-    const reference = ref<HTMLElement>(null);
-    const floating = ref<HTMLElement>(null);
-    const arrowEl = ref<HTMLElement>(null);
+  slots: Object as SlotsType<TooltipSlots>,
 
-    const { x, y, middlewareData, update } = useFloating(reference, floating, {
-      placement: props.placement,
-      middleware: [
-        flip(),
-        shift(),
-        offset(props.offset),
-        arrow({
-          element: arrowEl,
-        }),
-      ],
-    });
+  setup(props: TooltipProps, { expose, slots }) {
+    const referenceRef = ref<HTMLElement | null>(null);
+    const floatingRef = ref<HTMLElement | null>(null);
+    const arrowRef = ref<HTMLElement | null>(null);
 
-    const tipStyle = computed(() => {
+    // 在 setup 顶层获取 Griffel 样式（hooks 必须在顶层调用）
+    const griffelStyles = useTooltipGriffelStyles();
 
-      return {
-        top: `${y.value}px`,
-        left: `${x.value}px`,
-        display: open.value ? "block" : "none",
-      };
-    });
+    // 创建持久状态（只执行一次，保持内部状态和定时器引用）
+    const state = useTooltip(props);
 
-    const arrowStyle = computed(() => {
-      const { x, y } = middlewareData.value.arrow ?? { x: 0, y: 0 };
-
-      const staticSide = {
-        top: "bottom",
-        right: "left",
-        bottom: "top",
-        left: "right",
-      }[props.placement.split("-")[0]] as string;
-
-      return {
-        left: x ? `${x}px` : "",
-        top: y ? `${y}px` : "",
-        right: "",
-        bottom: "",
-        [staticSide]: "-4px",
-      };
-    });
-
-    function handleOpen(_context: { trigger: string }) {
-      open.value = true;
-    }
-    function handleClose(_context: { trigger: string }) {
-      open.value = false;
-    }
-
-    onMounted(() => {
-      on(reference.value, "mouseenter", () =>
-        handleOpen({ trigger: "trigger-element-hover" })
-      );
-      on(reference.value, "mouseleave", () =>
-        handleClose({ trigger: "trigger-element-hover" })
-      );
-    });
-
-    const forwardRef = (ref: HTMLElement) => {
-      reference.value = ref;
-    };
-
-    const setArrowRef = (ref: HTMLElement) => {
-      if (ref === arrowEl.value) return;
-
-      arrowEl.value = ref;
-    };
-    const setReferenceRef = (ref: HTMLElement) => {
-      if (ref === reference.value) {
-        return;
-      } else {
-        reference.value = ref;
-        update();
+    // Floating UI 定位
+    const { x, y, middlewareData, update } = useFloating(
+      referenceRef,
+      floatingRef,
+      {
+        placement: state.placement as Placement,
+        middleware: [
+          offset(state.offset),
+          flip(),
+          shift(),
+          arrow({ element: arrowRef }),
+        ],
       }
-    };
-
-    const setFloatingRef = (ref: HTMLElement) => {
-      if (ref === floating.value) {
-        return;
-      }
-      floating.value = ref;
-      update();
-    };
-
-    return {
-      tipStyle,
-      arrowStyle,
-      reference,
-      floating,
-      open,
-      arrowEl,
-      setArrowRef,
-      setReferenceRef,
-      setFloatingRef,
-      forwardRef,
-    };
-  },
-  render() {
-    const {
-      tipStyle,
-      arrowStyle,
-      forwardRef,
-      open,
-      setArrowRef,
-      setFloatingRef,
-    } = this;
-    const content = renderTNodeJSX(this, "label");
-    return (
-      <Container
-        ref="containerRef"
-        forwardRef={(ref) => forwardRef(ref)}
-        onContentMounted={(el) => {
-          
-        }}
-        visible={open}
-      >
-        {{
-          content: () => (
-            <div
-              ref={setFloatingRef}
-              class="t-tooltip-content"
-              style={tipStyle}
-            >
-              {content}
-              <div
-                class="t-tooltip-arrow"
-                ref={setArrowRef}
-                style={arrowStyle}
-              />
-            </div>
-          ),
-          default: () => renderContent(this, "default", "triggerElement"),
-        }}
-      </Container>
     );
-  },
+
+    // 计算箭头样式
+    const arrowStyle = computed(() => {
+      const { x: arrowX, y: arrowY } = middlewareData.value.arrow ?? { x: 0, y: 0 };
+      return {
+        left: arrowX ? `${arrowX}px` : '',
+        top: arrowY ? `${arrowY}px` : '',
+      };
+    });
+
+    // 计算定位样式
+    const positioningStyle = computed(() => ({
+      position: 'fixed',
+      left: `${x.value}px`,
+      top: `${y.value}px`,
+    }));
+
+    // 监听可见性变化，应用样式（applyTooltipStyles 不包含 hooks，可以在 watch 中调用）
+    watch(
+      () => state._isVisible.value,
+      () => {
+        state.isVisible = state._isVisible.value;
+        applyTooltipStyles(state, griffelStyles);
+      },
+      { immediate: true }
+    );
+
+    // 清理定时器
+    onUnmounted(() => {
+      state.clearTimers();
+    });
+
+    // 暴露引用和方法
+    expose({
+      referenceRef,
+      floatingRef,
+      update,
+    });
+
+    // 返回渲染函数
+    return () => renderTooltip(
+      state,
+      slots,
+      {
+        referenceRef,
+        floatingRef,
+        arrowRef,
+        positioningStyle: positioningStyle.value,
+        arrowStyle: arrowStyle.value,
+      }
+    );
+  }
 });
+
+export default Tooltip;
