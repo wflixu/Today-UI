@@ -1,5 +1,8 @@
 import { type App } from "vue";
 
+// 导入统一样式
+import './style/index.css';
+
 import * as components from "./components";
 import { version } from "../package.json";
 

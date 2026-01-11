@@ -23,7 +23,12 @@
       "Bash(git commit:*)",
       "Bash(grep:*)",
       "Bash(git log:*)",
-      "Bash(pnpm run bt:*)"
+      "Bash(pnpm run bt:*)",
+      "Bash(wc:*)",
+      "Bash(pnpm info:*)",
+      "Bash(pnpm dlx tsdown:*)",
+      "Bash(pnpm add:*)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []
