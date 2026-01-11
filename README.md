@@ -1,161 +1,158 @@
 # Today-UI
 
-> 基于 Vue 3 的 Fluent Design 组件库
+> A Vue 3 component library implementing Microsoft's Fluent Design System
 
+[![npm version](https://badge.fury.io/js/today-ui.svg)](https://www.npmjs.com/package/today-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Vue 3](https://img.shields.io/badge/Vue-3.5+-brightgreen.svg)](https://vuejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![Vue 3](https://img.shields.io/badge/Vue-3.5.26-b42b68.svg)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
 
-Today-UI 是一个遵循微软 [Fluent Design System](https://www.fluentui.com/) 设计规范的 Vue 3 组件库，旨在提供与 `@fluentui/react-components` API 兼容的 Vue 3 实现。
+Today-UI is a Vue 3 component library that brings Microsoft's [Fluent Design System](https://www.fluentui.com/) to the Vue ecosystem. It transcribes `@fluentui/react-components` to Vue 3 while maintaining API compatibility and visual fidelity.
 
-## ✨ 特性
+## ✨ Features
 
-- **🎨 Fluent Design 设计** - 完整实现微软 Fluent Design 规范，包含 Web 和 Teams 主题
-- **🔧 TypeScript 支持** - 完整的 TypeScript 类型定义，提供优秀的开发体验
-- **🎯 API 兼容性** - 与 `@fluentui/react-components` 保持高度 API 兼容
-- **⚡ 高性能样式** - 基于 [griffel-vue](https://github.com/wflixu/griffel-vue) 的 CSS-in-JS 方案
-- **🌈 主题系统** - 支持 4 种预设主题（Web/Teams × Light/Dark），基于 CSS 变量
-- **📦 丰富的组件** - Button、Dialog、Dropdown、Menu、Tooltip、Tabs、Icon 等
-- **🛠️ 开发工具** - 集成 Histoire 组件文档和交互式开发环境
-- **🧩 110+ 图标** - 内置完整的 Fluent Design 图标库
+- **🎨 Fluent Design** - Complete implementation of Microsoft's Fluent Design System specifications
+- **💎 TypeScript** - Full type safety with TSX support for better development experience
+- **🎯 API Compatible** - High API compatibility with `@fluentui/react-components`
+- **⚡ Atomic CSS** - [griffel-vue](https://github.com/wflixu/griffel-vue) for highly optimized, tree-shakeable styles
+- **🌈 Theming** - 4 built-in themes (Web/Teams × Light/Dark) with CSS variables
+- **📦 Tree-shakeable** - Pure ESM output for optimal bundle size
+- **🛠️ Developer Tools** - Integrated [Histoire](https://histoire.dev/) for component documentation
+- **🧩 110+ Icons** - Complete Fluent Design icon library
 
-## 📦 安装
+## 📦 Installation
 
 ```bash
-# 使用 pnpm（推荐）
-pnpm install today-ui
+# pnpm (recommended)
+pnpm add today-ui
 
-# 使用 npm
+# npm
 npm install today-ui
 
-# 使用 yarn
+# yarn
 yarn add today-ui
 ```
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 完整示例
+### Basic Usage
 
 ```vue
-<script setup lang="ts">
-import { TButton, TIcon } from 'today-ui';
+<script setup>
+import { Button } from 'today-ui'
 </script>
 
 <template>
-  <TButton appearance="primary">
-    <template #icon>
-      <TIcon name="save" />
-    </template>
-    保存
-  </TButton>
+  <Button appearance="primary">
+    Click me
+  </Button>
 </template>
 ```
 
-### 引入样式
+### Import Styles
 
-在应用入口文件中引入样式文件：
+Import the styles in your application entry file:
 
 ```typescript
 // main.ts
 import 'today-ui/dist/style.css';
 ```
 
-### 全局注册（可选）
+### Global Registration (Optional)
 
 ```typescript
 // main.ts
 import { createApp } from 'vue';
 import TodayUI from 'today-ui';
 import App from './App.vue';
-import 'today-ui/dist/style.css';
 
 const app = createApp(App);
 app.use(TodayUI);
 app.mount('#app');
 ```
 
-## 🎨 主题系统
+## 🎨 Theming System
 
-Today-UI 提供完整的 Fluent Design 主题系统，支持以下预设主题：
+Today-UI provides a complete Fluent Design theme system with the following presets:
 
-- **Web Light** - 标准 Web 亮色主题（默认）
-- **Web Dark** - 标准 Web 暗色主题
-- **Teams Light** - Microsoft Teams 亮色主题
-- **Teams Dark** - Microsoft Teams 暗色主题
+- **Web Light** - Standard Web light theme (default)
+- **Web Dark** - Standard Web dark theme
+- **Teams Light** - Microsoft Teams light theme
+- **Teams Dark** - Microsoft Teams dark theme
 
-### 切换主题
+### Switch Themes
 
 ```typescript
 import { setTheme } from 'today-ui';
 
-// 切换到暗色主题
+// Switch to dark theme
 setTheme('web-dark');
 
-// 切换到 Teams 亮色主题
+// Switch to Teams light theme
 setTheme('teams-light');
 ```
 
-### 自定义主题令牌
+### Custom Design Tokens
 
 ```css
 :root {
   --colorBrandForeground1: #0f6cbd;
   --colorNeutralBackground1: #ffffff;
   --borderRadiusMedium: 4px;
-  /* 更多设计令牌... */
+  /* More design tokens... */
 }
 ```
 
-## 📚 组件列表
+## 📚 Component List
 
-### 基础组件
+### Basic Components
 
-| 组件 | 说明 | 状态 |
-|------|------|------|
-| **[Button](src/button/doc.md)** | 按钮，支持多种外观、尺寸和形状 | ✅ |
-| **[Icon](src/icon/doc.md)** | SVG 图标组件，支持 110+ Fluent 图标 | ✅ |
+| Component | Description | Status |
+|-----------|-------------|--------|
+| **[Button](src/button/SPEC.md)** | Button with multiple appearances, sizes, and shapes | ✅ |
+| **[Icon](src/icon/)** | SVG icon component with 110+ Fluent icons | ✅ |
 
-### 表单组件
+### Form Components
 
-| 组件 | 说明 | 状态 |
-|------|------|------|
-| **[Dropdown](src/dropdown/)** | 下拉菜单及触发器 | ✅ |
-| **[Menu](src/menu/)** | 上下文菜单和导航菜单 | ✅ |
+| Component | Description | Status |
+|-----------|-------------|--------|
+| **[Dropdown](src/dropdown/)** | Dropdown menu and trigger | ✅ |
+| **[Menu](src/menu/)** | Context menu and navigation menu | ✅ |
 
-### 反馈组件
+### Feedback Components
 
-| 组件 | 说明 | 状态 |
-|------|------|------|
-| **[Dialog](src/dialog/)** | 模态对话框和确认对话框 | ✅ |
-| **[Toast](src/toast/)** | 通知消息 | ✅ |
-| **[Tooltip](src/tooltip/)** | 工具提示 | ✅ |
+| Component | Description | Status |
+|-----------|-------------|--------|
+| **[Dialog](src/dialog/)** | Modal dialog and confirmation dialog | ✅ |
+| **[Toast](src/toast/)** | Notification messages | ✅ |
+| **[Tooltip](src/tooltip/)** | Tooltip for additional information | ✅ |
 
-### 数据展示
+### Data Display
 
-| 组件 | 说明 | 状态 |
-|------|------|------|
-| **[Tabs](src/tabs/)** | 标签页组件 | ✅ |
-| **[FileTree](src/file-tree/)** | 支持懒加载的文件树 | ✅ |
+| Component | Description | Status |
+|-----------|-------------|--------|
+| **[Tabs](src/tabs/)** | Tab component for organizing content | ✅ |
+| **[FileTree](src/file-tree/)** | File tree with lazy loading support | ✅ |
 
-更多组件开发中...
+More components coming soon...
 
-## 🧩 图标系统
+## 🧩 Icon System
 
-Today-UI 内置 110+ Fluent Design 图标，支持两种使用方式：
+Today-UI includes 110+ Fluent Design icons with two usage methods:
 
-### 方式一：动态图标（推荐）
+### Method 1: Dynamic Icon (Recommended)
 
 ```vue
 <template>
-  <TIcon name="chevron-right" :size="24" />
+  <Icon name="chevron-right" :size="24" />
 </template>
 ```
 
-### 方式二：直接导入
+### Method 2: Direct Import
 
 ```vue
-<script setup lang="ts">
-import { ChevronRightIcon } from 'today-ui';
+<script setup>
+import { ChevronRightIcon } from 'today-ui/icons';
 </script>
 
 <template>
@@ -163,117 +160,130 @@ import { ChevronRightIcon } from 'today-ui';
 </template>
 ```
 
-可用图标包括：基础操作、导航箭头、搜索缩放、状态指示、文件文件夹、编辑格式、媒体播放、用户账户等类别。
+Available icon categories: Basic actions, Navigation arrows, Search & Zoom, Status indicators, Files & Folders, Editing & Formatting, Media playback, User accounts, and more.
 
-查看 [完整图标列表](src/icon/doc.md)
+## 🔧 Development
 
-## 🔧 开发
-
-### 环境要求
+### Requirements
 
 - **Node.js** >= 20
 - **pnpm** >= 9
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-### 开发命令
+### Development Commands
 
 ```bash
-# 启动 Histoire 开发服务器（组件文档）
+# Start Histoire dev server (component documentation)
 pnpm dev
 
-# 构建组件库
+# Build the library
 pnpm build
 
-# 仅生成 TypeScript 类型
-pnpm build:types
+# Build in watch mode
+pnpm build:watch
 
-# 运行单元测试
+# Preview built documentation
+pnpm doc:preview
+
+# Run unit tests
 pnpm test
 
-# 类型检查
+# Type checking
 pnpm typecheck
 
-# 代码检查和修复
+# Lint and fix code
 pnpm lint
 ```
 
-### 项目结构
+### Project Structure
 
 ```
 today-ui/
 ├── src/
-│   ├── button/           # Button 组件
-│   ├── dialog/           # Dialog 组件
-│   ├── dropdown/         # Dropdown 组件
-│   ├── icon/             # Icon 组件（110+ 图标）
-│   ├── menu/             # Menu 组件
-│   ├── tabs/             # Tabs 组件
-│   ├── toast/            # Toast 组件
-│   ├── tooltip/          # Tooltip 组件
-│   ├── file-tree/        # FileTree 组件
-│   ├── shared/           # 共享工具和配置
-│   │   ├── griffel/      # Griffel CSS-in-JS 配置
-│   │   └── theme/        # 主题系统
-│   ├── style/            # 全局样式和设计令牌
-│   └── components.ts     # 组件导出入口
-├── scripts/              # 构建和工具脚本
-├── specs/                # 组件规格文档
-└── dist/                 # 构建输出
+│   ├── button/              # Button component
+│   ├── dialog/              # Dialog component
+│   ├── dropdown/            # Dropdown component
+│   ├── icon/                # Icon component (110+ icons)
+│   ├── menu/                # Menu component
+│   ├── tabs/                # Tabs component
+│   ├── toast/               # Toast component
+│   ├── tooltip/             # Tooltip component
+│   ├── file-tree/           # FileTree component
+│   ├── shared/              # Shared utilities and configs
+│   │   ├── griffel/        # Griffel CSS-in-JS configuration
+│   │   └── theme/          # Theme system
+│   ├── style/               # Global styles and design tokens
+│   └── index.ts             # Component exports entry
+├── specs/                   # Component specification documents
+├── histoire.config.ts       # Histoire configuration
+├── tsdown.config.ts        # tsdown build configuration
+└── dist/                    # Build output (ESM)
 ```
 
-## 📖 文档
+## 📖 Documentation
 
-- **[组件文档](src/button/doc.md)** - 各组件的使用文档和 API 说明
-- **[设计规格](src/button/spec.md)** - 组件的设计决策和实现细节
-- **[Histoire 文档](http://localhost:6006)** - 启动 `pnpm dev` 后访问交互式文档
+- **[Histoire Documentation](http://localhost:6006)** - Run `pnpm dev` to access interactive documentation
+- **[Component Specs](src/button/SPEC.md)** - Design decisions and implementation details
+- **[CLAUDE.md](CLAUDE.md)** - Development guidelines and project conventions
 
-## 🎯 技术栈
+## 🎯 Tech Stack
 
 - **Vue 3.5+** - Composition API + TSX
-- **TypeScript 5.x** - 完整类型支持
-- **@floating-ui/vue** - 浮层定位引擎
-- **griffel-vue** - CSS-in-JS 样式方案
-- **Vite** - 构建工具
-- **Histoire** - 组件文档工具
-- **Vitest** - 单元测试框架
+- **TypeScript 5.9.2** - Full type support
+- **tsdown** - Library build tool (ESM output)
+- **@floating-ui/vue** - Floating UI positioning engine
+- **griffel-vue** - CSS-in-JS styling solution
+- **Histoire** - Component documentation tool
+- **Vitest** - Unit testing framework
 
-## 🔗 相关资源
+## 🔗 Related Resources
 
 - [Fluent Design System](https://www.fluentui.com/)
 - [@fluentui/react-components](https://react.fluentui.dev/)
 - [griffel-vue](https://github.com/wflixu/griffel-vue)
-- [Vue 3 文档](https://vuejs.org/)
+- [Vue 3 Documentation](https://vuejs.org/)
 - [Floating UI](https://floating-ui.com/)
+- [Histoire](https://histoire.dev/)
 
-## 📝 开发规范
+## 📝 Development Conventions
 
-本项目遵循以下开发规范：
+This project follows these conventions:
 
-- **不处理无障碍性** - 专注于视觉效果和基础交互，不实现 ARIA 属性和键盘导航
-- **使用 TSX 语法** - 组件使用 TSX 编写，提供更好的类型推断
-- **CSS-in-JS + CSS 变量** - Griffel 负责原子化样式，CSS 变量作为设计令牌
-- **双文档模式** - 每个组件提供 `doc.md`（使用文档）和 `spec.md`（设计文档）
+- **No Accessibility** - Focused on visual effects and basic interactions, does not implement ARIA attributes or keyboard navigation
+- **TSX Syntax** - Components written in TSX for better type inference
+- **CSS-in-JS + CSS Variables** - Griffel for atomic styles, CSS variables as design tokens
+- **Dual Documentation** - Each component provides inline docs in Histoire stories and `spec.md` for design specifications
 
-详见 [CLAUDE.md](CLAUDE.md)
+See [CLAUDE.md](CLAUDE.md) for details.
 
-## 🤝 贡献
+## 🏗️ Build System
 
-欢迎贡献！请随时提交 Issue 或 Pull Request。
+Today-UI uses [tsdown](https://tsdown.dev/) for building:
 
-## 📄 许可证
+- **Output Format**: Pure ESM (`*.mjs` files)
+- **Type Definitions**: Auto-generated `.d.mts` files
+- **CSS Processing**: Automatic CSS extraction and bundling
+- **Code Splitting**: Preserved module structure for tree-shaking
+- **Source Maps**: Included for debugging
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit Issues or Pull Requests.
+
+## 📄 License
 
 [MIT](LICENSE)
 
-## 📮 联系方式
+## 📮 Contact
 
-- 作者: [wflixu](https://github.com/wflixu)
+- Author: [wflixu](https://github.com/wflixu)
 - GitHub: [https://github.com/wflixu/Today-UI](https://github.com/wflixu/Today-UI)
 
 ---
 
-**Made with ❤️ by wflixu**
+**Made with ❤️ by [wflixu](https://github.com/wflixu)**

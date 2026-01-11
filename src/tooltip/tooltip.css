@@ -1,0 +1,31 @@
+/**
+ * Tooltip Component CSS
+ * 箭头定位和触发元素包装器样式
+ */
+
+/* 触发元素包装器 */
+.t-tooltip-trigger {
+  display: inline-block;
+}
+
+/* Tooltip 内容容器 */
+.t-tooltip__content {
+  /* 内容样式由 Griffel 提供 */
+}
+
+/* 箭头定位 - 根据 placement 调整位置 */
+.t-tooltip__arrow[data-placement^="top"] {
+  bottom: -4px;
+}
+
+.t-tooltip__arrow[data-placement^="bottom"] {
+  top: -4px;
+}
+
+.t-tooltip__arrow[data-placement^="left"] {
+  right: -4px;
+}
+
+.t-tooltip__arrow[data-placement^="right"] {
+  left: -4px;
+}

@@ -16,17 +16,16 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 
 ### 开发与文档
 - `pnpm dev` - 启动 Histoire 开发服务器，用于组件开发和文档编写
-- `pnpm story:preview` - 预览构建好的 Histoire 文档
+- `pnpm doc:preview` - 预览构建好的 Histoire 文档
 - `pnpm doc` - 构建 Histoire 文档
 
 ### 构建与类型生成
-- `pnpm build` - 完整构建：Vite 构建 + TypeScript 类型生成 + API 提取
-- `pnpm b` - 仅执行 Vite 构建
-- `pnpm bt` - 为构建生成 TypeScript 类型
-- `pnpm build:type` - 使用 vue-tsc 生成 TypeScript 类型
+- `pnpm build` - 使用 tsdown 构建库（ESM 格式 + TypeScript 类型定义）
+- `pnpm build:watch` - 监听模式构建
 
 ### 测试与代码质量
-- `pnpm test:unit` - 在 jsdom 环境中运行 Vitest 单元测试
+- `pnpm test` - 在 jsdom 环境中运行 Vitest 单元测试
+- `pnpm test:watch` - 监听模式运行测试
 - `pnpm typecheck` - 对测试进行类型检查
 - `pnpm lint` - 运行 ESLint 并自动修复
 
@@ -37,16 +36,19 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - **@floating-ui/vue** - 弹出层组件的核心定位引擎
 - **griffel-vue** - CSS-in-JS 样式解决方案（Fluent Design 实现）
 - **TypeScript 5.x** - 完整的类型安全支持
+- **tsdown** - 库构建工具（ESM 格式输出）
 - **pnpm** - 使用pnpm 作为包管理器
-- **Vitest** -单元测试框架
+- **Histoire** - 组件文档和测试
+- **Vitest** - 单元测试框架
 
 ### 组件开发模式
 每个组件遵循一致的结构模式：
 - `.tsx` 文件 - 主要组件逻辑，使用 TSX 语法
 - `props.ts` - 组件 props 定义
 - `type.ts` - TypeScript 类型和接口定义
-- `.story.vue` - Histoire 文档和示例
+- `.story.vue` - Histoire示例 和文档
 - `style/` 文件夹 - 组件特定样式（需要时）
+- `spec.md` - 组件设计规格和实现细节
 
 ### 主要组件类型
 - **Tooltip** - 工具提示功能
@@ -64,10 +66,12 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - `components.ts` - 组件注册和导出
 
 ### 构建配置
-- **库模式**: Vite 构建 UMD、ES 模块和 TypeScript 定义
-- **外部依赖**: Vue 和 radash 在构建时外部化
-- **CSS 处理**: PostCSS 支持嵌套和导入
-- **类型生成**: API Extractor 生成干净的 TypeScript 定义
+- **构建工具**: tsdown（纯 ESM 输出）
+- **输出格式**: 仅 ESM（.mjs 文件）
+- **外部依赖**: Vue、@floating-ui/vue、griffel-vue、radash
+- **CSS 处理**: tsdown 自动处理 CSS 导入和提取
+- **类型生成**: tsdown 自动生成 .d.mts 类型定义文件
+- **按需导入**: 保留模块结构，支持按需导入组件
 
 ### 文档系统
 - **Histoire** 用于组件文档和交互示例
