@@ -3,6 +3,7 @@ export { default as Button } from "./button";
 export { default as Dropdown } from "./dropdown/";
 export { default as FileTree } from "./file-tree/";
 export { default as TIcon } from "./icon";
+export { default as Input } from "./input";
 export { default as Menu } from "./menu/";
 export { default as Tooltip } from "./tooltip/";
 export { default as Tabs, Tablist, TabPanel } from "./tabs";
