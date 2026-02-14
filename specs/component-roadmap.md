@@ -232,9 +232,10 @@ Today-UI 旨在将微软的 Fluent Design System 完整转录到 Vue 3 生态系
 - `.tsx` - 主要组件逻辑
 - `props.ts` - Props 定义
 - `type.ts` - TypeScript 类型定义
-- `.story.vue` - Histoire 文档示例
+- `docs/` - 组件文档和规格
+  - `<ComponentName>.story.vue` - Histoire 文档示例
+  - `spec.md` - 组件设计规格（可选）
 - `tests/<ComponentName>.test.ts` - **单元测试（必需）**
-- `spec.md` - 组件设计规格（可选）
 - `style/` - 组件特定样式（需要时）
 
 ### 单元测试规范

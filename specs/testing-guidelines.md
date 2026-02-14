@@ -18,9 +18,11 @@ Today-UI 要求**每个组件都必须编写单元测试**，确保组件功能�
 src/<component-name>/
   ├── tests/
   │   └── <ComponentName>.test.ts  ✅ 单元测试文件
+  ├── docs/
+  │   ├── <ComponentName>.story.vue  ✅ Histoire 文档示例
+  │   └── spec.md  ✅ 组件设计规格（可选）
   ├── <ComponentName>.tsx
   ├── <ComponentName>.types.ts
-  ├── <ComponentName>.story.vue
   └── ...
 ```
 
