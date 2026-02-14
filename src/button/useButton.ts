@@ -48,9 +48,14 @@ export const useButton = (
     // 创建根元素配置
     const root = {
         as,
-        disabled: disabled || loading, // loading 时禁用
+        disabled: (disabled || loading) && !disabledFocusable, // disabledFocusable 时不设置 disabled
         onClick: handleClick,
     };
+
+    // 当 disabledFocusable 时，设置 tabindex="-1"
+    if (disabledFocusable && (disabled || loading)) {
+        root.tabindex = '-1' as any;
+    }
 
     // 返回状态对象
     return {

@@ -1,18 +1,27 @@
 import { fileURLToPath } from "node:url";
-import { mergeConfig, defineConfig } from "vite";
-import { configDefaults } from "vitest/config";
-import viteConfig from "./vite.config.mjs";
+import { defineConfig } from "vitest/config";
+import { resolve } from "node:path";
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      environment: "jsdom",
-      exclude: [...configDefaults.exclude, "e2e/*"],
-      root: fileURLToPath(new URL("./", import.meta.url)),
-      transformMode: {
-        web: [/\.[jt]sx$/],
-      },
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueJsx(),
+  ],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
     },
-  })
-);
+  },
+  test: {
+    environment: "jsdom",
+    exclude: ["node_modules", "dist", "e2e/*", "react-components"],
+    root: __dirname,
+    transformMode: {
+      web: [/\.[jt]sx$/],
+    },
+  },
+});

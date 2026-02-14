@@ -10,9 +10,9 @@ Today-UI 旨在将微软的 Fluent Design System 完整转录到 Vue 3 生态系
 
 ### 当前进度
 
-- ✅ 已实现: **2/53** (4%)
+- ✅ 已实现: **3/53** (6%)
 - 🚧 进行中: 0
-- 📋 待实现: 51
+- 📋 待实现: 50
 
 ---
 
@@ -20,8 +20,9 @@ Today-UI 旨在将微软的 Fluent Design System 完整转录到 Vue 3 生态系
 
 | 组件名 | 状态 | 文件位置 | 备注 |
 |--------|------|----------|------|
-| Button | ✅ 完成 | [src/button/](src/button/) | 基础按钮组件 |
+| Button | ✅ 完成 | [src/button/](src/button/) | 基础按钮组件（含单元测试）|
 | Icon (TIcon) | ✅ 完成 | [src/icon/](src/icon/) | SVG 图标系统 |
+| Input | ✅ 完成 | [src/input/](src/input/) | 文本输入组件 |
 
 ### 部分实现或待完善的组件
 
@@ -232,8 +233,59 @@ Today-UI 旨在将微软的 Fluent Design System 完整转录到 Vue 3 生态系
 - `props.ts` - Props 定义
 - `type.ts` - TypeScript 类型定义
 - `.story.vue` - Histoire 文档示例
+- `tests/<ComponentName>.test.ts` - **单元测试（必需）**
 - `spec.md` - 组件设计规格（可选）
 - `style/` - 组件特定样式（需要时）
+
+### 单元测试规范
+
+**每个组件都必须编写单元测试**，确保组件功能正确、稳定可靠。
+
+#### 测试文件规范
+
+- **文件位置**：`src/<component-name>/tests/<ComponentName>.test.ts`
+- **文件命名**：使用 `.test.ts` 后缀（不是 `.spec.ts`）
+- **参考示例**：[src/button/tests/Button.test.ts](../src/button/tests/Button.test.ts)
+
+#### 测试覆盖要求
+
+每个组件测试必须包含：
+
+1. **Props 渲染测试** - 所有 props 的渲染测试
+2. **事件处理测试** - 所有事件的触发测试
+3. **插槽测试** - 所有插槽的渲染测试
+4. **动态更新测试** - 动态 props 更新测试
+5. **废弃警告测试**（如适用）- 废弃 props 的警告测试
+6. **边界情况测试** - 极端情况测试
+7. **表单功能测试**（表单组件）- v-model、受控/非受控模式
+
+#### 覆盖率要求
+
+- **语句覆盖率**: ≥ 80%
+- **分支覆盖率**: ≥ 75%
+- **函数覆盖率**: ≥ 80%
+- **行覆盖率**: ≥ 80%
+
+#### 测试命令
+
+```bash
+# 运行所有测试
+pnpm test
+
+# 运行特定组件测试
+pnpm test src/<component>/tests/<Component>.test.ts
+
+# 监听模式
+pnpm test:watch
+
+# 生成覆盖率报告
+pnpm test:coverage
+```
+
+#### 详细规范
+
+完整的测试规范、最佳实践和示例，请参考：
+- **[specs/testing-guidelines.md](testing-guidelines.md)** - 完整的组件测试规范文档
 
 ---
 
@@ -249,7 +301,7 @@ Today-UI 旨在将微软的 Fluent Design System 完整转录到 Vue 3 生态系
 
 | 里程碑 | 组件数量 | 目标日期 | 状态 |
 |--------|----------|----------|------|
-| M0: 基础组件 | 2 | 2025-12 | ✅ 已完成 (Button, Icon) |
+| M0: 基础组件 | 3 | 2025-12 | ✅ 已完成 (Button, Icon, Input) |
 | M1: P0 表单组件 | 10 | 2026-04 | 📋 计划中 |
 | M2: P1 布局组件 | 9 | 2026-06 | 📋 计划中 |
 | M3: P2 反馈组件 | 5 | 2026-08 | 📋 计划中 |
