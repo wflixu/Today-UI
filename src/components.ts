@@ -1,6 +1,7 @@
 
 export { default as Button } from "./button";
 export { default as Dropdown } from "./dropdown/";
+export { default as Field } from "./field";
 export { default as FileTree } from "./file-tree/";
 export { default as TIcon } from "./icon";
 export { default as Input } from "./input";

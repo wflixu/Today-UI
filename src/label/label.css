@@ -1,0 +1,28 @@
+/* Label component styles
+ *
+ * Griffel handles all static styles:
+ * - Base styles (root)
+ * - Size variants (small, medium, large)
+ * - Weight variants (normal, semibold, bold)
+ * - State styles (disabled)
+ * - Required indicator
+ *
+ * CSS is ONLY used for pseudo-classes that Griffel cannot handle:
+ * - :hover state
+ * - :focus-within state
+ */
+
+/* Semantic base class */
+.t-label {
+  /* All styles applied by Griffel */
+}
+
+/* Hover state - when label is interactive */
+.t-label:not(.disabled):hover {
+  cursor: pointer;
+}
+
+/* Focus-within state - when associated input is focused */
+.t-label:focus-within {
+  outline: none;
+}
