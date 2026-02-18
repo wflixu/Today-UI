@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import TTooltip from "./Tooltip";
+import Tooltip from '../Tooltip'
 
 // 基础示例
 const basicArgs = reactive({
@@ -44,67 +44,67 @@ const controlledVisible = ref(false)
 <template>
   <Story title="Components/Tooltip">
     <Variant title="基础用法">
-      <TTooltip v-bind="basicArgs">
+      <Tooltip v-bind="basicArgs">
         <button>鼠标悬停查看</button>
-      </TTooltip>
+      </Tooltip>
     </Variant>
 
     <Variant title="不同位置">
       <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <TTooltip content="Top Tooltip" placement="top">
+        <Tooltip content="Top Tooltip" placement="top">
           <button>Top</button>
-        </TTooltip>
-        <TTooltip content="Bottom Tooltip" placement="bottom">
+        </Tooltip>
+        <Tooltip content="Bottom Tooltip" placement="bottom">
           <button>Bottom</button>
-        </TTooltip>
-        <TTooltip content="Left Tooltip" placement="left">
+        </Tooltip>
+        <Tooltip content="Left Tooltip" placement="left">
           <button>Left</button>
-        </TTooltip>
-        <TTooltip content="Right Tooltip" placement="right">
+        </Tooltip>
+        <Tooltip content="Right Tooltip" placement="right">
           <button>Right</button>
-        </TTooltip>
+        </Tooltip>
       </div>
     </Variant>
 
     <Variant title="延迟显示">
-      <TTooltip v-bind="delayArgs">
+      <Tooltip v-bind="delayArgs">
         <button>鼠标悬停 500ms 后显示</button>
-      </TTooltip>
+      </Tooltip>
     </Variant>
 
     <Variant title="带箭头">
       <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <TTooltip content="Top Arrow" placement="top" :with-arrow="true">
+        <Tooltip content="Top Arrow" placement="top" :with-arrow="true">
           <button>Top Arrow</button>
-        </TTooltip>
-        <TTooltip content="Bottom Arrow" placement="bottom" :with-arrow="true">
+        </Tooltip>
+        <Tooltip content="Bottom Arrow" placement="bottom" :with-arrow="true">
           <button>Bottom Arrow</button>
-        </TTooltip>
-        <TTooltip content="Left Arrow" placement="left" :with-arrow="true">
+        </Tooltip>
+        <Tooltip content="Left Arrow" placement="left" :with-arrow="true">
           <button>Left Arrow</button>
-        </TTooltip>
-        <TTooltip content="Right Arrow" placement="right" :with-arrow="true">
+        </Tooltip>
+        <Tooltip content="Right Arrow" placement="right" :with-arrow="true">
           <button>Right Arrow</button>
-        </TTooltip>
+        </Tooltip>
       </div>
     </Variant>
 
     <Variant title="关系类型">
       <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <TTooltip content="Description (默认)" relationship="description">
+        <Tooltip content="Description (默认)" relationship="description">
           <button>Description</button>
-        </TTooltip>
-        <TTooltip content="Label (品牌色)" relationship="label">
+        </Tooltip>
+        <Tooltip content="Label (品牌色)" relationship="label">
           <button>Label</button>
-        </TTooltip>
-        <TTooltip content="Inaccessible (灰色)" relationship="inaccessible">
+        </Tooltip>
+        <Tooltip content="Inaccessible (灰色)" relationship="inaccessible">
           <button>Inaccessible</button>
-        </TTooltip>
+        </Tooltip>
       </div>
     </Variant>
 
     <Variant title="自定义内容">
-      <TTooltip>
+      <Tooltip>
         <template #content>
           <div style="padding: 4px;">
             <strong>自定义内容</strong>
@@ -112,28 +112,28 @@ const controlledVisible = ref(false)
           </div>
         </template>
         <button>自定义内容 Tooltip</button>
-      </TTooltip>
+      </Tooltip>
     </Variant>
 
     <Variant title="触发方式">
       <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <TTooltip content="Hover 触发" trigger="hover">
+        <Tooltip content="Hover 触发" trigger="hover">
           <button>Hover</button>
-        </TTooltip>
-        <TTooltip content="Focus 触发" trigger="focus">
+        </Tooltip>
+        <Tooltip content="Focus 触发" trigger="focus">
           <input type="text" placeholder="聚焦触发" />
-        </TTooltip>
-        <TTooltip content="Both 触发" trigger="both">
+        </Tooltip>
+        <Tooltip content="Both 触发" trigger="both">
           <button>Both</button>
-        </TTooltip>
+        </Tooltip>
       </div>
     </Variant>
 
     <Variant title="受控模式">
       <div>
-        <TTooltip :visible="controlledVisible" content="受控模式 Tooltip">
+        <Tooltip :visible="controlledVisible" content="受控模式 Tooltip">
           <button>受控 Tooltip</button>
-        </TTooltip>
+        </Tooltip>
         <div style="margin-top: 10px;">
           <button @click="controlledVisible = !controlledVisible">
             {{ controlledVisible ? '隐藏' : '显示' }} Tooltip
@@ -143,12 +143,12 @@ const controlledVisible = ref(false)
     </Variant>
 
     <Variant title="最大宽度">
-      <TTooltip
+      <Tooltip
         content="这是一个很长的 Tooltip 内容，用于测试最大宽度限制和自动换行功能"
         :max-width="300"
       >
         <button>长内容 Tooltip</button>
-      </TTooltip>
+      </Tooltip>
     </Variant>
   </Story>
 </template>
@@ -161,9 +161,9 @@ const controlledVisible = ref(false)
 ## 基础用法
 
 \`\`\`vue
-<TTooltip content="这是一个 Tooltip">
+<Tooltip content="这是一个 Tooltip">
   <button>鼠标悬停查看</button>
-</TTooltip>
+</Tooltip>
 \`\`\`
 
 ## Props

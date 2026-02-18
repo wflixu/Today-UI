@@ -1,7 +1,7 @@
-import { ref, computed, type ComputedRef } from 'vue';
+import { ref, computed, type Ref, type ComputedRef } from 'vue';
 import type { TooltipProps, TooltipState } from './Tooltip.types';
 
-// 扩展 TooltipState 类型以包含内部的 computed ref
+// 扩展 TooltipState 以包含内部的 computed ref
 interface TooltipStateInternal extends TooltipState {
   _isVisible: ComputedRef<boolean>;
 }
@@ -10,14 +10,17 @@ interface TooltipStateInternal extends TooltipState {
  * Tooltip 状态管理 Hook
  * 处理触发模式、延迟处理、可见性控制
  */
-export const useTooltip = (props: TooltipProps): TooltipStateInternal => {
+export const useTooltip = (
+  props: TooltipProps,
+  referenceRef?: Ref<HTMLElement | null>
+): TooltipStateInternal => {
   // 内部可见性状态（非受控模式）
   const internalVisible = ref(props.defaultVisible);
 
-  // 计算实际可见性（受控或非受控）
-  const _isVisible = computed(
-    () => props.visible !== undefined ? props.visible : internalVisible.value
-  );
+  // 计算实际可见性（受控优先）- 使用 computed 保持响应性
+  const _isVisible = computed(() => {
+    return props.visible !== undefined ? props.visible : internalVisible.value;
+  });
 
   // 延迟定时器管理
   let showTimer: ReturnType<typeof setTimeout> | null = null;
@@ -43,7 +46,7 @@ export const useTooltip = (props: TooltipProps): TooltipStateInternal => {
     showTimer = setTimeout(() => {
       internalVisible.value = true;
       props.onVisibleChange?.(true);
-    }, props.delay);
+    }, props.delay ?? 250);
   };
 
   // 隐藏逻辑（带延迟）
@@ -54,7 +57,7 @@ export const useTooltip = (props: TooltipProps): TooltipStateInternal => {
     hideTimer = setTimeout(() => {
       internalVisible.value = false;
       props.onVisibleChange?.(false);
-    }, props.closeDelay);
+    }, props.closeDelay ?? 250);
   };
 
   // 事件处理器
@@ -83,22 +86,34 @@ export const useTooltip = (props: TooltipProps): TooltipStateInternal => {
   };
 
   return {
-    placement: props.placement,
-    offset: props.offset,
-    relationship: props.relationship,
-    withArrow: props.withArrow,
+    // Props
+    content: props.content,
     maxWidth: props.maxWidth,
     wrapText: props.wrapText,
-    content: props.content,
+    placement: props.placement,
+    offset: props.offset,
     attach: props.attach,
+    trigger: props.trigger,
+    delay: props.delay,
+    closeDelay: props.closeDelay,
+    relationship: props.relationship,
+    withArrow: props.withArrow,
+
+    // 状态 - 暴露 _isVisible computed ref
     _isVisible,
-    isVisible: _isVisible.value, // 直接赋值，而不是 getter
-    className: '', // 将由 useTooltipStyles 填充
-    arrowClassName: undefined, // 将由 useTooltipStyles 填充
+    isVisible: _isVisible.value, // 初始值
+
+    // 样式（占位，由 useTooltipStyles 填充）
+    className: '',
+    arrowClassName: undefined,
+
+    // 事件处理器
     handleMouseEnter,
     handleMouseLeave,
     handleFocus,
     handleBlur,
+
+    // 清理
     clearTimers,
   };
 };
