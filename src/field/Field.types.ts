@@ -35,7 +35,7 @@ export interface FieldState {
     // Element configuration
     root: Record<string, any>;
     content?: Record<string, any>;
-    validationMessage?: Record<string, any>;
+    validationMessageProps?: Record<string, any>;
 }
 
 /**

@@ -48,9 +48,9 @@ export const useFieldStyles = (state: FieldState) => {
             state.validationState !== 'none' && styles[state.validationState],
         ].filter(Boolean);
 
-        state.validationMessage = {
-            ...state.validationMessage,
-            className: mergeClasses(...validationMessageClasses, state.validationMessage.className),
+        state.validationMessageProps = {
+            ...state.validationMessageProps,
+            className: mergeClasses(...validationMessageClasses, state.validationMessageProps?.className),
         };
     }
 };

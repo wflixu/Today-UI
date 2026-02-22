@@ -34,7 +34,7 @@ export const renderField = (state: FieldState, slots: FieldSlotsType) => {
         children.push(validationMessageContent);
     } else if (state.validationMessage) {
         children.push(h('div', {
-            ...state.validationMessage,
+            ...state.validationMessageProps,
             role: 'status',
             'aria-live': 'polite',
         }, [

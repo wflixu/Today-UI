@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { logEvent } from 'histoire/client'
-import TButton from './Button'
-import type { ButtonProps } from './Button.types'
+import TButton from '../Button'
+import type { ButtonProps } from '../Button.types'
 
 // 定义辅助函数
 const showAlert = (message: string) => {

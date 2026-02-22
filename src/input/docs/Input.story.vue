@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Input from './Input'
-import type { InputProps } from './Input.types'
+import Input from '../Input'
+import type { InputProps } from '../Input.types'
 
 // 基础状态
 const value = ref('')

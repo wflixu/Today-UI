@@ -24,6 +24,6 @@ export const useField = (
         // 元素配置
         root: {},
         content: {},
-        validationMessage: (props.validationMessage && !hasValidationMessageSlot()) ? {} : undefined,
+        validationMessageProps: (props.validationMessage && !hasValidationMessageSlot()) ? {} : undefined,
     };
 };

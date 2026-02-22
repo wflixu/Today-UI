@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Label from './Label'
+import Label from '../Label'
 import Input from '../../input/Input'
 import type { LabelProps } from '../Label.types'
 
