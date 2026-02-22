@@ -1,5 +1,6 @@
 import { mergeClasses } from '@/shared/griffel/mergeClasses';
 import type { InputState } from './Input.types';
+import { useInputStyles as useGriffelStyles } from './input.styles';
 
 export const inputClassNames = {
     root: 't-input',
@@ -16,9 +17,8 @@ export const inputClassNames = {
  * Apply styles to the Input state by merging semantic class names with griffel styles.
  */
 export const useInputStyles = (state: InputState) => {
-    // Import styles lazily to avoid circular dependencies
-    const { useInputStyles } = require('./input.styles');
-    const styles = useInputStyles();
+    // Get Griffel styles
+    const styles = useGriffelStyles();
 
     // 合并语义化类名和 griffel 类名 - root
     const rootClasses = [

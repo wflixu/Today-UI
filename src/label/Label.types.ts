@@ -1,74 +1,137 @@
-import { ExtractPropTypes, PropType, SlotsType, VNode } from 'vue';
+import { ExtractPropTypes, PropType, Slot, VNode } from 'vue';
 
-/**
- * Label component props
- */
+export type LabelSize = 'small' | 'medium' | 'large';
+export type LabelWeight = 'normal' | 'semibold' | 'bold';
+
+// Props 定义
 export const labelProps = {
-    // Content
+    /**
+     * The label content (can also use default slot)
+     */
     label: {
         type: String,
-        default: undefined
-    },
-    for: {
-        type: String,
-        default: undefined
+        default: undefined as undefined
     },
 
-    // State
+    /**
+     * Associates the label with a form control
+     */
+    for: {
+        type: String,
+        default: undefined as undefined
+    },
+
+    /**
+     * Indicates that the form control is required
+     *
+     * @default false
+     */
     required: {
         type: Boolean,
         default: false
     },
+
+    /**
+     * Indicates that the label is disabled
+     *
+     * @default false
+     */
     disabled: {
         type: Boolean,
         default: false
     },
 
-    // Style
+    /**
+     * A label supports different sizes.
+     *
+     * @default 'medium'
+     */
     size: {
-        type: String as PropType<'small' | 'medium' | 'large'>,
+        type: String as PropType<LabelSize>,
         default: 'medium'
     },
+
+    /**
+     * Font weight variant
+     *
+     * @default 'semibold'
+     */
     weight: {
-        type: String as PropType<'normal' | 'semibold' | 'bold'>,
+        type: String as PropType<LabelWeight>,
         default: 'semibold'
     },
 
-    // Semantic attributes
+    /**
+     * The label element's id
+     */
     id: {
         type: String,
-        default: undefined
+        default: undefined as undefined
     },
-} as const;
+};
 
+// 提取 Props 类型
 export type LabelProps = ExtractPropTypes<typeof labelProps>;
 
-/**
- * Label component state
- */
+// 插槽类型定义
+export type LabelSlots = {
+    /**
+     * Custom label content (takes priority over label prop)
+     */
+    default?: Slot;
+
+    /**
+     * Custom required indicator
+     */
+    requiredIndicator?: Slot;
+};
+
+// 状态接口
 export interface LabelState {
-    // Props
+    /**
+     * The label content
+     */
     label?: string;
+
+    /**
+     * Associates the label with a form control
+     */
     for?: string;
+
+    /**
+     * Indicates that the form control is required
+     */
     required: boolean;
+
+    /**
+     * Indicates that the label is disabled
+     */
     disabled: boolean;
-    size: 'small' | 'medium' | 'large';
-    weight: 'normal' | 'semibold' | 'bold';
 
-    // Element configuration
+    /**
+     * A label supports different sizes.
+     */
+    size: NonNullable<LabelProps['size']>;
+
+    /**
+     * Font weight variant
+     */
+    weight: NonNullable<LabelProps['weight']>;
+
+    /**
+     * The label element's id
+     */
+    id?: string;
+
+    /**
+     * Root element configuration for rendering.
+     */
     root: Record<string, any>;
+
+    /**
+     * The required indicator element attributes.
+     */
     requiredIndicator?: Record<string, any>;
-}
-
-/**
- * Label component slots
- */
-export interface LabelSlots {
-    // Custom label content (takes priority over label prop)
-    default?: () => VNode[];
-
-    // Custom required indicator
-    requiredIndicator?: () => VNode[];
 }
 
 export type LabelSlotsType = SlotsType<LabelSlots>;

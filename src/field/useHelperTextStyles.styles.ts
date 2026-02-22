@@ -1,5 +1,6 @@
 import { mergeClasses } from '@/shared/griffel/mergeClasses';
 import type { HelperTextState } from './HelperText.types';
+import { useHelperTextStyles as useGriffelStyles } from './helperText.styles';
 
 export const helperTextClassNames = {
     root: 't-helper-text',
@@ -17,9 +18,8 @@ export const helperTextClassNames = {
  * This ensures no redundancy and clear separation of concerns.
  */
 export const useHelperTextStyles = (state: HelperTextState): void => {
-    // Import styles lazily to avoid circular dependencies
-    const { useHelperTextStyles } = require('./helperText.styles');
-    const styles = useHelperTextStyles();
+    // Get Griffel styles
+    const styles = useGriffelStyles();
 
     // Merge semantic class name with Griffel classes - root
     const rootClasses = [

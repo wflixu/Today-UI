@@ -1,5 +1,6 @@
 import { mergeClasses } from '@/shared/griffel/mergeClasses';
 import type { FieldState } from './Field.types';
+import { useFieldStyles as useGriffelStyles } from './field.styles';
 
 export const fieldClassNames = {
     root: 't-field',
@@ -11,9 +12,8 @@ export const fieldClassNames = {
  * Apply styles to the Field state by merging semantic class names with griffel styles.
  */
 export const useFieldStyles = (state: FieldState) => {
-    // Import styles lazily to avoid circular dependencies
-    const { useFieldStyles } = require('./field.styles');
-    const styles = useFieldStyles();
+    // Get Griffel styles
+    const styles = useGriffelStyles();
 
     // 合并 root 类名
     const rootClasses = [

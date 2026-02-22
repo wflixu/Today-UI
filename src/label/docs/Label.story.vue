@@ -39,14 +39,14 @@ const usernameValue = ref('')
       <HstCheckbox v-model="state.required" title="required" />
     </template>
 
-    <Variant title="基础用法">
+    <Variant title="Basic Usage - 基础用法">
       <div>
         <Label for="username">用户名</Label>
         <Input id="username" placeholder="请输入用户名" />
       </div>
     </Variant>
 
-    <Variant title="尺寸变体">
+    <Variant title="Size Variants - 尺寸变体">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
           <Label for="small" size="small">小号标签</Label>
@@ -63,7 +63,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="字体粗细">
+    <Variant title="Weight Variants - 字体粗细">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
           <Label for="normal" weight="normal">普通字体</Label>
@@ -80,7 +80,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="必填标识">
+    <Variant title="Required Indicator - 必填标识">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
           <Label for="required-email" required>邮箱地址</Label>
@@ -93,7 +93,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="禁用状态">
+    <Variant title="Disabled State - 禁用状态">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
           <Label for="disabled-label" disabled>禁用标签</Label>
@@ -102,7 +102,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="自定义必填标识">
+    <Variant title="Custom Required Indicator - 自定义必填标识">
       <div>
         <Label for="custom-required" required>
           邮箱地址
@@ -114,7 +114,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="登录表单示例">
+    <Variant title="Login Form Example - 登录表单示例">
       <form @submit.prevent style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <div>
           <Label for="form-email" required>邮箱地址</Label>
@@ -132,7 +132,7 @@ const usernameValue = ref('')
       </div>
     </Variant>
 
-    <Variant title="注册表单示例">
+    <Variant title="Registration Form Example - 注册表单示例">
       <form @submit.prevent style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <div>
           <Label for="reg-username" required>用户名</Label>
@@ -154,7 +154,7 @@ const usernameValue = ref('')
       </form>
     </Variant>
 
-    <Variant title="All Size and Weight Combinations">
+    <Variant title="All Combinations - 所有尺寸与粗细组合">
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
         <template v-for="size in ['small', 'medium', 'large']" :key="size">
           <template v-for="weight in ['normal', 'semibold', 'bold']" :key="`${size}-${weight}`">

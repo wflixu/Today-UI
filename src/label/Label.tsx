@@ -3,6 +3,7 @@ import { labelProps, type LabelSlots } from './Label.types';
 import { useLabel } from './useLabel';
 import { useLabelStyles } from './useLabelStyles.styles';
 import { renderLabel } from './renderLabel';
+import './label.css';
 
 /**
  * Label component - Provides a label for form controls

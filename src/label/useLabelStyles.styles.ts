@@ -1,46 +1,45 @@
 import { mergeClasses } from '@/shared/griffel/mergeClasses';
 import type { LabelState } from './Label.types';
+import { useLabelStyles as useGriffelStyles } from './label.styles';
 
+// 类名常量
 export const labelClassNames = {
     root: 't-label',
     requiredIndicator: 't-label__required-indicator',
 } as const;
 
 /**
- * Apply styles to the Label state by merging semantic class names with Griffel styles.
- *
- * Style Strategy:
- * - Griffel (label.styles.ts): Handles ALL static styles
- *   - Base styles, size variants, weight variants, disabled state, required indicator
- * - CSS (label.css): Handles ONLY pseudo-classes
- *   - :hover state, :focus-within state
- *
- * This ensures no redundancy and clear separation of concerns.
+ * Label 样式钩子函数
+ * 使用 griffel-vue 生成样式，同时保留语义化类名
  */
-export const useLabelStyles = (state: LabelState): void => {
-    // Import styles lazily to avoid circular dependencies
-    const { useLabelStyles } = require('./label.styles');
-    const styles = useLabelStyles();
+export const useLabelStyles_unstable = (state: LabelState): void => {
+    // 获取 Griffel 样式
+    const styles = useGriffelStyles();
+    const { size, weight, disabled } = state;
 
-    // Merge semantic class name with Griffel classes - root
+    // 根元素类名
     const rootClasses = [
-        labelClassNames.root,              // Semantic class for CSS pseudo-class targeting
-        styles.root,                       // Base Griffel styles
-        styles[state.size],                // Size variant from Griffel
-        styles[state.weight],              // Weight variant from Griffel
-        state.disabled && styles.disabled, // Disabled state from Griffel
+        labelClassNames.root,                    // 语义化类名 .t-label
+        size !== 'medium' && `size-${size}`,     // BEM 修饰符 .size-small
+        weight !== 'semibold' && `weight-${weight}`, // BEM 修饰符 .weight-normal
+        disabled && 'disabled',                  // BEM 修饰符 .disabled
+        styles.root,                             // Griffel 基础样式
+        size !== 'medium' && styles[size as keyof typeof styles],       // Griffel 尺寸样式
+        weight !== 'semibold' && styles[weight as keyof typeof styles],  // Griffel 字体粗细样式
+        disabled && styles.disabled,             // Griffel 禁用样式
     ].filter(Boolean);
 
+    // 应用类名到状态
     state.root = {
         ...state.root,
-        className: mergeClasses(...rootClasses, state.root.className),
+        className: mergeClasses(...rootClasses, state.root.className as string),
     };
 
-    // Merge required indicator classes
+    // 处理 required indicator 样式
     if (state.requiredIndicator) {
         const requiredIndicatorClasses = [
-            labelClassNames.requiredIndicator,  // Semantic class for reference
-            styles.requiredIndicator,           // Griffel styles
+            labelClassNames.requiredIndicator,  // 语义化类名
+            styles.requiredIndicator,           // Griffel 样式
         ].filter(Boolean);
 
         state.requiredIndicator = {
@@ -49,3 +48,8 @@ export const useLabelStyles = (state: LabelState): void => {
         };
     }
 };
+
+/**
+ * 向后兼容的样式函数
+ */
+export const useLabelStyles = useLabelStyles_unstable;

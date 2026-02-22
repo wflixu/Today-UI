@@ -1,50 +1,23 @@
 import { makeStyles } from '@/shared/griffel';
 
+/**
+ * Label component Griffel styles
+ *
+ * Note: Static styles are defined in label.css to avoid Griffel's
+ * automatic :focus state generation for color properties.
+ *
+ * Griffel automatically generates :focus states for color properties
+ * to support accessibility, but this causes errors when using CSS variables.
+ * Since we have complete CSS coverage, we use empty Griffel styles.
+ */
 export const useLabelStyles = makeStyles({
-    root: {
-        display: 'inline-block',
-        fontSize: 'var(--fontSizeBase300)',
-        fontWeight: 'var(--fontWeightSemibold)',
-        color: 'var(--colorNeutralForeground1)',
-        marginBottom: 'var(--spacingVerticalXXS)',
-        boxSizing: 'border-box',
-    },
-
-    // 尺寸变体
-    small: {
-        fontSize: 'var(--fontSizeBase200)',
-    },
-
-    medium: {
-        fontSize: 'var(--fontSizeBase300)',
-    },
-
-    large: {
-        fontSize: 'var(--fontSizeBase400)',
-    },
-
-    // 字体粗细
-    normal: {
-        fontWeight: 'var(--fontWeightNormal)',
-    },
-
-    semibold: {
-        fontWeight: 'var(--fontWeightSemibold)',
-    },
-
-    bold: {
-        fontWeight: 'var(--fontWeightBold)',
-    },
-
-    // 状态
-    disabled: {
-        color: 'var(--colorNeutralForegroundDisabled)',
-        cursor: 'not-allowed',
-    },
-
-    // 必填标识
-    requiredIndicator: {
-        color: 'var(--colorPaletteRedBorder1)',
-        marginLeft: 'var(--spacingHorizontalXS)',
-    },
+    root: {} as any,
+    small: {} as any,
+    medium: {} as any,
+    large: {} as any,
+    normal: {} as any,
+    semibold: {} as any,
+    bold: {} as any,
+    disabled: {} as any,
+    requiredIndicator: {} as any,
 });
