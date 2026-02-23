@@ -8,6 +8,9 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
         showClearButtonVisible,
         showPasswordToggleVisible,
         isPasswordVisible,
+        hasClearButtonSlot,
+        hasPasswordToggleButtonSlot,
+        hasProgressIndicatorSlot,
         value,
         disabled,
         readonly,
@@ -45,6 +48,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     const inputElement = h('input', {
         class: state.input.className,
         type: inputType.value,
+        id: state.id,
         name: state.name,
         autocomplete: state.autocomplete,
         placeholder: state.placeholder,
@@ -63,7 +67,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     children.push(inputElement);
 
     // 清除按钮（内置）
-    if (showClearButtonVisible && !slots.clearButton) {
+    if (showClearButtonVisible && !hasClearButtonSlot) {
         const clearButtonElement = h('button', {
             type: 'button',
             class: state.clearButton?.className,
@@ -75,14 +79,14 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     }
 
     // 清除按钮（自定义插槽）
-    if (slots.clearButton && showClearButtonVisible) {
+    if (hasClearButtonSlot && showClearButtonVisible) {
         children.push(
             h('span', { class: state.clearButton?.className }, slots.clearButton())
         );
     }
 
     // 密码切换按钮（内置）
-    if (showPasswordToggleVisible && isPasswordVisible && !slots.passwordToggleButton) {
+    if (showPasswordToggleVisible && !hasPasswordToggleButtonSlot) {
         const passwordToggleElement = h('button', {
             type: 'button',
             class: state.passwordToggleButton?.className,
@@ -93,7 +97,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     }
 
     // 密码切换按钮（自定义插槽）
-    if (slots.passwordToggleButton && showPasswordToggleVisible) {
+    if (hasPasswordToggleButtonSlot && showPasswordToggleVisible) {
         children.push(
             h('span', { class: state.passwordToggleButton?.className }, slots.passwordToggleButton())
         );
@@ -107,7 +111,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     }
 
     // 进度指示器（内置）
-    if (state.progressIndicator && !slots.progressIndicator) {
+    if (state.progressIndicator && !hasProgressIndicatorSlot) {
         const progressValue = (state.progress || 0) / 100;
         const progressElement = h('div', {
             class: state.progressIndicator?.className,
@@ -130,7 +134,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
     }
 
     // 进度指示器（自定义插槽）
-    if (slots.progressIndicator && state.progressIndicator) {
+    if (hasProgressIndicatorSlot && state.progressIndicator) {
         children.push(
             h('span', { class: state.progressIndicator?.className }, slots.progressIndicator())
         );

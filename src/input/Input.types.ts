@@ -172,6 +172,14 @@ export const inputProps = {
   },
 
   /**
+   * 输入框唯一标识符
+   */
+  id: {
+    type: String,
+    default: undefined as undefined
+  },
+
+  /**
    * 输入框名称
    */
   name: {
@@ -231,6 +239,7 @@ export interface InputState {
   required: boolean;
   error: boolean;
   type: string;
+  id: string | undefined;
   name: string | undefined;
   autocomplete: string | undefined;
   placeholder: string | undefined;
@@ -249,6 +258,9 @@ export interface InputState {
   showClearButtonVisible: boolean;
   showPasswordToggleVisible: boolean;
   isPasswordVisible: boolean;
+  hasClearButtonSlot: boolean;
+  hasPasswordToggleButtonSlot: boolean;
+  hasProgressIndicatorSlot: boolean;
 
   // 事件处理
   onInput: (event: Event) => void;

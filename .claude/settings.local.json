@@ -30,7 +30,11 @@
       "Bash(pnpm add:*)",
       "Bash(timeout:*)",
       "Bash(git ls-tree:*)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "Bash(git restore:*)",
+      "Bash(pnpm list:*)",
+      "Bash(pnpm doc:*)",
+      "Bash(npm info:*)"
     ],
     "deny": [],
     "ask": []

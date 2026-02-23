@@ -1,7 +1,171 @@
-/* src/input/input.css */
+@import "./../style/base.css";
 
 .t-input {
-  /* 基础样式通过 griffel 处理 */
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.t-input__input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase300);
+  line-height: var(--lineHeightBase300);
+  color: var(--colorNeutralForeground1);
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  padding: var(--spacingVerticalSN) var(--spacingHorizontalMN);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+/* 外观变体 */
+.t-input.appearance-filled .t-input__input {
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+}
+
+.t-input.appearance-underlined .t-input__input {
+  border: none;
+  border-bottom: var(--strokeWidthThick) solid var(--colorNeutralStroke1);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: var(--spacingVerticalS);
+  padding-bottom: var(--spacingVerticalXS);
+}
+
+.t-input.appearance-inline-dark .t-input__input,
+.t-input.appearance-inline-light .t-input__input {
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+}
+
+/* 尺寸变体 */
+.t-input.size-small .t-input__input {
+  min-height: 28px;
+  font-size: var(--fontSizeBase200);
+  padding: var(--spacingVerticalSN) var(--spacingHorizontalS);
+}
+
+.t-input.size-medium .t-input__input {
+  min-height: 32px;
+  font-size: var(--fontSizeBase300);
+  padding: var(--spacingVerticalMN) var(--spacingHorizontalMN);
+}
+
+.t-input.size-large .t-input__input {
+  min-height: 40px;
+  font-size: var(--fontSizeBase400);
+  padding: var(--spacingVerticalMN) var(--spacingHorizontalL);
+}
+
+/* 状态样式 */
+.t-input.disabled .t-input__input {
+  cursor: not-allowed;
+  color: var(--colorNeutralForegroundDisabled);
+  background-color: var(--colorNeutralBackgroundDisabled);
+  border-color: var(--colorNeutralStrokeDisabled);
+}
+
+.t-input.readonly .t-input__input {
+  background-color: var(--colorNeutralBackground1);
+  cursor: default;
+}
+
+.t-input.error .t-input__input {
+  border-color: var(--colorPaletteRedBorder1);
+}
+
+/* 验证状态 */
+.t-input__input.validation-valid {
+  border-color: var(--colorPaletteGreenBorder1);
+}
+
+.t-input__input.validation-warning {
+  border-color: var(--colorPaletteDarkOrangeBorder1);
+}
+
+.t-input__input.validation-invalid {
+  border-color: var(--colorPaletteRedBorder1);
+}
+
+/* 插槽样式 */
+.t-input__content-before {
+  display: flex;
+  align-items: center;
+  margin-right: var(--spacingHorizontalS);
+}
+
+.t-input__content-after {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacingHorizontalS);
+}
+
+/* 清除按钮样式 */
+.t-input__clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--borderRadiusSmall);
+  color: var(--colorNeutralForeground1);
+  transition: all 0.2s ease;
+}
+
+.t-input__clear-button:hover {
+  background-color: var(--colorNeutralBackground1Hover);
+  color: var(--colorNeutralForeground1Hover);
+}
+
+.t-input__clear-button:active {
+  transform: scale(0.95);
+}
+
+.t-input__clear-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* 密码切换按钮样式 */
+.t-input__password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--borderRadiusSmall);
+  color: var(--colorNeutralForeground1);
+  transition: all 0.2s ease;
+}
+
+.t-input__password-toggle:hover {
+  background-color: var(--colorNeutralBackground1Hover);
+  color: var(--colorNeutralForeground1Hover);
+}
+
+.t-input__password-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 进度指示器样式 */
+.t-input__progress-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: var(--colorCompoundBrandBackground1);
+  border-radius: var(--borderRadiusSmall);
+  pointer-events: none;
 }
 
 /* 交互状态 */
@@ -20,36 +184,33 @@
 }
 
 /* 外观变体的交互状态 */
-.t-input--outline .t-input__input:hover:not(:disabled):not(.readonly) {
-  border-color: var(--colorNeutralStroke1Hover);
-}
-
-.t-input--filled .t-input__input:hover:not(:disabled):not(.readonly) {
+.t-input.appearance-filled .t-input__input:hover:not(:disabled):not(.readonly) {
   background-color: var(--colorNeutralBackground1Hover);
 }
 
-.t-input--underlined .t-input__input:hover:not(:disabled):not(.readonly) {
+.t-input.appearance-underlined .t-input__input:hover:not(:disabled):not(.readonly) {
   border-bottom-color: var(--colorNeutralStroke1Hover);
 }
 
-.t-input--inline-dark .t-input__input:hover:not(:disabled):not(.readonly) {
+.t-input.appearance-inline-dark .t-input__input:hover:not(:disabled):not(.readonly),
+.t-input.appearance-inline-light .t-input__input:hover:not(:disabled):not(.readonly) {
   background-color: var(--colorNeutralBackground1Hover);
 }
 
-.t-input--inline-light .t-input__input:hover:not(:disabled):not(.readonly) {
-  background-color: var(--colorNeutralBackground1Hover);
+/* 验证状态的 focus 样式 */
+.t-input__input.validation-valid:focus {
+  outline-color: var(--colorPaletteGreenBorder1);
 }
 
-/* 错误状态 */
-.t-input--error .t-input__input {
-  border-color: var(--colorPaletteRedBorder1);
+.t-input__input.validation-warning:focus {
+  outline-color: var(--colorPaletteDarkOrangeBorder1);
 }
 
-.t-input--error .t-input__input:focus-visible {
+.t-input__input.validation-invalid:focus {
   outline-color: var(--colorPaletteRedBorder1);
 }
 
-/* 只读状态 */
-.t-input--readonly .t-input__input {
-  background-color: var(--colorNeutralBackground1);
+/* 错误状态 */
+.t-input.error .t-input__input:focus-visible {
+  outline-color: var(--colorPaletteRedBorder1);
 }

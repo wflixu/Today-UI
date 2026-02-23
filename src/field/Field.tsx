@@ -32,7 +32,7 @@ export const Field = defineComponent({
     setup(props, { expose, slots }) {
         // Compute the complete state by applying hooks
         const state = computed(() => {
-            const fieldState = useField(props);
+            const fieldState = useField(props, slots);
             useFieldStyles(fieldState);
             return fieldState;
         });

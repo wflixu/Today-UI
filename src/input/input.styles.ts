@@ -22,42 +22,55 @@ export const useInputStyles = makeStyles({
         lineHeight: 'var(--lineHeightBase300)',
         color: 'var(--colorNeutralForeground1)',
         backgroundColor: 'var(--colorNeutralBackground1)',
-        border: 'var(--strokeWidthThin) solid var(--colorNeutralStroke1)',
+        // 使用非简写属性代替 border
+        borderWidth: 'var(--strokeWidthThin)',
+        borderStyle: 'solid',
+        borderColor: 'var(--colorNeutralStroke1)',
         borderRadius: 'var(--borderRadiusMedium)',
-        padding: 'var(--spacingVerticalSN) var(--spacingHorizontalMN)',
+        // 使用非简写属性代替 padding
+        paddingTop: 'var(--spacingVerticalSN)',
+        paddingBottom: 'var(--spacingVerticalSN)',
+        paddingLeft: 'var(--spacingHorizontalMN)',
+        paddingRight: 'var(--spacingHorizontalMN)',
         transition: 'all 0.2s ease',
         outline: 'none',
-    },
+    } as any,
 
     // 外观变体
-    outline: {
-        // 默认样式已在 input 中定义
-    },
+    outline: {} as any,
 
     filled: {
         backgroundColor: 'var(--colorNeutralBackground1)',
-        border: 'var(--strokeWidthThin) solid var(--colorNeutralStroke1)',
-    },
+        borderWidth: 'var(--strokeWidthThin)',
+        borderStyle: 'solid',
+        borderColor: 'var(--colorNeutralStroke1)',
+    } as any,
 
     underlined: {
-        border: 'none',
-        borderBottom: 'var(--strokeWidthThick) solid var(--colorNeutralStroke1)',
-        borderRadius: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
+        borderWidth: '0px',
+        borderBottomWidth: 'var(--strokeWidthThick)',
+        borderStyle: 'solid',
+        borderBottomColor: 'var(--colorNeutralStroke1)',
+        borderRadius: '0px',
+        paddingLeft: '0px',
+        paddingRight: '0px',
         paddingTop: 'var(--spacingVerticalS)',
         paddingBottom: 'var(--spacingVerticalXS)',
-    },
+    } as any,
 
     'inline-dark': {
         backgroundColor: 'var(--colorNeutralBackground1)',
-        border: 'var(--strokeWidthThin) solid var(--colorNeutralStroke1)',
+        borderWidth: 'var(--strokeWidthThin)',
+        borderStyle: 'solid',
+        borderColor: 'var(--colorNeutralStroke1)',
         borderRadius: 'var(--borderRadiusMedium)',
     } as any,
 
     'inline-light': {
         backgroundColor: 'var(--colorNeutralBackground1)',
-        border: 'var(--strokeWidthThin) solid var(--colorNeutralStroke1)',
+        borderWidth: 'var(--strokeWidthThin)',
+        borderStyle: 'solid',
+        borderColor: 'var(--colorNeutralStroke1)',
         borderRadius: 'var(--borderRadiusMedium)',
     } as any,
 
@@ -65,20 +78,29 @@ export const useInputStyles = makeStyles({
     small: {
         minHeight: '28px',
         fontSize: 'var(--fontSizeBase200)',
-        padding: 'var(--spacingVerticalSN) var(--spacingHorizontalS)',
-    },
+        paddingTop: 'var(--spacingVerticalSN)',
+        paddingBottom: 'var(--spacingVerticalSN)',
+        paddingLeft: 'var(--spacingHorizontalS)',
+        paddingRight: 'var(--spacingHorizontalS)',
+    } as any,
 
     medium: {
         minHeight: '32px',
         fontSize: 'var(--fontSizeBase300)',
-        padding: 'var(--spacingVerticalMN) var(--spacingHorizontalMN)',
-    },
+        paddingTop: 'var(--spacingVerticalMN)',
+        paddingBottom: 'var(--spacingVerticalMN)',
+        paddingLeft: 'var(--spacingHorizontalMN)',
+        paddingRight: 'var(--spacingHorizontalMN)',
+    } as any,
 
     large: {
         minHeight: '40px',
         fontSize: 'var(--fontSizeBase400)',
-        padding: 'var(--spacingVerticalMN) var(--spacingHorizontalL)',
-    },
+        paddingTop: 'var(--spacingVerticalMN)',
+        paddingBottom: 'var(--spacingVerticalMN)',
+        paddingLeft: 'var(--spacingHorizontalL)',
+        paddingRight: 'var(--spacingHorizontalL)',
+    } as any,
 
     // 状态样式
     disabled: {
@@ -86,55 +108,48 @@ export const useInputStyles = makeStyles({
         color: 'var(--colorNeutralForegroundDisabled)',
         backgroundColor: 'var(--colorNeutralBackgroundDisabled)',
         borderColor: 'var(--colorNeutralStrokeDisabled)',
-    },
+    } as any,
 
     error: {
         borderColor: 'var(--colorPaletteRedBorder1)',
-    },
+    } as any,
 
     readonly: {
         backgroundColor: 'var(--colorNeutralBackground1)',
         cursor: 'default',
-    },
+    } as any,
 
     // 插槽样式
     contentBefore: {
         display: 'flex',
         alignItems: 'center',
+        // 使用非简写属性代替 margin
         marginRight: 'var(--spacingHorizontalS)',
-    },
+    } as any,
 
     contentAfter: {
         display: 'flex',
         alignItems: 'center',
+        // 使用非简写属性代替 margin
         marginLeft: 'var(--spacingHorizontalS)',
-    },
+    } as any,
 
     // 清除按钮样式
     clearButton: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2px 6px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
+        paddingLeft: '6px',
+        paddingRight: '6px',
         cursor: 'pointer',
         backgroundColor: 'transparent',
-        border: 'none',
+        borderWidth: '0px',
+        borderStyle: 'solid',
         borderRadius: 'var(--borderRadiusSmall)',
         color: 'var(--colorNeutralForeground1)',
         transition: 'all 0.2s ease',
-        selectors: {
-            '&:hover': {
-                backgroundColor: 'var(--colorNeutralBackground1Hover)',
-                color: 'var(--colorNeutralForeground1Hover)',
-            },
-            '&:active': {
-                transform: 'scale(0.95)',
-            },
-            '&:disabled': {
-                cursor: 'not-allowed',
-                opacity: 0.5,
-            },
-        },
     } as any,
 
     // 密码切换按钮样式
@@ -142,29 +157,24 @@ export const useInputStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2px 6px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
+        paddingLeft: '6px',
+        paddingRight: '6px',
         cursor: 'pointer',
         backgroundColor: 'transparent',
-        border: 'none',
+        borderWidth: '0px',
+        borderStyle: 'solid',
         borderRadius: 'var(--borderRadiusSmall)',
         color: 'var(--colorNeutralForeground1)',
         transition: 'all 0.2s ease',
-        selectors: {
-            '&:hover': {
-                backgroundColor: 'var(--colorNeutralBackground1Hover)',
-                color: 'var(--colorNeutralForeground1Hover)',
-            },
-            '&:active': {
-                transform: 'scale(0.95)',
-            },
-        },
     } as any,
 
     // 进度指示器样式
     progressIndicator: {
         position: 'absolute',
-        bottom: 0,
-        left: 0,
+        bottom: '0px',
+        left: '0px',
         height: '2px',
         backgroundColor: 'var(--colorCompoundBrandBackground1)',
         borderRadius: 'var(--borderRadiusSmall)',
@@ -174,28 +184,13 @@ export const useInputStyles = makeStyles({
     // 验证状态样式
     valid: {
         borderColor: 'var(--colorPaletteGreenBorder1)',
-        selectors: {
-            '&:focus': {
-                outlineColor: 'var(--colorPaletteGreenBorder1)',
-            },
-        },
     } as any,
 
     warning: {
         borderColor: 'var(--colorPaletteDarkOrangeBorder1)',
-        selectors: {
-            '&:focus': {
-                outlineColor: 'var(--colorPaletteDarkOrangeBorder1)',
-            },
-        },
     } as any,
 
     invalid: {
         borderColor: 'var(--colorPaletteRedBorder1)',
-        selectors: {
-            '&:focus': {
-                outlineColor: 'var(--colorPaletteRedBorder1)',
-            },
-        },
     } as any,
 });

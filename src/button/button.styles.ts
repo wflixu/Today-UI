@@ -5,8 +5,7 @@
 
 import { makeStyles } from '@/shared/griffel';
 
-// 使用类型断言避免 Griffel 严格类型检查
-// 这是因为我们使用 CSS 变量，TypeScript 无法正确推断类型
+// 使用非简写属性避免 Griffel 警告
 export const useButtonStyles = makeStyles({
   root: {
     // 布局
@@ -16,18 +15,28 @@ export const useButtonStyles = makeStyles({
     justifyContent: 'center',
     textDecorationLine: 'none',
     verticalAlign: 'middle',
-    margin: '0px',
+    // 使用非简写属性代替 margin
+    marginTop: '0px',
+    marginBottom: '0px',
+    marginLeft: '0px',
+    marginRight: '0px',
     overflow: 'hidden',
 
     // 外观
     backgroundColor: 'var(--colorNeutralBackground1)',
     color: 'var(--colorNeutralForeground1)',
-    border: 'var(--strokeWidthThin) solid var(--colorNeutralStroke1)',
+    // 使用非简写属性代替 border
+    borderWidth: 'var(--strokeWidthThin)',
+    borderStyle: 'solid',
+    borderColor: 'var(--colorNeutralStroke1)',
     fontFamily: 'var(--fontFamilyBase)',
     outlineStyle: 'none',
 
-    // 尺寸
-    padding: '5px var(--spacingHorizontalM)',
+    // 尺寸 - 使用非简写属性代替 padding
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    paddingLeft: 'var(--spacingHorizontalM)',
+    paddingRight: 'var(--spacingHorizontalM)',
     minWidth: '96px',
     borderRadius: 'var(--borderRadiusMedium)',
 
@@ -73,30 +82,38 @@ export const useButtonStyles = makeStyles({
   // ========== Size 变体 ==========
 
   small: {
-    padding: '3px var(--spacingHorizontalS)',
+    // 使用非简写属性代替 padding
+    paddingTop: '3px',
+    paddingBottom: '3px',
+    paddingLeft: 'var(--spacingHorizontalS)',
+    paddingRight: 'var(--spacingHorizontalS)',
     minWidth: '64px',
     fontSize: 'var(--fontSizeBase200)',
     fontWeight: 'var(--fontWeightRegular)',
     lineHeight: 'var(--lineHeightBase200)',
-  },
+  } as any,
 
   large: {
-    padding: '8px var(--spacingHorizontalL)',
+    // 使用非简写属性代替 padding
+    paddingTop: '8px',
+    paddingBottom: '8px',
+    paddingLeft: 'var(--spacingHorizontalL)',
+    paddingRight: 'var(--spacingHorizontalL)',
     minWidth: '96px',
     fontSize: 'var(--fontSizeBase400)',
     fontWeight: 'var(--fontWeightSemibold)',
     lineHeight: 'var(--lineHeightBase400)',
-  },
+  } as any,
 
   // ========== Shape 变体 ==========
 
   square: {
     borderRadius: 'var(--borderRadiusNone)',
-  },
+  } as any,
 
   circular: {
     borderRadius: 'var(--borderRadiusCircular)',
-  },
+  } as any,
 
   // ========== Disabled 状态 ==========
 
@@ -126,35 +143,36 @@ export const useButtonStyles = makeStyles({
     fontSize: '16px',
     height: '16px',
     width: '16px',
-  },
+  } as any,
 
   iconLarge: {
     fontSize: '24px',
     height: '24px',
     width: '24px',
-  },
+  } as any,
 
-  // 图标位置间距
+  // 图标位置间距 - 使用非简写属性代替 margin
   iconBefore: {
     marginRight: 'var(--fui-Button-icon-spacing)',
-  },
+  } as any,
 
   iconAfter: {
     marginLeft: 'var(--fui-Button-icon-spacing)',
-  },
+  } as any,
 
   // ========== Loading 状态 ==========
 
   loading: {
     position: 'relative',
     cursor: 'wait',
-  },
+  } as any,
 
   spinnerWrapper: {
-    display: 'inline-flex',
+    display: 'inlineFlex',
     alignItems: 'center',
+    // 使用非简写属性代替 margin
     marginRight: 'var(--spacingHorizontalXS)',
-  },
+  } as any,
 
   // ========== Primary 焦点样式 ==========
 
@@ -163,32 +181,44 @@ export const useButtonStyles = makeStyles({
   // ========== Icon-only 样式优化 ==========
 
   iconOnlySmall: {
-    padding: '1px',
+    // 使用非简写属性代替 padding
+    paddingTop: '1px',
+    paddingBottom: '1px',
+    paddingLeft: '1px',
+    paddingRight: '1px',
     minWidth: '24px',
     maxWidth: '24px',
-  },
+  } as any,
 
   iconOnlyMedium: {
-    padding: '5px',
+    // 使用非简写属性代替 padding
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    paddingLeft: '5px',
+    paddingRight: '5px',
     minWidth: '32px',
     maxWidth: '32px',
-  },
+  } as any,
 
   iconOnlyLarge: {
-    padding: '7px',
+    // 使用非简写属性代替 padding
+    paddingTop: '7px',
+    paddingBottom: '7px',
+    paddingLeft: '7px',
+    paddingRight: '7px',
     minWidth: '40px',
     maxWidth: '40px',
-  },
+  } as any,
 
   // ========== 带图标时的 padding 调整 ==========
 
   withIconSmall: {
     paddingBottom: '1px',
     paddingTop: '1px',
-  },
+  } as any,
 
   withIconLarge: {
     paddingBottom: '7px',
     paddingTop: '7px',
-  },
+  } as any,
 });
