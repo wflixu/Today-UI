@@ -1,0 +1,55 @@
+/* src/input/input.css */
+
+.t-input {
+  /* 基础样式通过 griffel 处理 */
+}
+
+/* 交互状态 */
+.t-input__input:hover:not(:disabled):not(.readonly) {
+  border-color: var(--colorNeutralStroke1Hover);
+}
+
+.t-input__input:focus-visible {
+  outline: var(--strokeWidthThick) solid var(--colorStrokeFocus2);
+  outline-offset: -2px;
+}
+
+.t-input__input:disabled,
+.t-input__input.readonly {
+  cursor: not-allowed;
+}
+
+/* 外观变体的交互状态 */
+.t-input--outline .t-input__input:hover:not(:disabled):not(.readonly) {
+  border-color: var(--colorNeutralStroke1Hover);
+}
+
+.t-input--filled .t-input__input:hover:not(:disabled):not(.readonly) {
+  background-color: var(--colorNeutralBackground1Hover);
+}
+
+.t-input--underlined .t-input__input:hover:not(:disabled):not(.readonly) {
+  border-bottom-color: var(--colorNeutralStroke1Hover);
+}
+
+.t-input--inline-dark .t-input__input:hover:not(:disabled):not(.readonly) {
+  background-color: var(--colorNeutralBackground1Hover);
+}
+
+.t-input--inline-light .t-input__input:hover:not(:disabled):not(.readonly) {
+  background-color: var(--colorNeutralBackground1Hover);
+}
+
+/* 错误状态 */
+.t-input--error .t-input__input {
+  border-color: var(--colorPaletteRedBorder1);
+}
+
+.t-input--error .t-input__input:focus-visible {
+  outline-color: var(--colorPaletteRedBorder1);
+}
+
+/* 只读状态 */
+.t-input--readonly .t-input__input {
+  background-color: var(--colorNeutralBackground1);
+}

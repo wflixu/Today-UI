@@ -4,8 +4,16 @@
  */
 
 import { makeStyles } from '@/shared/griffel';
+import { mergeClasses } from '@/shared/griffel/mergeClasses';
+import type { TooltipState } from './Tooltip.types';
 
-export const useTooltipStyles = makeStyles({
+export const tooltipClassNames = {
+  root: 't-tooltip',
+  content: 't-tooltip__content',
+  arrow: 't-tooltip__arrow',
+} as const;
+
+export const useTooltipStylesStyles = makeStyles({
   root: {
     // 定位
     position: 'absolute',
@@ -85,3 +93,35 @@ export const useTooltipStyles = makeStyles({
     color: 'var(--colorNeutralForeground2)',
   } as any,
 });
+
+/**
+ * Apply styles to the Tooltip state by merging semantic class names with Griffel styles.
+ *
+ * Style Strategy:
+ * - Griffel (above): Handles ALL static styles
+ *   - Base styles, visibility state, relationship variants, arrow
+ * - CSS (tooltip.css): Handles ONLY dynamic positioning
+ *   - Arrow positioning based on data-placement attribute
+ */
+export const applyTooltipStyles = (state: TooltipState): void => {
+  const styles = useTooltipStylesStyles();
+
+  // Merge classes for root
+  const rootClasses = [
+    tooltipClassNames.root,
+    styles.root,
+    state.isVisible && styles.visible,
+    state.relationship === 'label' && styles.relationshipLabel,
+    state.relationship === 'inaccessible' && styles.relationshipInaccessible,
+  ].filter(Boolean);
+
+  state.className = mergeClasses(...rootClasses);
+
+  // Merge classes for arrow
+  if (state.withArrow) {
+    state.arrowClassName = mergeClasses(
+      tooltipClassNames.arrow,
+      styles.arrow
+    );
+  }
+};

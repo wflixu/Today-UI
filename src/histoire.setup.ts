@@ -1,5 +1,3 @@
-// src/histoire.setup.ts
-
 import { createPinia } from 'pinia'
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 import TodayUI from './index'

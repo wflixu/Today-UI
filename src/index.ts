@@ -24,6 +24,9 @@ const TodayUI = {
   version: version ?? "",
 };
 export * from "./components";
+export * from "./field";
+export * from "./label";
+export * from "./input";
 export type * from "./interface";
 export * from "./icon/";
 export type * from "./shared/type";

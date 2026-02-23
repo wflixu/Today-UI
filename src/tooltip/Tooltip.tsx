@@ -1,4 +1,4 @@
-import { defineComponent, ref, SlotsType, computed, onUnmounted, watch } from 'vue';
+import { defineComponent, ref, SlotsType, computed, onUnmounted } from 'vue';
 import {
   useFloating,
   offset,
@@ -8,7 +8,7 @@ import {
   type Placement,
 } from '@floating-ui/vue';
 import { renderTooltip } from './renderTooltip';
-import { useTooltipGriffelStyles, applyTooltipStyles } from './useTooltipStyles';
+import { applyTooltipStyles } from './useTooltipStyles.styles';
 import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
 import { useTooltip } from './useTooltip';
 import './tooltip.css';
@@ -23,20 +23,26 @@ export const Tooltip = defineComponent({
     const floatingRef = ref<HTMLElement | null>(null);
     const arrowRef = ref<HTMLElement | null>(null);
 
-    // 在 setup 顶层获取 Griffel 样式（hooks 必须在顶层调用）
-    const griffelStyles = useTooltipGriffelStyles();
+    // 创建 Tooltip 状态（只在 setup 时执行一次）
+    const tooltipState = useTooltip(props, referenceRef);
 
-    // 创建持久状态（只执行一次，保持内部状态和定时器引用）
-    const state = useTooltip(props);
+    // 使用 computed 创建响应式状态（与 Button 模式一致）
+    const state = computed(() => {
+      // 更新 isVisible 值以保持响应性
+      tooltipState.isVisible = tooltipState._isVisible.value;
+      // 在 computed 中应用样式
+      applyTooltipStyles(tooltipState);
+      return tooltipState;
+    });
 
     // Floating UI 定位
     const { x, y, middlewareData, update } = useFloating(
       referenceRef,
       floatingRef,
       {
-        placement: state.placement as Placement,
+        placement: tooltipState.placement as Placement,
         middleware: [
-          offset(state.offset),
+          offset(tooltipState.offset),
           flip(),
           shift(),
           arrow({ element: arrowRef }),
@@ -60,31 +66,22 @@ export const Tooltip = defineComponent({
       top: `${y.value}px`,
     }));
 
-    // 监听可见性变化，应用样式（applyTooltipStyles 不包含 hooks，可以在 watch 中调用）
-    watch(
-      () => state._isVisible.value,
-      () => {
-        state.isVisible = state._isVisible.value;
-        applyTooltipStyles(state, griffelStyles);
-      },
-      { immediate: true }
-    );
-
     // 清理定时器
     onUnmounted(() => {
-      state.clearTimers();
+      tooltipState.clearTimers();
     });
 
     // 暴露引用和方法
     expose({
       referenceRef,
       floatingRef,
+      arrowRef,
       update,
     });
 
     // 返回渲染函数
     return () => renderTooltip(
-      state,
+      state.value,
       slots,
       {
         referenceRef,

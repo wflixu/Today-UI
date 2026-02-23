@@ -46,9 +46,10 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - `.tsx` 文件 - 主要组件逻辑，使用 TSX 语法
 - `props.ts` - 组件 props 定义
 - `type.ts` - TypeScript 类型和接口定义
-- `.story.vue` - Histoire示例 和文档
+- `docs/` 文件夹 - 组件文档和规格
+  - `<ComponentName>.story.vue` - Histoire 示例和文档
+  - `spec.md` - 组件设计规格和实现细节（可选）
 - `style/` 文件夹 - 组件特定样式（需要时）
-- `spec.md` - 组件设计规格和实现细节
 
 ### 主要组件类型
 - **Tooltip** - 工具提示功能
@@ -104,6 +105,64 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 5. 保持组件行为和视觉效果的一致性
 
 ## 开发规范
+
+### 单元测试要求
+
+**每个组件都必须编写单元测试。**
+
+#### 测试文件规范
+
+- **文件位置**：测试文件必须放在组件目录下的 `tests/` 子目录中
+  ```
+  src/<component-name>/
+    ├── tests/
+    │   └── <ComponentName>.test.ts  ✅ 单元测试
+    ├── <ComponentName>.tsx
+    └── ...
+  ```
+
+- **文件命名**：使用 `.test.ts` 后缀（不是 `.spec.ts`）
+- **参考示例**：[src/button/tests/Button.test.ts](src/button/tests/Button.test.ts)
+
+#### 测试覆盖范围
+
+每个组件测试必须包含：
+
+1. **Props 渲染测试** - 验证所有 props 都能正确渲染
+2. **事件处理测试** - 验证所有事件都能正确触发
+3. **插槽测试** - 验证所有插槽都能正确渲染
+4. **动态 Props 更新测试** - 验证响应式更新
+5. **废弃警告测试**（如适用）- 验证废弃 props 会显示警告
+6. **无障碍性相关测试** - 验证自定义属性和表单属性支持
+7. **边界情况测试** - 验证极端情况（空内容、超长文本等）
+
+#### 测试命令
+
+```bash
+# 运行所有测试
+pnpm test
+
+# 运行特定组件测试
+pnpm test src/<component-name>/tests/<ComponentName>.test.ts
+
+# 监听模式（开发时使用）
+pnpm test:watch
+
+# 生成覆盖率报告
+pnpm test:coverage
+```
+
+#### 覆盖率要求
+
+- **语句覆盖率**: ≥ 80%
+- **分支覆盖率**: ≥ 75%
+- **函数覆盖率**: ≥ 80%
+- **行覆盖率**: ≥ 80%
+
+#### 详细测试规范
+
+完整的测试规范、最佳实践和示例，请参考：
+- **[specs/testing-guidelines.md](specs/testing-guidelines.md)** - 完整的组件测试规范文档
 
 ### 无障碍性（Accessibility）
 

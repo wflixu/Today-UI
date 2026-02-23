@@ -1,0 +1,51 @@
+@import "./../style/base.css";
+
+/* Semantic base class - base styles */
+.t-label {
+  display: inline-block;
+  font-size: var(--fontSizeBase300);
+  font-weight: var(--fontWeightSemibold);
+  color: var(--colorNeutralForeground1);
+  margin-bottom: var(--spacingVerticalXXS);
+  box-sizing: border-box;
+}
+
+/* Size variations */
+.t-label.size-small {
+  font-size: var(--fontSizeBase200);
+}
+
+.t-label.size-large {
+  font-size: var(--fontSizeBase400);
+}
+
+/* Weight variations */
+.t-label.weight-normal {
+  font-weight: var(--fontWeightNormal);
+}
+
+.t-label.weight-bold {
+  font-weight: var(--fontWeightBold);
+}
+
+/* Disabled state */
+.t-label.disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+
+/* Required indicator */
+.t-label__required-indicator {
+  color: var(--colorPaletteRedBorder1);
+  margin-left: var(--spacingHorizontalXS);
+}
+
+/* Hover state - when label is interactive */
+.t-label:not(.disabled):hover {
+  cursor: pointer;
+}
+
+/* Focus-within state - when associated input is focused */
+.t-label:focus-within {
+  outline: none;
+}

@@ -1,19 +1,33 @@
 /**
- * Tooltip Component CSS
- * 箭头定位和触发元素包装器样式
+ * Tooltip Component Styles
+ *
+ * Griffel handles all static styles:
+ * - Base styles (root)
+ * - Visibility state (visible)
+ * - Relationship variants (label, inaccessible)
+ * - Arrow styling
+ * - Animation (opacity, transform)
+ * - Typography (font, size, weight, line-height)
+ * - Colors (background, foreground, border)
+ * - Spacing (padding)
+ * - Sizing (maxWidth)
+ *
+ * CSS is ONLY used for dynamic positioning based on data-placement:
+ * - Arrow positioning adjustments
+ * - Trigger element wrapper
  */
 
-/* 触发元素包装器 */
-.t-tooltip-trigger {
-  display: inline-block;
+/* Semantic base class */
+.t-tooltip {
+  /* All styles applied by Griffel */
 }
 
-/* Tooltip 内容容器 */
+/* Content wrapper */
 .t-tooltip__content {
-  /* 内容样式由 Griffel 提供 */
+  /* Content container */
 }
 
-/* 箭头定位 - 根据 placement 调整位置 */
+/* Arrow positioning based on data-placement attribute */
 .t-tooltip__arrow[data-placement^="top"] {
   bottom: -4px;
 }
@@ -28,4 +42,9 @@
 
 .t-tooltip__arrow[data-placement^="right"] {
   left: -4px;
+}
+
+/* Trigger element wrapper */
+.t-tooltip-trigger {
+  display: inline-block;
 }
