@@ -16,3 +16,7 @@ export {
 
 // 导出类型
 export type { GriffelStyle, GriffelRenderer } from 'griffel-vue';
+
+// 导出工具函数
+export * from './utils';
+export * from './types';
