@@ -197,13 +197,46 @@ src/input/
 ├── input.css                  # 完整的组件样式
 ├── index.ts                   # 导出文件
 ├── tests/
-│   └── Input.test.ts          # 单元测试
+│   └── Input.test.ts          # 单元测试（69 个测试用例）
 └── docs/
     ├── Input.story.vue        # Histoire 文档
     └── SPEC.md                # 本文档
 ```
 
 ## 样式实现
+
+### v0.3.1 DOM 结构重构（2026-02-27）
+
+**问题分析：**
+原先的实现将所有元素作为 root 的直接子元素，导致 CSS 样式无法正确应用。正确的 Fluent Design Input 结构需要使用 input-wrapper 来包装 input 元素和相关按钮。
+
+**新的 DOM 结构：**
+
+```
+.t-input (root - 布局容器)
+  ├── .t-input__input-wrapper (样式容器 - 边框、背景、变体修饰符)
+  │    ├── .t-input__content-before (前置内容)
+  │    ├── .t-input__input (input 元素)
+  │    └── .t-input__content-after (后置内容)
+  │         ├── .t-input__clear-button (清除按钮)
+  │         └── .t-input__password-toggle (密码切换按钮)
+  └── .t-input__progress-indicator (进度条 - 绝对定位)
+```
+
+**关键设计决策：**
+
+1. **input-wrapper 的职责：**
+   - 提供边框和背景样式
+   - 应用所有变体修饰符（appearance、size、state）
+   - 使用 flexbox 布局对齐内部元素
+
+2. **input 元素：**
+   - `border: none; background: transparent;` 样式继承自 wrapper
+   - `flex: 1; min-width: 0;` 确保正确填充空间
+
+3. **修饰符类位置：**
+   - 所有变体类（如 `t-input--filled`、`t-input--small`、`error`）应用在 wrapper 上
+   - root 元素保持简洁，仅作为布局容器
 
 ### v0.3.0 纯 CSS + BEM 命名策略
 
@@ -212,7 +245,7 @@ src/input/
 ```typescript
 export const inputClassNames = {
   root: 't-input',
-  inputWrapper: 't-input__input-wrapper',
+  inputWrapper: 't-input__input-wrapper',  // 新增：包装器
   input: 't-input__input',
   contentBefore: 't-input__content-before',
   contentAfter: 't-input__content-after',
@@ -251,9 +284,8 @@ export const inputVariants = {
 **CSS 样式实现 (input.css)：**
 
 ```css
-/* Input 基础样式 */
+/* Input 根容器 - 布局容器 */
 .t-input {
-  /* 布局 */
   box-sizing: border-box;
   display: inline-flex;
   flex-direction: column;
@@ -261,32 +293,54 @@ export const inputVariants = {
   width: 100%;
 }
 
-.t-input__input {
-  /* 使用 CSS Variables */
+/* Input Wrapper - 样式容器 */
+.t-input__input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+
+  /* 边框和背景 */
   background-color: var(--colorNeutralBackground1);
   border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
   border-radius: var(--borderRadiusMedium);
+}
+
+/* Input 元素 - 透明，继承 wrapper 样式 */
+.t-input__input {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  border: none;
+  background: transparent;
+
   color: var(--colorNeutralForeground1);
   font-family: var(--fontFamilyBase);
   font-size: var(--fontSizeBase300);
   padding: var(--spacingVerticalSNudge) var(--spacingHorizontalMN);
-  width: 100%;
-
-  /* 布局 */
-  box-sizing: border-box;
-  outline: none;
 }
 
-/* 外观变体 */
-.t-input--filled .t-input__input {
+/* 外观变体 - 应用在 wrapper 上 */
+.t-input--filled .t-input__input-wrapper {
   background-color: var(--colorNeutralBackground1);
 }
 
-.t-input--underlined .t-input__input {
+.t-input--underlined .t-input__input-wrapper {
   border-radius: 0;
   border-left: none;
   border-right: none;
   border-top: none;
+  border-bottom-width: var(--strokeWidthThick);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* 交互状态 */
+.t-input__input-wrapper:focus-within {
+  border-color: var(--colorBrandStroke1);
+  box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorCompoundBrandStroke1Hover);
+  z-index: 1;
 }
 
 /* 尺寸变体 */
@@ -297,6 +351,9 @@ export const inputVariants = {
 
 .t-input--large .t-input__input {
   font-size: var(--fontSizeBase400);
+  padding: var(--spacingVerticalS) var(--spacingHorizontalM);
+}
+```
   padding: var(--spacingVerticalS) var(--spacingHorizontalM);
 }
 
@@ -382,6 +439,7 @@ const handleInput = (event: Event) => {
 - **@fluentui/react-components Input**: https://react.fluentui.dev/?path=/docs/components-input--docs
 - **Fluent Design 设计规范**: https://www.fluent2.microsoft.design/
 - **HTML5 input 元素**: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+- @fluentui/react-components Input 源码
 
 ## 变更历史
 
@@ -389,6 +447,48 @@ const handleInput = (event: Event) => {
 |------|------|----------|
 | 0.2.0 | 2026-02-13 | 初始实现 |
 | 0.3.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
+| 0.3.1 | 2026-02-27 | **DOM 结构重构**：修复样式应用问题 |
+
+### 版本 0.3.1 详细变更（2026-02-27）
+
+**问题：**
+- 样式类与 DOM 结构不匹配
+- 变体修饰符应用位置错误
+- focus 状态无法正确显示
+
+**解决方案：**
+- ✅ 新增 `.t-input__input-wrapper` 包装器元素
+- ✅ 将所有变体修饰符移至 wrapper
+- ✅ input 元素使用透明样式，继承 wrapper 边框和背景
+- ✅ 使用 `:focus-within` 伪类实现 focus 状态
+
+**修改文件：**
+- 🔄 `input.css` - 重构样式，添加 input-wrapper 样式
+- 🔄 `useInputClasses.ts` - 返回 inputWrapper 类名
+- 🔄 `renderInput.ts` - 重构 DOM 结构，添加 input-wrapper
+- 🔄 `Input.tsx` - 应用 inputWrapper 类名
+- 🔄 `Input.types.ts` - 添加 inputWrapper 到 InputState
+- 🔄 `useInput.ts` - 添加 inputWrapper 到返回状态
+- 🔄 `tests/Input.test.ts` - 更新测试以匹配新结构
+
+**DOM 结构变更：**
+```
+旧结构：
+.t-input
+  ├── .t-input__content-before
+  ├── .t-input__input (边框、背景样式)
+  ├── .t-input__clear-button
+  └── .t-input__password-toggle
+
+新结构：
+.t-input
+  └── .t-input__input-wrapper (边框、背景样式)
+       ├── .t-input__content-before
+       ├── .t-input__input (透明)
+       └── .t-input__content-after
+            ├── .t-input__clear-button
+            └── .t-input__password-toggle
+```
 
 ### 版本 0.3.0 详细变更（2026-02-27）
 

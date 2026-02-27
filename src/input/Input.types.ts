@@ -272,6 +272,7 @@ export interface InputState {
 
   // 元素配置
   root: Record<string, any>;
+  inputWrapper: Record<string, any>;
   input: Record<string, any>;
   contentBefore?: Record<string, any>;
   contentAfter?: Record<string, any>;

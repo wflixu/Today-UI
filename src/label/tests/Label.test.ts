@@ -181,15 +181,15 @@ describe('Label Component', () => {
       expect(classes).toContain('t-label');
     });
 
-    it('should not generate modifier classes for disabled state', () => {
+    it('should apply disabled state class', () => {
       const wrapper = mount(Label, {
         props: { for: 'test', disabled: true },
         slots: { default: 'Test' }
       });
 
       const classes = wrapper.find('label').classes();
-      // Should NOT have disabled class (removed in redesign)
-      expect(classes).not.toContain('disabled');
+      // Should have disabled class for styling
+      expect(classes).toContain('disabled');
       // Should have semantic class
       expect(classes).toContain('t-label');
     });

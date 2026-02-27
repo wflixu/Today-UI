@@ -16,14 +16,14 @@ export const labelClassNames = {
  */
 export const labelVariants = {
   size: {
-    small: 'size-small',
+    small: 't-label--small',
     medium: '',
-    large: 'size-large',
+    large: 't-label--large',
   } satisfies Record<LabelSize, string>,
   weight: {
-    normal: 'weight-normal',
+    normal: 't-label--normal',
     semibold: '',
-    bold: 'weight-bold',
+    bold: 't-label--bold',
   } satisfies Record<LabelWeight, string>,
   state: {
     disabled: 'disabled',

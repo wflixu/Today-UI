@@ -151,8 +151,8 @@ describe('Input 组件', () => {
           props: { error: true }
         });
 
-        const root = wrapper.find('.t-input');
-        expect(root.classes()).toContain('error');
+        const inputWrapper = wrapper.find('.t-input__input-wrapper');
+        expect(inputWrapper.classes()).toContain('error');
       });
     });
 
@@ -631,12 +631,12 @@ describe('Input 组件', () => {
         props: { error: false }
       });
 
-      let root = wrapper.find('.t-input');
-      expect(root.classes()).not.toContain('error');
+      let inputWrapper = wrapper.find('.t-input__input-wrapper');
+      expect(inputWrapper.classes()).not.toContain('error');
 
       await wrapper.setProps({ error: true });
-      root = wrapper.find('.t-input');
-      expect(root.classes()).toContain('error');
+      inputWrapper = wrapper.find('.t-input__input-wrapper');
+      expect(inputWrapper.classes()).toContain('error');
     });
   });
 

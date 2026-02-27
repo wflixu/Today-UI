@@ -63,13 +63,13 @@ export function useInputClasses(state: {
   validationState?: InputValidationState;
 }): {
   root: string;
+  inputWrapper: string;
   input: string;
   contentBefore?: string;
   contentAfter?: string;
   clearButton?: string;
   passwordToggleButton?: string;
   progressIndicator?: string;
-  inputValidation?: string;
 } {
   const {
     appearance = 'outline',
@@ -81,13 +81,15 @@ export function useInputClasses(state: {
   } = state;
 
   return {
-    root: cn(
-      inputClassNames.root,
+    root: cn(inputClassNames.root),
+    inputWrapper: cn(
+      inputClassNames.inputWrapper,
       appearance !== 'outline' && inputVariants.appearance[appearance],
       size !== 'medium' && inputVariants.size[size],
       disabled && inputVariants.state.disabled,
       error && inputVariants.state.error,
-      readonly && inputVariants.state.readonly
+      readonly && inputVariants.state.readonly,
+      validationState !== 'none' && inputVariants.validationState[validationState]
     ),
     input: inputClassNames.input,
     contentBefore: inputClassNames.contentBefore,
@@ -95,6 +97,5 @@ export function useInputClasses(state: {
     clearButton: inputClassNames.clearButton,
     passwordToggleButton: inputClassNames.passwordToggleButton,
     progressIndicator: inputClassNames.progressIndicator,
-    inputValidation: validationState !== 'none' ? inputVariants.validationState[validationState] : undefined,
   };
 }

@@ -17,21 +17,14 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
         required,
     } = state;
 
-    const rest = {
-        root: state.root,
-        input: state.input,
-        contentBefore: state.contentBefore,
-        contentAfter: state.contentAfter,
-        clearButton: state.clearButton,
-        passwordToggleButton: state.passwordToggleButton,
-        progressIndicator: state.progressIndicator,
-    };
-
     const children = [];
+
+    // ========== Input Wrapper ==========
+    const wrapperChildren = [];
 
     // 前置内容
     if (hasContentBefore && slots.contentBefore) {
-        children.push(
+        wrapperChildren.push(
             h('span', { class: state.contentBefore?.className }, slots.contentBefore())
         );
     }
@@ -64,7 +57,10 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
         onBlur: state.onBlur,
     });
 
-    children.push(inputElement);
+    wrapperChildren.push(inputElement);
+
+    // ========== Content After 区域 ==========
+    const contentAfterChildren = [];
 
     // 清除按钮（内置）
     if (showClearButtonVisible && !hasClearButtonSlot) {
@@ -75,14 +71,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
             onClick: state.onClear,
             'aria-label': '清除输入内容',
         }, '×');
-        children.push(clearButtonElement);
-    }
-
-    // 清除按钮（自定义插槽）
-    if (hasClearButtonSlot && showClearButtonVisible) {
-        children.push(
-            h('span', { class: state.clearButton?.className }, slots.clearButton())
-        );
+        contentAfterChildren.push(clearButtonElement);
     }
 
     // 密码切换按钮（内置）
@@ -93,22 +82,43 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
             onClick: state.onPasswordToggle,
             'aria-label': isPasswordVisible ? '隐藏密码' : '显示密码',
         }, '👁️');
-        children.push(passwordToggleElement);
+        contentAfterChildren.push(passwordToggleElement);
+    }
+
+    // 后置内容（自定义插槽）
+    if (hasContentAfter && slots.contentAfter) {
+        // 如果有自定义的 contentAfter 插槽，将其渲染
+        contentAfterChildren.push(
+            h('span', { class: state.contentAfter?.className }, slots.contentAfter())
+        );
+    }
+
+    // 清除按钮（自定义插槽）
+    if (hasClearButtonSlot && showClearButtonVisible) {
+        contentAfterChildren.push(
+            h('span', { class: state.clearButton?.className }, slots.clearButton())
+        );
     }
 
     // 密码切换按钮（自定义插槽）
     if (hasPasswordToggleButtonSlot && showPasswordToggleVisible) {
-        children.push(
+        contentAfterChildren.push(
             h('span', { class: state.passwordToggleButton?.className }, slots.passwordToggleButton())
         );
     }
 
-    // 后置内容（如果有）
-    if (hasContentAfter && slots.contentAfter) {
-        children.push(
-            h('span', { class: state.contentAfter?.className }, slots.contentAfter())
+    // 将 contentAfter children 添加到 wrapper
+    if (contentAfterChildren.length > 0) {
+        wrapperChildren.push(
+            h('span', { class: state.contentAfter?.className }, contentAfterChildren)
         );
     }
+
+    // ========== Root Children ==========
+    // Input Wrapper
+    children.push(
+        h('div', { class: state.inputWrapper?.className }, wrapperChildren)
+    );
 
     // 进度指示器（内置）
     if (state.progressIndicator && !hasProgressIndicatorSlot) {
@@ -116,13 +126,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
         const progressElement = h('div', {
             class: state.progressIndicator?.className,
             style: {
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                height: '2px',
-                backgroundColor: 'currentColor',
                 width: `${progressValue * 100}%`,
-                transition: 'width 0.2s ease',
             },
             role: 'progressbar',
             'aria-valuenow': state.progress,
@@ -140,7 +144,7 @@ export const renderInput = (state: InputState, slots: InputSlots) => {
         );
     }
 
-    // 包装器
+    // Root 包装器
     return h('div', { class: state.root.className }, children);
 };
 

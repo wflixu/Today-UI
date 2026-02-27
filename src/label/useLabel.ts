@@ -43,6 +43,7 @@ export const useLabel = (
 
         // Element configuration
         root,
-        requiredIndicator: (required && !hasRequiredIndicatorSlot()) ? {} : undefined,
+        // 始终创建 requiredIndicator 配置（无论是默认还是自定义插槽），只要 required 为 true
+        requiredIndicator: required ? {} : undefined,
     };
 };

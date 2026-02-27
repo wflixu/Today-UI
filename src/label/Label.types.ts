@@ -68,6 +68,14 @@ export const labelProps = {
         type: String,
         default: undefined as undefined
     },
+
+    /**
+     * Custom CSS class name
+     */
+    class: {
+        type: String,
+        default: undefined as undefined
+    },
 };
 
 // 提取 Props 类型

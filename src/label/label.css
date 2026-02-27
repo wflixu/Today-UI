@@ -11,20 +11,20 @@
 }
 
 /* Size variations */
-.t-label.size-small {
+.t-label--small {
   font-size: var(--fontSizeBase200);
 }
 
-.t-label.size-large {
+.t-label--large {
   font-size: var(--fontSizeBase400);
 }
 
 /* Weight variations */
-.t-label.weight-normal {
+.t-label--normal {
   font-weight: var(--fontWeightNormal);
 }
 
-.t-label.weight-bold {
+.t-label--bold {
   font-weight: var(--fontWeightBold);
 }
 

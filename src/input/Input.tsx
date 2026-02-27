@@ -38,14 +38,17 @@ export const Input = defineComponent({
                 inputState.root.className = classes.root;
             }
 
+            if (inputState.inputWrapper !== undefined) {
+                inputState.inputWrapper = {
+                    ...inputState.inputWrapper,
+                    className: classes.inputWrapper,
+                };
+            }
+
             if (inputState.input) {
-                const inputClasses = [classes.input];
-                if (classes.inputValidation) {
-                    inputClasses.push(classes.inputValidation);
-                }
                 inputState.input = {
                     ...inputState.input,
-                    className: inputClasses.join(' '),
+                    className: classes.input,
                 };
             }
 

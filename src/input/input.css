@@ -1,34 +1,342 @@
-/* src/input/input.css */
+@import "./../style/base.css";
 
-/* Semantic class names - styles are applied by Griffel */
+/* ========== Input Root ========== */
 .t-input {
-  /* All styles applied by Griffel */
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
 }
 
+/* ========== Input Wrapper ========== */
+/* 包装器：包含 input、contentBefore、contentAfter 及其内部按钮 */
 .t-input__input-wrapper {
-  /* All styles applied by Griffel */
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
 }
 
+/* ========== Input Element ========== */
 .t-input__input {
-  /* All styles applied by Griffel */
+  /* 布局 */
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  border: none;
+  background: transparent;
+
+  /* 使用 CSS Variables - Fluent Design 令牌 */
+  color: var(--colorNeutralForeground1);
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase300);
+  padding: var(--spacingVerticalSNudge) var(--spacingHorizontalMN);
+
+  transition-duration: var(--durationFaster);
+  transition-property: background, border, box-shadow;
 }
+
+/* ========== Input Container（提供边框和背景） ========== */
+/* 通过 wrapper 的伪元素或专门的类来提供边框背景 */
+.t-input__input-wrapper {
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  padding: 0;
+}
+
+.t-input__input-wrapper::before {
+  /* 可选：用于提供额外的样式层 */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* ========== Appearance Variants ========== */
+
+/* Outline (default) - 使用 wrapper 默认样式 */
+
+/* Filled */
+.t-input--filled .t-input__input-wrapper {
+  background-color: var(--colorNeutralBackground1);
+}
+
+.t-input--filled .t-input__input {
+  background-color: transparent;
+}
+
+/* Underlined */
+.t-input--underlined .t-input__input-wrapper {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom-width: var(--strokeWidthThick);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Inline Dark */
+.t-input--inline-dark .t-input__input-wrapper {
+  background-color: transparent;
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.t-input--inline-dark .t-input__input {
+  color: var(--colorNeutralForegroundOnBrand);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.t-input--inline-dark .t-input__input::placeholder {
+  color: var(--colorNeutralForeground4Brand);
+}
+
+.t-input--inline-dark .t-input__input-wrapper:hover:not(:disabled) .t-input__input::placeholder {
+  color: var(--colorNeutralForeground3Brand);
+}
+
+/* Inline Light */
+.t-input--inline-light .t-input__input-wrapper {
+  background-color: transparent;
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.t-input--inline-light .t-input__input {
+  color: var(--colorNeutralForeground1);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.t-input--inline-light .t-input__input::placeholder {
+  color: var(--colorNeutralForeground4);
+}
+
+.t-input--inline-light .t-input__input-wrapper:hover:not(:disabled) .t-input__input::placeholder {
+  color: var(--colorNeutralForeground3);
+}
+
+/* ========== Size Variants ========== */
+
+/* Small */
+.t-input--small .t-input__input {
+  font-size: var(--fontSizeBase200);
+  padding: var(--spacingVerticalXXS) var(--spacingHorizontalS);
+}
+
+.t-input--small .t-input__content-before {
+  padding-left: var(--spacingHorizontalXS);
+}
+
+.t-input--small .t-input__content-after {
+  padding-right: var(--spacingHorizontalXS);
+}
+
+/* Large */
+.t-input--large .t-input__input {
+  font-size: var(--fontSizeBase400);
+  padding: var(--spacingVerticalS) var(--spacingHorizontalM);
+}
+
+.t-input--large .t-input__content-before {
+  padding-left: var(--spacingHorizontalMNudge);
+}
+
+.t-input--large .t-input__content-after {
+  padding-right: var(--spacingHorizontalMNudge);
+}
+
+/* ========== State Classes ========== */
+
+/* Disabled */
+.t-input--disabled .t-input__input-wrapper,
+.t-input__input-wrapper:has(.t-input__input:disabled) {
+  background-color: var(--colorNeutralBackgroundDisabled);
+  border-color: var(--colorNeutralStrokeDisabled);
+  cursor: not-allowed;
+}
+
+.t-input--disabled .t-input__input,
+.t-input__input:disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+
+/* Error */
+.t-input--error .t-input__input-wrapper,
+.t-input__input-wrapper.error {
+  border-color: var(--colorPaletteRedBorder1);
+}
+
+/* Readonly */
+.t-input--readonly .t-input__input,
+.t-input__input[readonly] {
+  cursor: default;
+}
+
+/* ========== Validation States ========== */
+
+/* Valid */
+.t-input .validation-valid {
+  border-color: var(--colorPaletteGreenBorder1);
+}
+
+/* Warning */
+.t-input .validation-warning {
+  border-color: var(--colorPaletteDarkOrangeBorder1);
+}
+
+/* Invalid */
+.t-input .validation-invalid {
+  border-color: var(--colorPaletteRedBorder1);
+}
+
+/* ========== Interactive States ========== */
+
+/* Hover */
+.t-input__input-wrapper:hover:not(:has(.t-input__input:disabled)):not(.t-input--error):not(.error) {
+  border-color: var(--colorNeutralStroke1Hover);
+}
+
+/* Focus */
+.t-input__input:focus {
+  outline: none;
+}
+
+.t-input__input-wrapper:focus-within {
+  border-color: var(--colorBrandStroke1);
+  box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorCompoundBrandStroke1Hover);
+  z-index: 1;
+}
+
+/* Focus with Error */
+.t-input--error .t-input__input-wrapper:focus-within,
+.t-input__input-wrapper.error:focus-within {
+  border-color: var(--colorPaletteRedBorder1);
+  box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorPaletteRedBorder1);
+}
+
+/* ========== Content Slots ========== */
 
 .t-input__content-before {
-  /* All styles applied by Griffel */
+  display: inline-flex;
+  align-items: center;
+  padding-left: var(--spacingHorizontalS);
+  flex-shrink: 0;
 }
 
 .t-input__content-after {
-  /* All styles applied by Griffel */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacingHorizontalXS);
+  padding-right: var(--spacingHorizontalS);
+  flex-shrink: 0;
 }
 
+/* ========== Clear Button ========== */
 .t-input__clear-button {
-  /* All styles applied by Griffel */
+  background: none;
+  border: none;
+  color: var(--colorNeutralForeground4);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacingHorizontalXS);
+  border-radius: var(--borderRadiusSmall);
+  transition: background-color var(--durationFast) var(--curveEasyEaseMax),
+              color var(--durationFast) var(--curveEasyEaseMax);
 }
 
+.t-input__clear-button:hover:not(:disabled) {
+  color: var(--colorNeutralForeground2);
+  background-color: var(--colorNeutralBackground1Hover);
+}
+
+.t-input__clear-button:active:not(:disabled) {
+  color: var(--colorNeutralForeground1);
+  background-color: var(--colorNeutralBackground1Pressed);
+}
+
+.t-input__clear-button:disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+
+/* ========== Password Toggle Button ========== */
 .t-input__password-toggle {
-  /* All styles applied by Griffel */
+  background: none;
+  border: none;
+  color: var(--colorNeutralForeground2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacingHorizontalXS);
+  border-radius: var(--borderRadiusSmall);
+  transition: background-color var(--durationFast) var(--curveEasyEaseMax),
+              color var(--durationFast) var(--curveEasyEaseMax);
 }
 
+.t-input__password-toggle:hover:not(:disabled) {
+  color: var(--colorNeutralForeground1);
+  background-color: var(--colorNeutralBackground1Hover);
+}
+
+.t-input__password-toggle:active:not(:disabled) {
+  color: var(--colorBrandForeground1);
+  background-color: var(--colorNeutralBackground1Pressed);
+}
+
+/* ========== Progress Indicator ========== */
 .t-input__progress-indicator {
-  /* All styles applied by Griffel */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: var(--strokeWidthThick);
+  background-color: var(--colorCompoundBrandStroke1);
+  border-radius: 0 0 var(--borderRadiusMedium) var(--borderRadiusMedium);
+  transition: width var(--durationNormal) var(--curveDecelerateMid);
+  pointer-events: none;
+}
+
+/* ========== Autofill Styles ========== */
+.t-input__input::placeholder {
+  color: var(--colorNeutralForeground4);
+}
+
+/* ========== Autofill Styles ========== */
+.t-input__input::placeholder {
+  color: var(--colorNeutralForeground4);
+}
+
+/* Webkit autofill - 应用到 wrapper */
+.t-input__input-wrapper:has(:-webkit-autofill) {
+  background-color: var(--colorNeutralBackground1);
+}
+
+.t-input__input:-webkit-autofill,
+.t-input__input:-webkit-autofill:hover,
+.t-input__input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--colorNeutralForeground1);
+  -webkit-box-shadow: 0 0 0 1000px var(--colorNeutralBackground1) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.t-input--filled .t-input__input-wrapper:has(:-webkit-autofill) {
+  background-color: var(--colorNeutralBackground1);
+}
+
+.t-input--filled .t-input__input:-webkit-autofill,
+.t-input--filled .t-input__input:-webkit-autofill:hover,
+.t-input--filled .t-input__input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--colorNeutralBackground1) inset;
 }

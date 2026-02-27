@@ -1,4 +1,5 @@
 import { computed, defineComponent, SlotsType } from 'vue';
+import { cn } from '@/shared/styles/classUtils';
 import { labelProps, type LabelSlots } from './Label.types';
 import { useLabel } from './useLabel';
 import { useLabelClasses, labelClassNames } from './useLabelClasses';
@@ -33,8 +34,13 @@ export const Label = defineComponent({
                 disabled: labelState.disabled,
             });
 
+            // 合并自定义 class 和组件类名
+            const mergedClasses = props.class
+                ? cn(classes, props.class)
+                : classes;
+
             // 应用类名到状态
-            labelState.root.className = classes;
+            labelState.root.className = mergedClasses;
 
             // 处理 required indicator 样式
             if (labelState.requiredIndicator) {

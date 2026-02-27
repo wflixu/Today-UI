@@ -163,6 +163,7 @@ export const useInput = (
 
         // 元素配置
         root: {},
+        inputWrapper: {},
         input: {},
         contentBefore: hasContentBefore.value ? {} : undefined,
         contentAfter: hasContentAfter.value ? {} : undefined,
