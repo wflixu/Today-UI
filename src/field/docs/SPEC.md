@@ -46,7 +46,7 @@ Field 只负责布局和验证：
 
 ### 4. 纯 CSS 样式策略
 
-**v1.0.0 更新：** 采用纯 CSS Variables + BEM 命名策略
+**v0.3.0 更新：** 采用纯 CSS Variables + BEM 命名策略
 
 ## API 参考
 
@@ -180,7 +180,7 @@ src/field/
 
 ## 样式实现
 
-### v1.0.0 纯 CSS + BEM 命名策略
+### v0.3.0 纯 CSS + BEM 命名策略
 
 **语义化类名定义 (useFieldClasses.ts)：**
 
@@ -424,13 +424,13 @@ Field 组件通过以下方式支持无障碍性：
 
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
-| 1.0.0 | 2026-02-16 | 初始实现（位于 src/input/Field.tsx） |
-| 1.1.0 | 2026-02-17 | **重大变更**：重新设计为完全独立的布局容器，移除 label、required、helperText props |
-| 1.2.0 | 2026-02-17 | **目录重构**：从 src/input/ 移动到独立的 src/field/ 目录 |
-| 1.3.0 | 2026-02-17 | **组件整合**：HelperText 组件移动到 src/field/ 目录，与 Field 组件放在一起 |
-| 1.4.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
+| 0.2.0 | 2026-02-16 | 初始实现（位于 src/input/Field.tsx） |
+| 0.2.1 | 2026-02-17 | **重大变更**：重新设计为完全独立的布局容器，移除 label、required、helperText props |
+| 0.2.2 | 2026-02-17 | **目录重构**：从 src/input/ 移动到独立的 src/field/ 目录 |
+| 0.2.3 | 2026-02-17 | **组件整合**：HelperText 组件移动到 src/field/ 目录，与 Field 组件放在一起 |
+| 0.3.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
 
-### 版本 1.1.0 详细变更（2026-02-17）
+### 版本 0.2.1 详细变更（2026-02-17）
 
 **重新设计目标：**
 - Label 和 Field 完全独立
@@ -451,7 +451,7 @@ Field 组件通过以下方式支持无障碍性：
 - ✅ `label` slot - 用户手动放置 Label 组件
 - ✅ `helperText` slot - 用户手动放置 HelperText 组件
 
-### 版本 1.4.0 详细变更（2026-02-27）
+### 版本 0.3.0 详细变更（2026-02-27）
 
 **迁移目标：**
 - 从 Griffel CSS-in-JS 迁移到纯 CSS Variables

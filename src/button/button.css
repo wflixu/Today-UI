@@ -52,242 +52,210 @@
     outline: var(--strokeWidthThick) solid var(--colorStrokeFocus2);
     outline-offset: -2px;
   }
+}
 
-  /* Shape variations */
-  &.shape-square {
-    border-radius: var(--borderRadiusNone);
+/* ========== Shape variations ========== */
+.t-button--square {
+  border-radius: var(--borderRadiusNone);
+}
+
+.t-button--circular {
+  border-radius: var(--borderRadiusCircular);
+}
+
+/* ========== Size variations ========== */
+.t-button--small {
+  padding: 3px var(--spacingHorizontalS);
+  min-width: 64px;
+  font-size: var(--fontSizeBase200);
+  font-weight: var(--fontWeightRegular);
+  line-height: var(--lineHeightBase200);
+}
+
+.t-button--large {
+  padding: 8px var(--spacingHorizontalL);
+  min-width: 96px;
+  font-size: var(--fontSizeBase400);
+  font-weight: var(--fontWeightSemibold);
+  line-height: var(--lineHeightBase400);
+}
+
+/* ========== Icon-only variations ========== */
+.is-icon-only.t-button--small {
+  padding: 1px;
+  min-width: 24px;
+  max-width: 24px;
+}
+
+.is-icon-only {
+  padding: 5px;
+  min-width: 32px;
+  max-width: 32px;
+}
+
+.is-icon-only.t-button--large {
+  padding: 7px;
+  min-width: 40px;
+  max-width: 40px;
+}
+
+/* ========== Appearance variations ========== */
+.t-button--primary {
+  background-color: var(--colorBrandBackground);
+  color: var(--colorNeutralForegroundOnBrand);
+  border-color: transparent;
+  box-shadow: var(--colorNeutralShadowKey) 0px 2px 4px;
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorBrandBackgroundHover);
+    color: var(--colorNeutralForegroundOnBrand);
+    box-shadow: var(--colorNeutralShadowKey) 0px 4px 8px;
   }
 
-  &.shape-circular {
-    border-radius: var(--borderRadiusCircular);
+  &:active:not([disabled]) {
+    background-color: var(--colorBrandBackgroundPressed);
+    color: var(--colorNeutralForegroundOnBrand);
+    box-shadow: var(--colorNeutralShadowKey) 0px 1px 2px;
   }
 
-  /* Size variations */
-  &.size-small {
-    padding: 3px var(--spacingHorizontalS);
-    min-width: 64px;
-    font-size: var(--fontSizeBase200);
-    font-weight: var(--fontWeightRegular);
-    line-height: var(--lineHeightBase200);
+  /* Primary 按钮特殊焦点样式 */
+  &:focus-visible {
+    outline: var(--strokeWidthThick) solid var(--colorNeutralForegroundOnBrand);
+    outline-offset: -2px;
+    box-shadow: var(--shadow2), 0 0 0 1px var(--colorStrokeFocus2) inset;
   }
 
-  &.size-large {
-    padding: 8px var(--spacingHorizontalL);
-    min-width: 96px;
-    font-size: var(--fontSizeBase400);
-    font-weight: var(--fontWeightSemibold);
-    line-height: var(--lineHeightBase400);
-  }
-
-  /* Icon only variations */
-  &.icon-only.size-small {
-    padding: 1px;
-    min-width: 28px;
-  }
-
-  &.icon-only.size-large {
-    padding: 7px;
-    min-width: 44px;
-  }
-
-  /* Appearance variations */
-  &:not([disabled]) {
-    &.appearance-primary {
-      background-color: var(--colorBrandBackground);
-      color: var(--colorNeutralForegroundOnBrand);
-      border-color: transparent;
-      box-shadow: var(--colorNeutralShadowKey) 0px 2px 4px;
-
-      &:hover {
-        background-color: var(--colorBrandBackgroundHover);
-        color: var(--colorNeutralForegroundOnBrand);
-        box-shadow: var(--colorNeutralShadowKey) 0px 4px 8px;
-      }
-
-      &:active {
-        background-color: var(--colorBrandBackgroundPressed);
-        color: var(--colorNeutralForegroundOnBrand);
-        box-shadow: var(--colorNeutralShadowKey) 0px 1px 2px;
-      }
-    }
-
-    &.appearance-secondary {
-      /* Default secondary styles are already applied above */
-    }
-
-    &.appearance-outline {
-      background-color: var(--colorTransparentBackground);
-      border-color: var(--colorNeutralStrokeAccessible);
-      color: var(--colorNeutralForeground1);
-
-      &:hover {
-        background-color: var(--colorNeutralBackground1);
-        border-color: var(--colorNeutralStrokeAccessibleHover);
-        color: var(--colorNeutralForeground1);
-      }
-
-      &:active {
-        background-color: var(--colorNeutralBackground1Pressed);
-        border-color: var(--colorNeutralStrokeAccessiblePressed);
-        color: var(--colorNeutralForeground1);
-      }
-    }
-
-    &.appearance-subtle {
-      background-color: var(--colorTransparentBackground);
-      border-color: transparent;
-      color: var(--colorNeutralForeground2);
-
-      &:hover {
-        background-color: var(--colorNeutralBackground1Hover);
-        border-color: transparent;
-        color: var(--colorNeutralForeground2Hover);
-      }
-
-      &:active {
-        background-color: var(--colorNeutralBackground1Pressed);
-        border-color: transparent;
-        color: var(--colorNeutralForeground2Pressed);
-      }
-    }
-
-    &.appearance-transparent {
-      background-color: var(--colorTransparentBackground);
-      border-color: transparent;
-      color: var(--colorNeutralForeground2);
-
-      &:hover {
-        background-color: var(--colorTransparentBackgroundHover);
-        border-color: transparent;
-        color: var(--colorNeutralForeground2BrandHover);
-      }
-
-      &:active {
-        background-color: var(--colorTransparentBackgroundPressed);
-        border-color: transparent;
-        color: var(--colorNeutralForeground2BrandPressed);
-      }
-    }
-  }
-
-  /* Disabled states for different appearances */
-  &[disabled].appearance-primary {
+  &[disabled] {
     background-color: var(--colorNeutralBackgroundDisabled);
     color: var(--colorNeutralForegroundDisabled);
     border-color: transparent;
     box-shadow: none;
   }
+}
 
-  &[disabled].appearance-outline {
+.t-button--outline {
+  background-color: var(--colorTransparentBackground);
+  border-color: var(--colorNeutralStrokeAccessible);
+  color: var(--colorNeutralForeground1);
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorNeutralBackground1);
+    border-color: var(--colorNeutralStrokeAccessibleHover);
+    color: var(--colorNeutralForeground1);
+  }
+
+  &:active:not([disabled]) {
+    background-color: var(--colorNeutralBackground1Pressed);
+    border-color: var(--colorNeutralStrokeAccessiblePressed);
+    color: var(--colorNeutralForeground1);
+  }
+
+  &[disabled] {
     background-color: var(--colorTransparentBackground);
     border-color: var(--colorNeutralStrokeDisabled);
     color: var(--colorNeutralForegroundDisabled);
   }
+}
 
-  &[disabled].appearance-subtle {
+.t-button--subtle {
+  background-color: var(--colorTransparentBackground);
+  border-color: transparent;
+  color: var(--colorNeutralForeground2);
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorNeutralBackground1Hover);
+    border-color: transparent;
+    color: var(--colorNeutralForeground2Hover);
+  }
+
+  &:active:not([disabled]) {
+    background-color: var(--colorNeutralBackground1Pressed);
+    border-color: transparent;
+    color: var(--colorNeutralForeground2Pressed);
+  }
+
+  &[disabled] {
     background-color: var(--colorTransparentBackground);
     border-color: transparent;
     color: var(--colorNeutralForegroundDisabled);
   }
+}
 
-  &[disabled].appearance-transparent {
+.t-button--transparent {
+  background-color: var(--colorTransparentBackground);
+  border-color: transparent;
+  color: var(--colorNeutralForeground2);
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorTransparentBackgroundHover);
+    border-color: transparent;
+    color: var(--colorNeutralForeground2BrandHover);
+  }
+
+  &:active:not([disabled]) {
+    background-color: var(--colorTransparentBackgroundPressed);
+    border-color: transparent;
+    color: var(--colorNeutralForeground2BrandPressed);
+  }
+
+  &[disabled] {
     background-color: var(--colorTransparentBackground);
     border-color: transparent;
     color: var(--colorNeutralForegroundDisabled);
   }
-
-  /* Icon styles */
-  .t-button__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    height: 20px;
-    width: 20px;
-    flex-shrink: 0;
-    /* CSS 变量用于图标间距 */
-    --fui-Button-icon-spacing: var(--spacingHorizontalSNudge);
-  }
-
-  /* 图标尺寸变体 */
-  &.size-small .t-button__icon {
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
-    --fui-Button-icon-spacing: var(--spacingHorizontalXS);
-  }
-
-  &.size-large .t-button__icon {
-    font-size: 24px;
-    height: 24px;
-    width: 24px;
-    --fui-Button-icon-spacing: var(--spacingHorizontalSNudge);
-  }
-
-  /* 图标位置间距 */
-  .t-button__icon--before {
-    margin-right: var(--fui-Button-icon-spacing);
-  }
-
-  .t-button__icon--after {
-    margin-left: var(--fui-Button-icon-spacing);
-  }
-
-  /* ========== Loading 状态 ========== */
-  &.loading {
-    position: relative;
-    cursor: wait;
-  }
-
-  /* Spinner 容器 */
-  &__spinner-wrapper {
-    display: inline-flex;
-    align-items: center;
-    margin-right: var(--spacingHorizontalXS);
-  }
-
-  /* Icon-only 优化 */
-  &.icon-only.size-small {
-    padding: 1px;
-    min-width: 24px;
-    max-width: 24px;
-  }
-
-  &.icon-only.size-medium {
-    padding: 5px;
-    min-width: 32px;
-    max-width: 32px;
-  }
-
-  &.icon-only.size-large {
-    padding: 7px;
-    min-width: 40px;
-    max-width: 40px;
-  }
-
-  /* Primary 按钮特殊焦点样式 */
-  &.appearance-primary:focus-visible {
-    outline: var(--strokeWidthThick) solid var(--colorNeutralForegroundOnBrand);
-    outline-offset: -2px;
-    box-shadow: var(--shadow2), 0 0 0 1px var(--colorStrokeFocus2) inset;
-  }
 }
 
-/* ========== Spinner 动画 ========== */
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+/* ========== Icon styles ========== */
+.t-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  flex-shrink: 0;
 }
 
-/* High contrast mode support */
+/* 图标尺寸变体 */
+.t-button--small .t-button__icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.t-button--large .t-button__icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+/* ========== Loading 状态 ========== */
+.is-loading {
+  position: relative;
+  cursor: wait;
+}
+
+/* Spinner 容器 */
+.t-button__spinner-wrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 1.2em;
+  margin-right: var(--spacingHorizontalXS);
+}
+
+.t-button__spinner {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ========== High contrast mode support ========== */
 @media (forced-colors: active) {
   .t-button {
     &:focus-visible {
       outline: 2px solid ButtonText;
     }
 
-    &:not([disabled]).appearance-primary {
+    &:not([disabled]).t-button--primary {
       background-color: Highlight;
       color: HighlightText;
       border-color: HighlightText;
@@ -305,7 +273,7 @@
       }
     }
 
-    &:not([disabled]).appearance-outline {
+    &:not([disabled]).t-button--outline {
       &:hover {
         background-color: HighlightText;
         color: Highlight;
@@ -320,7 +288,8 @@
     }
   }
 }
-/* Spinner Component */
+
+/* ========== Spinner Component ========== */
 .t-spinner {
   display: inline-flex;
   align-items: center;

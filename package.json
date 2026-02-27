@@ -1,6 +1,6 @@
 {
   "name": "today-ui",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "description": "Fluent Design System components for Vue 3 using pure CSS Variables",
   "type": "module",
   "exports": {

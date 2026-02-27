@@ -98,11 +98,13 @@ export const Button = defineComponent({
 **类型：** `'small' | 'medium' | 'large'`
 **默认值：** `'medium'`
 
-| 值 | 高度 | 内边距 | 字体大小 |
-|---|---|---|---|
-| `small` | 28px | var(--spacingHorizontalMN) | var(--fontSizeBase200) |
-| `medium` | 36px | var(--spacingHorizontalM) | var(--fontSizeBase300) |
-| `large` | 44px | var(--spacingHorizontalL) | var(--fontSizeBase400) |
+| 值 | 高度 | 内边距 | 字体大小 | Spinner 尺寸 |
+|---|---|---|---|---|
+| `small` | 28px | var(--spacingHorizontalMN) | var(--fontSizeBase200) | 16px (tiny) |
+| `medium` | 36px | var(--spacingHorizontalM) | var(--fontSizeBase300) | 20px (small) |
+| `large` | 44px | var(--spacingHorizontalL) | var(--fontSizeBase400) | 24px (medium) |
+
+**Spinner 尺寸自适应**：Loading 状态下的 Spinner 会根据按钮尺寸自动调整大小，确保视觉协调和按钮高度不被撑开。
 
 ### shape
 
@@ -152,8 +154,9 @@ export const Button = defineComponent({
 
 **效果：**
 - 禁用按钮
-- 显示 Spinner
+- 显示 Spinner（尺寸根据按钮大小自动调整）
 - 可选显示加载文本（loadingText）
+- Spinner 不会撑开按钮高度
 
 ### loadingText
 
@@ -253,7 +256,7 @@ export const useButton = (props: ButtonProps): ButtonState => {
 
 ### 纯 CSS + CSS Variables 策略
 
-**v1.0.0 更新：** 完全迁移到纯 CSS Variables 方案，移除 Griffel CSS-in-JS 依赖。
+**v0.3.0 更新：** 完全迁移到纯 CSS Variables 方案，移除 Griffel CSS-in-JS 依赖。
 
 #### BEM 命名规范
 
@@ -382,6 +385,13 @@ export const buttonVariants = {
 }
 
 /* Spinner 动画 */
+.t-button__spinner-wrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 1.2em;
+  margin-right: var(--spacingHorizontalXS);
+}
+
 .t-button__spinner svg {
   animation: spin 1s linear infinite;
 }
@@ -455,18 +465,33 @@ export const renderButton = (
   state: ButtonState,
   slots: ButtonSlots
 ) => {
-  const { root, icon, showSpinner } = state;
+  const { root, icon, showSpinner, size } = state;
 
   return h(
     state.as || 'button',
     root,
     [
-      icon && slots.icon?.(),
-      slots.default?.(),
-      showSpinner && h(Spinner),
+      // Loading Spinner（尺寸自适应）
+      showSpinner && h('span', { class: 't-button__spinner-wrapper' }, [
+        h(Spinner, {
+          size: size === 'large' ? 'medium' :
+                size === 'small' ? 'tiny' : 'small'
+        }),
+        state.loadingText && ` ${state.loadingText}`
+      ].filter(Boolean)),
+      // Icon
+      !state.loading && icon && slots.icon?.(),
+      // Default content
+      !state.loading && slots.default?.(),
     ].filter(Boolean)
   );
 };
+```
+
+**Spinner 尺寸映射逻辑：**
+- Button `small` → Spinner `tiny` (16px)
+- Button `medium` → Spinner `small` (20px)
+- Button `large` → Spinner `medium` (24px)
 ```
 
 ### 属性映射
@@ -506,7 +531,7 @@ export const renderButton = (
 
 ## 性能优化
 
-### v1.0.0 纯 CSS 方案优势
+### v0.3.0 纯 CSS 方案优势
 
 - **零运行时开销**：无 CSS-in-JS 运行时计算
 - **更小的包体积**：移除 Griffel 依赖（减少 ~32KB）
@@ -559,9 +584,9 @@ export const renderButton = (
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
 | 0.2.x | 2026-02 | 早期版本（Griffel CSS-in-JS） |
-| 1.0.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方式 |
+| 0.3.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方式 |
 
-### 版本 1.0.0 详细变更（2026-02-27）
+### 版本 0.3.0 详细变更（2026-02-27）
 
 **迁移目标：**
 - 从 Griffel CSS-in-JS 迁移到纯 CSS Variables
@@ -596,6 +621,36 @@ export const renderButton = (
 - ✅ 所有 slots 功能保持不变
 - ✅ 视觉输出完全一致
 - ✅ API 接口保持不变
+
+**问题修复（本版本包含）：**
+
+1. **Appearance 属性不生效**
+   - **问题描述**：所有外观变体（primary、outline、subtle、transparent）显示相同样式
+   - **根本原因**：CSS 文件选择器与类名生成不匹配
+     - CSS 使用旧格式：`.appearance-primary`、`.shape-square`
+     - useButtonClasses 生成新格式：`.t-button--primary`、`.t-button--square`
+   - **解决方案**：完全重写 button.css，统一使用 BEM 格式选择器
+   - **影响文件**：`button.css`
+
+2. **Loading 状态高度问题**
+   - **问题描述**：按钮在 loading 状态时高度被撑开
+   - **根本原因**：
+     - Spinner 尺寸硬编码为 'small'，无法根据按钮尺寸调整
+     - `.t-button__spinner` 缺少高度约束
+   - **解决方案**：
+     - renderButton.ts 中根据按钮尺寸动态计算 Spinner 尺寸
+     - 添加 `.t-button__spinner-wrapper` 样式，设置 `height: 1.2em` 约束
+   - **影响文件**：`renderButton.ts`、`button.css`
+   - **Spinner 尺寸映射**：
+     - Button `small` → Spinner `tiny` (16px)
+     - Button `medium` → Spinner `small` (20px)
+     - Button `large` → Spinner `medium` (24px)
+
+**文档更新：**
+- ✅ 更新 Button.story.vue，添加"不同尺寸的 Loading 状态"示例
+- ✅ 添加"仅图标按钮"专门展示
+- ✅ 完善 Histoire 文档结构和说明
+- ✅ 更新 SPEC.md 尺寸表格，添加 Spinner 尺寸列
 
 ## 参考资料
 
