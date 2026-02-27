@@ -16,6 +16,12 @@
   align-items: center;
   width: 100%;
   position: relative;
+
+  /* 边框和背景 */
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  padding: 0;
 }
 
 /* ========== Input Element ========== */
@@ -38,22 +44,9 @@
   transition-property: background, border, box-shadow;
 }
 
-/* ========== Input Container（提供边框和背景） ========== */
-/* 通过 wrapper 的伪元素或专门的类来提供边框背景 */
-.t-input__input-wrapper {
-  background-color: var(--colorNeutralBackground1);
-  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
-  border-radius: var(--borderRadiusMedium);
-  padding: 0;
-}
-
-.t-input__input-wrapper::before {
-  /* 可选：用于提供额外的样式层 */
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
+/* Placeholder */
+.t-input__input::placeholder {
+  color: var(--colorNeutralForeground4);
 }
 
 /* ========== Appearance Variants ========== */
@@ -95,11 +88,11 @@
 }
 
 .t-input--inline-dark .t-input__input::placeholder {
-  color: var(--colorNeutralForeground4Brand);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.t-input--inline-dark .t-input__input-wrapper:hover:not(:disabled) .t-input__input::placeholder {
-  color: var(--colorNeutralForeground3Brand);
+.t-input--inline-dark .t-input__input-wrapper:hover .t-input__input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Inline Light */
@@ -120,7 +113,7 @@
   color: var(--colorNeutralForeground4);
 }
 
-.t-input--inline-light .t-input__input-wrapper:hover:not(:disabled) .t-input__input::placeholder {
+.t-input--inline-light .t-input__input-wrapper:hover .t-input__input::placeholder {
   color: var(--colorNeutralForeground3);
 }
 
@@ -185,24 +178,24 @@
 /* ========== Validation States ========== */
 
 /* Valid */
-.t-input .validation-valid {
+.t-input__input-wrapper.validation-valid {
   border-color: var(--colorPaletteGreenBorder1);
 }
 
 /* Warning */
-.t-input .validation-warning {
+.t-input__input-wrapper.validation-warning {
   border-color: var(--colorPaletteDarkOrangeBorder1);
 }
 
 /* Invalid */
-.t-input .validation-invalid {
+.t-input__input-wrapper.validation-invalid {
   border-color: var(--colorPaletteRedBorder1);
 }
 
 /* ========== Interactive States ========== */
 
 /* Hover */
-.t-input__input-wrapper:hover:not(:has(.t-input__input:disabled)):not(.t-input--error):not(.error) {
+.t-input__input-wrapper:hover:not(:has(.t-input__input:disabled)):not(.t-input--error):not(.error):not(.validation-invalid) {
   border-color: var(--colorNeutralStroke1Hover);
 }
 
@@ -213,13 +206,14 @@
 
 .t-input__input-wrapper:focus-within {
   border-color: var(--colorBrandStroke1);
-  box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorCompoundBrandStroke1Hover);
+  box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorCompoundBrandStrokeHover);
   z-index: 1;
 }
 
 /* Focus with Error */
 .t-input--error .t-input__input-wrapper:focus-within,
-.t-input__input-wrapper.error:focus-within {
+.t-input__input-wrapper.error:focus-within,
+.t-input__input-wrapper.validation-invalid:focus-within {
   border-color: var(--colorPaletteRedBorder1);
   box-shadow: 0 0 0 var(--strokeWidthThick) var(--colorPaletteRedBorder1);
 }
@@ -309,16 +303,7 @@
 }
 
 /* ========== Autofill Styles ========== */
-.t-input__input::placeholder {
-  color: var(--colorNeutralForeground4);
-}
-
-/* ========== Autofill Styles ========== */
-.t-input__input::placeholder {
-  color: var(--colorNeutralForeground4);
-}
-
-/* Webkit autofill - 应用到 wrapper */
+/* Webkit autofill */
 .t-input__input-wrapper:has(:-webkit-autofill) {
   background-color: var(--colorNeutralBackground1);
 }
