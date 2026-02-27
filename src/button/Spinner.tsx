@@ -4,7 +4,7 @@
  */
 
 import { defineComponent, PropType } from 'vue';
-import { useSpinnerStyles } from './useSpinnerStyles';
+import { useSpinnerClasses } from './useSpinnerClasses';
 
 export const Spinner = defineComponent({
   name: 'Spinner',
@@ -15,17 +15,17 @@ export const Spinner = defineComponent({
     },
   },
   setup(props) {
-    const styles = useSpinnerStyles();
+    const classes = useSpinnerClasses({ size: props.size });
 
     return () => (
-      <div class={styles.root}>
+      <div class={classes.root}>
         <svg
-          class={styles.svg}
+          class={classes.svg}
           viewBox="0 0 24 24"
           width={props.size === 'tiny' ? '16' : props.size === 'small' ? '20' : props.size === 'medium' ? '24' : '28'}
           height={props.size === 'tiny' ? '16' : props.size === 'small' ? '20' : props.size === 'medium' ? '24' : '28'}
         >
-          <circle class={styles.circle} cx="12" cy="12" r="10" />
+          <circle class={classes.circle} cx="12" cy="12" r="10" />
         </svg>
       </div>
     );

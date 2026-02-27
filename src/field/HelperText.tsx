@@ -1,7 +1,7 @@
 import { computed, defineComponent, SlotsType } from 'vue';
 import { helperTextProps, type HelperTextSlots } from './HelperText.types';
 import { useHelperText } from './useHelperText';
-import { useHelperTextStyles } from './useHelperTextStyles.styles';
+import { useHelperTextClasses } from './useHelperTextClasses';
 import { renderHelperText } from './renderHelperText';
 
 /**
@@ -34,7 +34,18 @@ export const HelperText = defineComponent({
         // Compute the complete state by applying hooks
         const state = computed(() => {
             const helperTextState = useHelperText(props);
-            useHelperTextStyles(helperTextState);
+
+            // 使用纯 CSS 类名 Hook
+            const classes = useHelperTextClasses({
+                disabled: helperTextState.disabled,
+                validationState: helperTextState.validationState,
+            });
+
+            // 应用类名到状态
+            if (helperTextState.root) {
+                helperTextState.root.className = classes;
+            }
+
             return helperTextState;
         });
 

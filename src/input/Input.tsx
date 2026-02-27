@@ -1,7 +1,7 @@
 
 import { defineComponent, ref, SlotsType, computed } from 'vue';
 import { renderInput } from './renderInput';
-import { useInputStyles } from './useInputStyles.styles';
+import { useInputClasses, inputClassNames } from './useInputClasses';
 import { inputProps, type InputProps, type InputSlots } from './Input.types';
 import { useInput } from './useInput';
 import './input.css';
@@ -22,8 +22,68 @@ export const Input = defineComponent({
         // 使用 computed 创建响应式状态
         const state = computed(() => {
             const inputState = useInput(props, slots, internalValue, isPasswordVisible, emit);
-            // 应用样式到状态
-            useInputStyles(inputState);
+
+            // 使用纯 CSS 类名 Hook
+            const classes = useInputClasses({
+                appearance: inputState.appearance,
+                size: inputState.size,
+                disabled: inputState.disabled,
+                error: inputState.error,
+                readonly: inputState.readonly,
+                validationState: inputState.validationState,
+            });
+
+            // 应用类名到状态
+            if (inputState.root) {
+                inputState.root.className = classes.root;
+            }
+
+            if (inputState.input) {
+                const inputClasses = [classes.input];
+                if (classes.inputValidation) {
+                    inputClasses.push(classes.inputValidation);
+                }
+                inputState.input = {
+                    ...inputState.input,
+                    className: inputClasses.join(' '),
+                };
+            }
+
+            if (inputState.contentBefore) {
+                inputState.contentBefore = {
+                    ...inputState.contentBefore,
+                    className: classes.contentBefore || '',
+                };
+            }
+
+            if (inputState.contentAfter) {
+                inputState.contentAfter = {
+                    ...inputState.contentAfter,
+                    className: classes.contentAfter || '',
+                };
+            }
+
+            if (inputState.clearButton) {
+                inputState.clearButton = {
+                    ...inputState.clearButton,
+                    className: classes.clearButton || '',
+                };
+            }
+
+            if (inputState.passwordToggleButton) {
+                inputState.passwordToggleButton = {
+                    ...inputState.passwordToggleButton,
+                    className: classes.passwordToggleButton || '',
+                };
+            }
+
+            if (inputState.progressIndicator) {
+                inputState.progressIndicator = {
+                    ...inputState.progressIndicator,
+                    className: classes.progressIndicator || '',
+                };
+            }
+
             return inputState;
         });
 

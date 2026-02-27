@@ -11,6 +11,7 @@ Tooltip 是一个用于显示简短上下文信息的浮层组件，当用户将
 - 支持受控和非受控模式
 - 与 Fluent Design System 保持视觉一致性
 - 遵循项目组件模式（computed 响应式状态）
+- 使用纯 CSS Variables，零运行时开销
 
 ## 功能范围
 
@@ -175,23 +176,30 @@ const visible = ref(false)
 const state = computed(() => {
   // 更新 isVisible 值以保持响应性
   tooltipState.isVisible = tooltipState._isVisible.value;
-  // 在 computed 中应用样式
-  applyTooltipStyles(tooltipState);
+
+  // 使用纯 CSS 类名 Hook
+  const classes = useTooltipClasses({
+    isVisible: tooltipState.isVisible,
+    relationship: tooltipState.relationship,
+    withArrow: tooltipState.withArrow,
+  });
+
+  // 应用类名到状态
+  tooltipState.className = classes.root;
+  tooltipState.arrowClassName = classes.arrow;
+
   return tooltipState;
 });
 ```
 
-### 2. 样式职责分离
+### 2. 纯 CSS 样式策略
 
-- **Griffel** (useTooltipStyles.styles.ts): 处理所有静态样式
+- **CSS** (tooltip.css): 处理所有样式
   - 基础样式（root）
   - 可见状态（visible）
   - 关系类型（label, inaccessible）
   - 箭头样式（arrow）
-
-- **CSS** (tooltip.css): 仅处理动态定位
-  - 箭头位置定位（data-placement 选择器）
-  - 触发元素包装器
+  - 伪类动画（opacity, transform）
 
 ### 3. @floating-ui/vue 集成
 
@@ -222,15 +230,119 @@ src/tooltip/
 ├── Tooltip.tsx                    # 主组件（computed 模式）
 ├── Tooltip.types.ts               # 类型定义
 ├── useTooltip.ts                  # 状态管理逻辑
-├── useTooltipStyles.styles.ts     # Griffel 样式 + 样式应用
+├── useTooltipClasses.ts           # 纯 CSS 类名钩子
 ├── renderTooltip.tsx              # 渲染函数
-├── tooltip.css                    # CSS（动态定位）
+├── tooltip.css                    # 完整的组件样式
 ├── index.ts                       # 导出文件
 ├── tests/
 │   └── Tooltip.test.ts           # 单元测试
 └── docs/
     ├── Tooltip.story.vue          # Histoire 文档
     └── SPEC.md                    # 本文档
+```
+
+## 样式实现
+
+### v1.0.0 纯 CSS + BEM 命名策略
+
+**语义化类名定义 (useTooltipClasses.ts)：**
+
+```typescript
+export const tooltipClassNames = {
+  root: 't-tooltip',
+  content: 't-tooltip__content',
+  arrow: 't-tooltip__arrow',
+} as const;
+
+export const tooltipVariants = {
+  relationship: {
+    description: '',
+    label: 't-tooltip--label',
+    inaccessible: 't-tooltip--inaccessible',
+  },
+  state: {
+    visible: 'visible',
+  },
+};
+```
+
+**CSS 样式实现 (tooltip.css)：**
+
+```css
+/* Tooltip 基础样式 */
+.t-tooltip {
+  /* 定位 */
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none;
+
+  /* 尺寸 */
+  max-width: var(--widthTooltipMax);
+
+  /* 外观 */
+  border-radius: var(--borderRadiusMedium);
+  box-shadow: var(--shadow8);
+
+  /* 排版 */
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase200);
+  font-weight: var(--fontWeightRegular);
+  line-height: var(--lineHeightBase200);
+
+  /* 颜色 */
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+
+  /* 内边距 */
+  padding: 4px 8px;
+
+  /* 动画初始状态 */
+  opacity: 0;
+  transform: scale(0.95);
+
+  /* 文本换行 */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  /* 过渡效果 */
+  transition-duration: var(--durationNormal);
+  transition-timing-function: var(--curveDecelerateMin);
+  transition-property: opacity, transform;
+}
+
+/* 可见状态 */
+.t-tooltip.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 关系类型 */
+.t-tooltip--label {
+  background-color: var(--colorBrandBackground);
+  color: var(--colorNeutralForegroundOnBrand);
+  border-color: transparent;
+}
+
+.t-tooltip--inaccessible {
+  background-color: var(--colorNeutralBackground3);
+  color: var(--colorNeutralForeground2);
+}
+
+/* 箭头 */
+.t-tooltip__arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  transform: rotate(45deg);
+}
+
+.t-tooltip--label .t-tooltip__arrow {
+  background-color: var(--colorBrandBackground);
+  border-color: transparent;
+}
 ```
 
 ## 与 Fluent UI v9 对比
@@ -252,6 +364,7 @@ src/tooltip/
 |------|------|----------|
 | 1.0.0 | 2025-01 | 初始实现（旧架构） |
 | 2.0.0 | 2026-02-18 | **重大重构**：统一架构模式，优化样式应用，添加测试 |
+| 2.1.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
 
 ### 版本 2.0.0 详细变更
 
@@ -260,17 +373,28 @@ src/tooltip/
 - ✅ 移除 watch，在 computed 中应用样式
 - ✅ 合并样式文件（useTooltipStyles.ts → useTooltipStyles.styles.ts）
 
-**优化：**
-- ✅ 简化样式应用逻辑
-- ✅ Griffel + CSS 职责分离
-- ✅ 移除冗余代码
+### 版本 2.1.0 详细变更（2026-02-27）
 
-**新增：**
-- ✅ 完整单元测试套件（49 个测试）
-- ✅ 简洁的 SPEC 文档
-- ✅ 完整的 Story 示例
+**迁移目标：**
+- 从 Griffel CSS-in-JS 迁移到纯 CSS Variables
+- 使用 BEM 命名规范提供语义化类名
+- 移除运行时样式开销，提升性能
 
-**删除：**
-- ❌ 移除 watch 监听可见性
-- ❌ 删除冗余样式文件
-- ❌ 删除旧的架构文件（container.tsx, props.ts 等）
+**新增文件：**
+- ✅ `useTooltipClasses.ts` - 纯 CSS 类名钩子
+
+**删除文件：**
+- ❌ `useTooltipStyles.styles.ts` - Griffel 样式钩子
+- ❌ `tooltip.styles.ts` - Griffel 样式定义
+
+**修改文件：**
+- 🔄 `Tooltip.tsx` - 更新为使用 `useTooltipClasses`
+- 🔄 `tooltip.css` - 更新为完整样式
+- 🔄 `index.ts` - 更新导出
+
+**改进：**
+- ✅ 包体积减少
+- ✅ 完全支持 SSR
+- ✅ 更好的开发体验
+- ✅ 类型安全的类名生成
+- ✅ 移除 Griffel 依赖

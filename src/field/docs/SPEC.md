@@ -11,6 +11,7 @@ Field 是一个用于组合 Label、Input、HelperText 和 ValidationMessage 的
 - 支持验证状态和验证消息显示
 - 与 Fluent Design System 保持视觉一致性
 - 保持组件简洁，易于组合使用
+- 使用纯 CSS Variables，零运行时开销
 
 ## 组件定位
 
@@ -42,6 +43,10 @@ Field 只负责布局和验证：
 - 简单场景：Label + Input（不使用 Field）
 - 带验证：Field + Label + Input
 - 完整字段：Field + Label + Input + HelperText
+
+### 4. 纯 CSS 样式策略
+
+**v1.0.0 更新：** 采用纯 CSS Variables + BEM 命名策略
 
 ## API 参考
 
@@ -141,53 +146,6 @@ interface FieldSlots {
 </Field>
 ```
 
-### 模式 6: 登录表单
-
-```vue
-<script setup>
-import { ref, computed } from 'vue'
-import Field from 'today-ui/field'
-import Label from 'today-ui/label'
-import Input from 'today-ui/input'
-
-const email = ref('')
-const password = ref('')
-
-const emailState = computed(() => {
-  if (!email.value) return 'none'
-  return email.value.includes('@') ? 'valid' : 'invalid'
-})
-
-const emailMessage = computed(() => {
-  if (emailState.value === 'valid') return '邮箱格式正确'
-  return '请输入有效的邮箱地址'
-})
-</script>
-
-<template>
-  <form @submit.prevent>
-    <Field :validation-state="emailState" :validation-message="emailMessage">
-      <template #label>
-        <Label for="email" required>邮箱</Label>
-      </template>
-      <Input id="email" v-model="email" type="email" />
-    </Field>
-
-    <Field>
-      <template #label>
-        <Label for="password" required>密码</Label>
-      </template>
-      <Input id="password" v-model="password" type="password" />
-      <template #helperText>
-        <HelperText>密码长度至少 8 位</HelperText>
-      </template>
-    </Field>
-
-    <button type="submit">登录</button>
-  </form>
-</template>
-```
-
 ## 验证状态
 
 Field 支持四种验证状态：
@@ -206,73 +164,116 @@ src/field/
 ├── Field.tsx                    # 主组件
 ├── Field.types.ts               # TypeScript 类型定义
 ├── useField.ts                  # 逻辑钩子
-├── useFieldStyles.styles.ts     # 样式应用
-├── field.styles.ts              # Griffel 样式
+├── useFieldClasses.ts           # 纯 CSS 类名钩子
 ├── renderField.ts               # 渲染函数
-├── field.css                    # CSS 交互状态
+├── field.css                    # 完整的组件样式
 ├── index.ts                     # 导出文件
 ├── HelperText.tsx               # HelperText 组件（配合使用）
 ├── HelperText.types.ts          # HelperText 类型定义
 ├── useHelperText.ts             # HelperText 逻辑钩子
-├── useHelperTextStyles.styles.ts # HelperText 样式应用
-├── helperText.styles.ts         # HelperText Griffel 样式
+├── useHelperTextClasses.ts      # HelperText 类名钩子
 ├── renderHelperText.ts          # HelperText 渲染函数
 └── docs/
-    ├── Field.story.vue          # Storybook 文档
-    ├── SPEC.md                  # 本文档
-    └── HelperText.spec.md       # HelperText 组件文档
+    ├── Field.story.vue          # Histoire 文档
+    └── SPEC.md                  # 本文档
 ```
 
 ## 样式实现
 
-### Griffel + CSS 混合样式策略
+### v1.0.0 纯 CSS + BEM 命名策略
 
-**Griffel (field.styles.ts)** - 处理所有静态样式：
-- 基础样式 (root)
-- 布局方向 (vertical, horizontal)
-- 验证状态 (valid, warning, invalid)
-- 内容容器 (content)
-
-**CSS (field.css)** - 处理伪类样式：
-- 无伪类样式需求
-
-### 样式应用逻辑
+**语义化类名定义 (useFieldClasses.ts)：**
 
 ```typescript
-export const useFieldStyles = (state: FieldState): void => {
-  const styles = useFieldStyles();
+export const fieldClassNames = {
+  root: 't-field',
+  content: 't-field__content',
+  validationMessage: 't-field__validation-message',
+} as const;
 
-  // Root element
-  const rootClasses = [
-    fieldClassNames.root,
-    styles.root,
-    styles[state.orientation],  // vertical or horizontal
-  ].filter(Boolean);
-
-  state.root = {
-    ...state.root,
-    className: mergeClasses(...rootClasses, state.root.className),
-  };
-
-  // Content wrapper
-  if (state.content) {
-    state.content.className = mergeClasses(
-      fieldClassNames.content,
-      styles.content,
-      state.content.className
-    );
-  }
-
-  // Validation message
-  if (state.validationMessage) {
-    state.validationMessage.className = mergeClasses(
-      fieldClassNames.validationMessage,
-      styles.validationMessage,
-      styles[state.validationState],
-      state.validationMessage.className
-    );
-  }
+export const fieldVariants = {
+  orientation: {
+    horizontal: 'orientation-horizontal',
+    vertical: 'orientation-vertical',
+  },
+  validationState: {
+    none: '',
+    valid: 'validation-valid',
+    warning: 'validation-warning',
+    invalid: 'validation-invalid',
+  },
 };
+```
+
+**CSS 样式实现 (field.css)：**
+
+```css
+/* Field 基础样式 */
+.t-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacingVerticalS);
+}
+
+/* 布局方向 */
+.t-field.orientation-vertical {
+  flex-direction: column;
+}
+
+.t-field.orientation-horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--spacingHorizontalM);
+}
+
+/* 内容容器 */
+.t-field__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* 验证消息 */
+.t-field__validation-message {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingHorizontalXS);
+  font-size: var(--fontSizeBase200);
+}
+
+.t-field__validation-message.validation-valid {
+  color: var(--colorPaletteGreenForeground1);
+}
+
+.t-field__validation-message.validation-warning {
+  color: var(--colorPaletteDarkOrangeForeground1);
+}
+
+.t-field__validation-message.validation-invalid {
+  color: var(--colorPaletteRedForeground1);
+}
+```
+
+### 类型安全类名生成
+
+```typescript
+export function useFieldClasses(props: {
+  orientation?: FieldOrientation;
+  validationState?: FieldValidationState;
+}): {
+  root: string;
+  content: string;
+  validationMessage?: string;
+} {
+  const { orientation = 'horizontal', validationState = 'none' } = props;
+  return {
+    root: cn(fieldClassNames.root, fieldVariants.orientation[orientation]),
+    content: fieldClassNames.content,
+    validationMessage: validationState !== 'none'
+      ? cn(fieldClassNames.validationMessage, fieldVariants.validationState[validationState])
+      : undefined,
+  };
+}
 ```
 
 ## 实现细节
@@ -423,10 +424,11 @@ Field 组件通过以下方式支持无障碍性：
 
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
-| 1.0.0 | 2026-02-16 | 初始实现（位于 src/input/Field.tsx）|
+| 1.0.0 | 2026-02-16 | 初始实现（位于 src/input/Field.tsx） |
 | 1.1.0 | 2026-02-17 | **重大变更**：重新设计为完全独立的布局容器，移除 label、required、helperText props |
 | 1.2.0 | 2026-02-17 | **目录重构**：从 src/input/ 移动到独立的 src/field/ 目录 |
 | 1.3.0 | 2026-02-17 | **组件整合**：HelperText 组件移动到 src/field/ 目录，与 Field 组件放在一起 |
+| 1.4.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
 
 ### 版本 1.1.0 详细变更（2026-02-17）
 
@@ -449,29 +451,35 @@ Field 组件通过以下方式支持无障碍性：
 - ✅ `label` slot - 用户手动放置 Label 组件
 - ✅ `helperText` slot - 用户手动放置 HelperText 组件
 
-### 版本 1.2.0 详细变更（2026-02-17）
+### 版本 1.4.0 详细变更（2026-02-27）
 
-**目录重构：**
-- 从 `src/input/Field.tsx` 移动到 `src/field/Field.tsx`
-- 所有 Field 相关文件移动到 `src/field/` 目录
-- 更新所有导入路径
-- 更新文档引用
+**迁移目标：**
+- 从 Griffel CSS-in-JS 迁移到纯 CSS Variables
+- 使用 BEM 命名规范提供语义化类名
+- 移除运行时样式开销，提升性能
 
-**理由：**
-- Field 是独立组件，不应该放在 input 文件夹中
-- 更清晰的目录结构
+**新增文件：**
+- ✅ `useFieldClasses.ts` - Field 类名钩子
+- ✅ `useHelperTextClasses.ts` - HelperText 类名钩子
 
-### 版本 1.3.0 详细变更（2026-02-17）
+**删除文件：**
+- ❌ `useFieldStyles.styles.ts` - Griffel 样式钩子
+- ❌ `field.styles.ts` - Griffel 样式定义
+- ❌ `useHelperTextStyles.styles.ts` - Griffel HelperText 样式钩子
+- ❌ `helperText.styles.ts` - Griffel HelperText 样式定义
 
-**组件整合：**
-- HelperText 组件从 `src/label/` 移动到 `src/field/`
-- HelperText 与 Field 组件紧密配合
-- 统一的导出：`export { HelperText } from 'today-ui/field'`
+**修改文件：**
+- 🔄 `Field.tsx` - 更新为使用 `useFieldClasses`
+- 🔄 `HelperText.tsx` - 更新为使用 `useHelperTextClasses`
+- 🔄 `field.css` - 更新为完整样式
+- 🔄 `index.ts` - 更新导出
 
-**理由：**
-- HelperText 主要与 Field 配合使用
-- 更合理的目录组织
-- 便于相关组件的维护
+**改进：**
+- ✅ 包体积减少
+- ✅ 完全支持 SSR
+- ✅ 更好的开发体验
+- ✅ 类型安全的类名生成
+- ✅ 移除 Griffel 依赖
 
 ## 参考资源
 
@@ -481,8 +489,7 @@ Field 组件通过以下方式支持无障碍性：
 - [src/field/Field.tsx](../Field.tsx) - 主组件
 - [src/field/Field.types.ts](../Field.types.ts) - 类型定义
 - [src/field/useField.ts](../useField.ts) - 逻辑钩子
-- [src/field/useFieldStyles.styles.ts](../useFieldStyles.styles.ts) - 样式应用
-- [src/field/field.styles.ts](../field.styles.ts) - Griffel 样式
+- [src/field/useFieldClasses.ts](../useFieldClasses.ts) - 类名钩子
 - [src/field/renderField.ts](../renderField.ts) - 渲染函数
 - [src/field/field.css](../field.css) - CSS 样式
 
@@ -490,10 +497,8 @@ Field 组件通过以下方式支持无障碍性：
 - [src/field/HelperText.tsx](../HelperText.tsx) - 主组件
 - [src/field/HelperText.types.ts](../HelperText.types.ts) - 类型定义
 - [src/field/useHelperText.ts](../useHelperText.ts) - 逻辑钩子
-- [src/field/useHelperTextStyles.styles.ts](../useHelperTextStyles.styles.ts) - 样式应用
-- [src/field/helperText.styles.ts](../helperText.styles.ts) - Griffel 样式
+- [src/field/useHelperTextClasses.ts](../useHelperTextClasses.ts) - 类名钩子
 - [src/field/renderHelperText.ts](../renderHelperText.ts) - 渲染函数
-- [src/field/docs/HelperText.spec.md](HelperText.spec.md) - HelperText 文档
 
 **配合组件：**
 - [src/label/Label.tsx](../../label/Label.tsx) - Label 组件

@@ -1,7 +1,7 @@
 import { computed, defineComponent, SlotsType } from 'vue';
 import { labelProps, type LabelSlots } from './Label.types';
 import { useLabel } from './useLabel';
-import { useLabelStyles } from './useLabelStyles.styles';
+import { useLabelClasses, labelClassNames } from './useLabelClasses';
 import { renderLabel } from './renderLabel';
 import './label.css';
 
@@ -25,7 +25,22 @@ export const Label = defineComponent({
         // Compute the complete state by applying hooks
         const state = computed(() => {
             const labelState = useLabel(props);
-            useLabelStyles(labelState);
+
+            // 使用纯 CSS 类名 Hook
+            const classes = useLabelClasses({
+                size: labelState.size,
+                weight: labelState.weight,
+                disabled: labelState.disabled,
+            });
+
+            // 应用类名到状态
+            labelState.root.className = classes;
+
+            // 处理 required indicator 样式
+            if (labelState.requiredIndicator) {
+                labelState.requiredIndicator.className = labelClassNames.requiredIndicator;
+            }
+
             return labelState;
         });
 

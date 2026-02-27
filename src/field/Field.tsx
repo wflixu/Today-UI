@@ -1,7 +1,7 @@
 import { computed, defineComponent, SlotsType } from 'vue';
 import { fieldProps, type FieldSlots } from './Field.types';
 import { useField } from './useField';
-import { useFieldStyles } from './useFieldStyles.styles';
+import { useFieldClasses } from './useFieldClasses';
 import { renderField } from './renderField';
 
 /**
@@ -33,7 +33,32 @@ export const Field = defineComponent({
         // Compute the complete state by applying hooks
         const state = computed(() => {
             const fieldState = useField(props, slots);
-            useFieldStyles(fieldState);
+
+            // 使用纯 CSS 类名 Hook
+            const classes = useFieldClasses({
+                orientation: fieldState.orientation,
+                validationState: fieldState.validationState as any,
+            });
+
+            // 应用类名到状态
+            if (fieldState.root) {
+                fieldState.root.className = classes.root;
+            }
+
+            if (fieldState.content) {
+                fieldState.content = {
+                    ...fieldState.content,
+                    className: classes.content,
+                };
+            }
+
+            if (fieldState.validationMessageProps && classes.validationMessage) {
+                fieldState.validationMessageProps = {
+                    ...fieldState.validationMessageProps,
+                    className: classes.validationMessage,
+                };
+            }
+
             return fieldState;
         });
 

@@ -5,4 +5,10 @@ export { Button as default } from './Button';
 export type { ButtonProps, ButtonSlots, ButtonState } from './Button.types';
 export { renderButton_unstable } from './renderButton';
 export { useButton } from './useButton';
-export { buttonClassNames, useButtonStyles_unstable } from './useButtonStyles.styles';
+export {
+  buttonClassNames,
+  useButtonClasses,
+  type ButtonAppearance,
+  type ButtonSize,
+  type ButtonShape,
+} from './useButtonClasses';

@@ -14,11 +14,12 @@ Today-UI is a Vue 3 component library that brings Microsoft's [Fluent Design Sys
 - **🎨 Fluent Design** - Complete implementation of Microsoft's Fluent Design System specifications
 - **💎 TypeScript** - Full type safety with TSX support for better development experience
 - **🎯 API Compatible** - High API compatibility with `@fluentui/react-components`
-- **⚡ Atomic CSS** - [griffel-vue](https://github.com/wflixu/griffel-vue) for highly optimized, tree-shakeable styles
+- **⚡ Pure CSS Variables** - Modern CSS variables for superior performance and easy theming
 - **🌈 Theming** - 4 built-in themes (Web/Teams × Light/Dark) with CSS variables
 - **📦 Tree-shakeable** - Pure ESM output for optimal bundle size
 - **🛠️ Developer Tools** - Integrated [Histoire](https://histoire.dev/) for component documentation
 - **🧩 110+ Icons** - Complete Fluent Design icon library
+- **🔧 Type-Safe Classes** - BEM naming with TypeScript utilities for class name management
 
 ## 📦 Installation
 
@@ -215,8 +216,8 @@ today-ui/
 │   ├── tooltip/             # Tooltip component
 │   ├── file-tree/           # FileTree component
 │   ├── shared/              # Shared utilities and configs
-│   │   ├── griffel/        # Griffel CSS-in-JS configuration
-│   │   └── theme/          # Theme system
+│   │   ├── styles/         # Style utilities (cn, bem, etc.)
+│   │   └── theme/          # Theme system (440+ CSS variables)
 │   ├── style/               # Global styles and design tokens
 │   └── index.ts             # Component exports entry
 ├── specs/                   # Component specification documents
@@ -235,9 +236,9 @@ today-ui/
 
 - **Vue 3.5+** - Composition API + TSX
 - **TypeScript 5.9.2** - Full type support
+- **CSS Variables** - Modern CSS with 440+ Fluent Design tokens
 - **tsdown** - Library build tool (ESM output)
 - **@floating-ui/vue** - Floating UI positioning engine
-- **griffel-vue** - CSS-in-JS styling solution
 - **Histoire** - Component documentation tool
 - **Vitest** - Unit testing framework
 
@@ -245,7 +246,6 @@ today-ui/
 
 - [Fluent Design System](https://www.fluentui.com/)
 - [@fluentui/react-components](https://react.fluentui.dev/)
-- [griffel-vue](https://github.com/wflixu/griffel-vue)
 - [Vue 3 Documentation](https://vuejs.org/)
 - [Floating UI](https://floating-ui.com/)
 - [Histoire](https://histoire.dev/)
@@ -256,7 +256,8 @@ This project follows these conventions:
 
 - **No Accessibility** - Focused on visual effects and basic interactions, does not implement ARIA attributes or keyboard navigation
 - **TSX Syntax** - Components written in TSX for better type inference
-- **CSS-in-JS + CSS Variables** - Griffel for atomic styles, CSS variables as design tokens
+- **Pure CSS + CSS Variables** - Semantic BEM class names with CSS variables for theming
+- **Type-Safe Classes** - TypeScript utilities for class name management (cn, bem, buildVariantClasses)
 - **Dual Documentation** - Each component provides inline docs in Histoire stories and `spec.md` for design specifications
 
 See [CLAUDE.md](CLAUDE.md) for details.

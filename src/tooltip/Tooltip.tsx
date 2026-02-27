@@ -8,7 +8,7 @@ import {
   type Placement,
 } from '@floating-ui/vue';
 import { renderTooltip } from './renderTooltip';
-import { applyTooltipStyles } from './useTooltipStyles.styles';
+import { useTooltipClasses, tooltipClassNames } from './useTooltipClasses';
 import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
 import { useTooltip } from './useTooltip';
 import './tooltip.css';
@@ -30,8 +30,18 @@ export const Tooltip = defineComponent({
     const state = computed(() => {
       // 更新 isVisible 值以保持响应性
       tooltipState.isVisible = tooltipState._isVisible.value;
-      // 在 computed 中应用样式
-      applyTooltipStyles(tooltipState);
+
+      // 使用纯 CSS 类名 Hook
+      const classes = useTooltipClasses({
+        isVisible: tooltipState.isVisible,
+        relationship: tooltipState.relationship,
+        withArrow: tooltipState.withArrow,
+      });
+
+      // 应用类名到状态
+      tooltipState.className = classes.root;
+      tooltipState.arrowClassName = classes.arrow;
+
       return tooltipState;
     });
 

@@ -1,11 +1,10 @@
 /**
  * Toast 样式钩子
- * 使用 griffel-vue 生成样式，同时保留语义化类名
+ * 使用纯 CSS 类名，保留语义化 BEM 命名
  */
 
 import type { ToastState } from './type';
-import { useToastStyles as useGriffelStyles } from './toast.styles';
-import { mergeClasses } from '@/shared/griffel/mergeClasses';
+import { cn } from '@/shared/styles/classUtils';
 
 // 语义化类名常量
 export const toastClassNames = {
@@ -15,33 +14,21 @@ export const toastClassNames = {
 
 /**
  * Toast 样式钩子函数
- * 使用 griffel-vue 生成样式，同时保留语义化类名
+ * 使用纯 CSS 类名
  */
 export const useToastStyles_unstable = (state: ToastState) => {
-  const styles = useGriffelStyles();
-
   // Provider 容器类名
   if (state.provider) {
-    const providerClasses = [
-      toastClassNames.provider,
-      styles.provider,
-    ].filter(Boolean);
-
     state.provider = {
       ...state.provider,
-      className: mergeClasses(...providerClasses, state.provider.className as string),
+      className: cn(toastClassNames.provider, state.provider.className as string),
     };
   }
 
   // Toast 根元素类名
-  const rootClasses = [
-    toastClassNames.root,
-    styles.root,
-  ].filter(Boolean);
-
   state.root = {
     ...state.root,
-    className: mergeClasses(...rootClasses, state.root.className as string),
+    className: cn(toastClassNames.root, state.root.className as string),
   };
 };
 

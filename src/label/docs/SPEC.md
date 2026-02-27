@@ -12,6 +12,7 @@ Label（标签）是一个用于为表单控件提供描述性标签的基础组
 - 与 Fluent Design System 保持视觉一致性
 - 通过 `for` 属性与表单控件正确关联
 - 保持组件简洁，易于组合使用
+- 使用纯 CSS Variables，零运行时开销
 
 ## 功能范围
 
@@ -57,12 +58,13 @@ Label 只负责标签显示功能：
 - 不负责验证消息（由 Field 负责）
 - 不负责辅助文字（由 HelperText 负责，位于 src/field/HelperText.tsx）
 
-### 3. 样式分离
+### 3. 纯 CSS 样式策略
 
-采用 Griffel + CSS 混合样式策略（详见下文"样式实现策略"）：
-- Griffel 处理所有静态样式
-- CSS 仅处理伪类样式
-- 避免样式冗余，保持单一事实来源
+**v1.0.0 更新：** 采用纯 CSS Variables + BEM 命名策略：
+- 完全使用 CSS Variables 定义样式
+- 语义化 BEM 类名
+- 类型安全的类名生成
+- 零运行时样式开销
 
 ### 4. 可访问性优先
 
@@ -71,9 +73,7 @@ Label 只负责标签显示功能：
 - 必填标识对屏幕阅读器隐藏 (`aria-hidden="true"`)
 - 支持键盘导航和焦点管理
 
----
-
-#### 组件定位
+## 组件定位
 
 Label 是一个独立的标签组件，用于为表单控件提供描述性标签。它可以：
 
@@ -82,7 +82,7 @@ Label 是一个独立的标签组件，用于为表单控件提供描述性标�
 - 支持必填标识
 - 支持多种样式变体（大小、粗细）
 
-#### 使用示例
+## 使用示例
 
 ```vue
 <!-- 基础用法 -->
@@ -110,7 +110,7 @@ Label 是一个独立的标签组件，用于为表单控件提供描述性标�
 </Field>
 ```
 
-#### API 设计
+## API 设计
 
 ```typescript
 interface LabelProps {
@@ -139,203 +139,175 @@ interface LabelSlots {
 }
 ```
 
-#### 文件结构
+## 文件结构
 
 ```
 src/label/
 ├── Label.tsx                  # 主组件
 ├── Label.types.ts             # TypeScript 类型定义
 ├── useLabel.ts                # 逻辑钩子
-├── useLabelStyles.styles.ts   # 样式应用
-├── label.styles.ts            # Griffel 样式
+├── useLabelClasses.ts         # 纯 CSS 类名钩子
 ├── renderLabel.ts             # 渲染函数
-├── label.css                  # CSS 交互状态（仅伪类）
+├── label.css                  # 完整的组件样式
 ├── index.ts                   # 导出文件
 ├── tests/
 │   └── Label.test.ts          # 单元测试
 └── docs/
-    ├── Label.story.vue        # Storybook 文档
+    ├── Label.story.vue        # Histoire 文档
     └── SPEC.md                # 本文档
 ```
 
 **注意：** HelperText 组件已移动到 [src/field/HelperText.tsx](../field/HelperText.tsx)
 
-#### 样式实现
+## 样式实现
 
-**语义化类名定义 (useLabelStyles.styles.ts)：**
+### v1.0.0 纯 CSS + BEM 命名策略
+
+**语义化类名定义 (useLabelClasses.ts)：**
 
 ```typescript
 export const labelClassNames = {
   root: 't-label',
   requiredIndicator: 't-label__required-indicator',
 } as const;
-```
 
-**Griffel 样式定义 (label.styles.ts)：**
-export const useLabelStyles = makeStyles({
-  root: {
-    display: 'inline-block',
-    fontSize: 'var(--fontSizeBase300)',
-    fontWeight: 'var(--fontWeightSemibold)',
-    color: 'var(--colorNeutralForeground1)',
-    marginBottom: 'var(--spacingVerticalXXS)',
+export const labelVariants = {
+  size: {
+    small: 'size-small',
+    medium: '',
+    large: 'size-large',
   },
-
-  // 尺寸变体
-  small: {
-    fontSize: 'var(--fontSizeBase200)',
+  weight: {
+    normal: 'weight-normal',
+    semibold: '',
+    bold: 'weight-bold',
   },
-  medium: {
-    fontSize: 'var(--fontSizeBase300)',
+  state: {
+    disabled: 'disabled',
   },
-  large: {
-    fontSize: 'var(--fontSizeBase400)',
-  },
-
-  // 字体粗细
-  normal: {
-    fontWeight: 'var(--fontWeightNormal)',
-  },
-  semibold: {
-    fontWeight: 'var(--fontWeightSemibold)',
-  },
-  bold: {
-    fontWeight: 'var(--fontWeightBold)',
-  },
-
-  // 状态
-  disabled: {
-    color: 'var(--colorNeutralForegroundDisabled)',
-    cursor: 'not-allowed',
-  },
-
-  // 必填标识
-  requiredIndicator: {
-    color: 'var(--colorPaletteRedBorder1)',
-    marginLeft: 'var(--spacingHorizontalXS)',
-  },
-});
-```
-
-**样式应用逻辑 (useLabelStyles.styles.ts)：**
-
-```typescript
-export const useLabelStyles = (state: LabelState): void => {
-  const { useLabelStyles } = require('./label.styles');
-  const styles = useLabelStyles();
-
-  // 仅合并语义类名和 Griffel 类，不生成修饰符类
-  const rootClasses = [
-    labelClassNames.root,              // 语义类，用于 CSS 伪类选择器
-    styles.root,                       // Griffel 基础样式
-    styles[state.size],                // Griffel 尺寸变体
-    styles[state.weight],              // Griffel 字体粗细变体
-    state.disabled && styles.disabled, // Griffel 禁用状态
-  ].filter(Boolean);
-
-  state.root = {
-    ...state.root,
-    className: mergeClasses(...rootClasses, state.root.className),
-  };
-
-  // Required indicator 样式
-  if (state.requiredIndicator) {
-    const requiredIndicatorClasses = [
-      labelClassNames.requiredIndicator,
-      styles.requiredIndicator,
-    ].filter(Boolean);
-
-    state.requiredIndicator = {
-      ...state.requiredIndicator,
-      className: mergeClasses(...requiredIndicatorClasses),
-    };
-  }
 };
 ```
 
-**关键改进：**
-- ❌ 移除了修饰符类生成：`size-${state.size}`, `weight-${state.weight}`, `disabled`
-- ✅ 完全依赖 Griffel 处理变体样式
-- ✅ 仅保留语义类用于 CSS 伪类选择器
-- ✅ 添加详细的 JSDoc 说明样式策略
-
-#### 样式实现策略
-
-Label 组件采用 Griffel + CSS 混合样式策略，确保无冗余和清晰的职责分离：
-
-**Griffel 样式 (label.styles.ts)**
-处理所有静态样式：
-- 基础样式 (root)
-- 尺寸变体 (small, medium, large)
-- 字体粗细 (normal, semibold, bold)
-- 状态样式 (disabled)
-- 必填标识 (requiredIndicator)
-
-**CSS 样式 (label.css)**
-仅处理伪类样式（Griffel 无法处理）：
-- `:hover` 状态 - 鼠标悬停时显示指针光标
-- `:focus-within` 状态 - 关联的 input 获得焦点时移除 outline
-
-**为什么这样设计？**
-
-1. **避免冗余**：每种样式只定义一次
-2. **明确职责**：Griffel 处理静态，CSS 处理交互
-3. **性能优化**：Griffel 在编译时生成高效样式
-4. **可维护性**：单一事实来源，易于修改
-
-**CSS 实现示例 (label.css)：**
+**CSS 样式实现 (label.css)：**
 
 ```css
-/* Label component styles
- *
- * Griffel handles all static styles:
- * - Base styles (root)
- * - Size variants (small, medium, large)
- * - Weight variants (normal, semibold, bold)
- * - State styles (disabled)
- * - Required indicator
- *
- * CSS is ONLY used for pseudo-classes that Griffel cannot handle:
- * - :hover state
- * - :focus-within state
- */
-
-/* Semantic base class */
+/* Label 基础样式 */
 .t-label {
-  /* All styles applied by Griffel */
+  /* 布局 */
+  display: inline-block;
+  margin-bottom: var(--spacingVerticalXXS);
+
+  /* 字体 */
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase300);
+  font-weight: var(--fontWeightSemibold);
+
+  /* 颜色 */
+  color: var(--colorNeutralForeground1);
 }
 
-/* Hover state - when label is interactive */
+/* 尺寸变体 */
+.t-label.size-small {
+  font-size: var(--fontSizeBase200);
+}
+
+.t-label.size-large {
+  font-size: var(--fontSizeBase400);
+}
+
+/* 字体粗细 */
+.t-label.weight-normal {
+  font-weight: var(--fontWeightNormal);
+}
+
+.t-label.weight-bold {
+  font-weight: var(--fontWeightBold);
+}
+
+/* 禁用状态 */
+.t-label.disabled {
+  color: var(--colorNeutralForegroundDisabled);
+  cursor: not-allowed;
+}
+
+/* 必填标识 */
+.t-label__required-indicator {
+  color: var(--colorPaletteRedBorder1);
+  margin-left: var(--spacingHorizontalXS);
+}
+
+/* 交互状态 */
 .t-label:not(.disabled):hover {
   cursor: pointer;
 }
 
-/* Focus-within state - when associated input is focused */
 .t-label:focus-within {
   outline: none;
 }
 ```
 
-**关键点：**
-- CSS 文件从 56 行减少到 28 行（减少 50%）
-- 移除了所有与 Griffel 重复的静态样式定义
-- 仅保留伪类样式，因为 Griffel 无法处理
-- 添加了详细的注释说明样式分工
+### 类型安全类名生成
 
-#### 实现步骤
+```typescript
+export function useLabelClasses(props: {
+  size?: LabelSize;
+  weight?: LabelWeight;
+  disabled?: boolean;
+}): string {
+  const { size = 'medium', weight = 'semibold', disabled = false } = props;
 
-1. 创建 [src/label/Label.types.ts](src/label/Label.types.ts) - 定义 Props、State、Slots
-2. 创建 [src/label/useLabel.ts](src/label/useLabel.ts) - 实现逻辑钩子
-3. 创建 [src/label/label.styles.ts](src/label/label.styles.ts) - 定义 Griffel 样式
-4. 创建 [src/label/useLabelStyles.styles.ts](src/label/useLabelStyles.styles.ts) - 样式合并逻辑
-5. 创建 [src/label/renderLabel.ts](src/label/renderLabel.ts) - 渲染函数
-6. 创建 [src/label/Label.tsx](src/label/Label.tsx) - 主组件
-7. 创建 [src/label/label.css](src/label/label.css) - 交互状态样式
-8. 创建 [src/label/index.ts](src/label/index.ts) - 导出文件
-9. 创建 [src/label/docs/Label.story.vue](src/label/docs/Label.story.vue) - Storybook 文档
-10. 创建 [src/label/tests/Label.test.ts](src/label/tests/Label.test.ts) - 单元测试
+  return cn(
+    labelClassNames.root,
+    size !== 'medium' && labelVariants.size[size],
+    weight !== 'semibold' && labelVariants.weight[weight],
+    disabled && labelVariants.state.disabled
+  );
+}
+```
 
----
+**关键改进：**
+- ✅ 完全使用 CSS Variables 和 BEM 类名
+- ✅ 类型安全的变体映射
+- ✅ 零运行时样式开销
+- ✅ 更好的可维护性和调试体验
+
+## 样式实现策略
+
+Label 组件采用纯 CSS Variables 策略：
+
+### CSS Variables
+- 基础样式
+- 尺寸变体 (small, medium, large)
+- 字体粗细 (normal, semibold, bold)
+- 状态样式 (disabled)
+- 必填标识 (requiredIndicator)
+
+### BEM 命名规范
+- `.t-label` - Block（根元素）
+- `.t-label__required-indicator` - Element（必填标识）
+- `.t-label.size-*` - Modifier（尺寸变体）
+- `.t-label.weight-*` - Modifier（字重变体）
+- `.t-label.disabled` - State（禁用状态）
+
+**为什么这样设计？**
+
+1. **性能优化**：零运行时样式开销，浏览器原生 CSS 引擎优化
+2. **可维护性**：语义化 BEM 类名易于理解和调试
+3. **类型安全**：TypeScript 类型保证变体正确性
+4. **SSR 友好**：纯 CSS 完全支持服务端渲染
+5. **开发体验**：直接在 CSS 文件中调试样式
+
+## 实现步骤
+
+1. 创建 [src/label/Label.types.ts](../Label.types.ts) - 定义 Props、State、Slots
+2. 创建 [src/label/useLabel.ts](../useLabel.ts) - 实现逻辑钩子
+3. 创建 [src/label/useLabelClasses.ts](../useLabelClasses.ts) - 类名钩子
+4. 创建 [src/label/renderLabel.ts](../renderLabel.ts) - 渲染函数
+5. 创建 [src/label/Label.tsx](../Label.tsx) - 主组件
+6. 创建 [src/label/label.css](../label.css) - 组件样式
+7. 创建 [src/label/index.ts](../index.ts) - 导出文件
+8. 创建 [src/label/docs/Label.story.vue](Label.story.vue) - Histoire 文档
+9. 创建 [src/label/tests/Label.test.ts](../tests/Label.test.ts) - 单元测试
 
 ## 变更历史
 
@@ -343,6 +315,7 @@ Label 组件采用 Griffel + CSS 混合样式策略，确保无冗余和清晰�
 |------|------|----------|
 | 1.0.0 | 2026-02-16 | 初始实现 |
 | 1.1.0 | 2026-02-17 | **优化实现**：移除 Griffel 和 CSS 之间的样式冗余，明确样式职责分离 |
+| 1.2.0 | 2026-02-27 | **重大变更**：迁移到纯 CSS Variables 方案 |
 
 ### 版本 1.1.0 详细变更
 
@@ -351,28 +324,35 @@ Label 组件采用 Griffel + CSS 混合样式策略，确保无冗余和清晰�
 - 明确 CSS 职责，仅用于伪类样式（:hover, :focus-within）
 - 保持 API 不变，无破坏性变更
 
-**修改的文件：**
-1. [src/label/label.css](src/label/label.css) - 删除 37 行冗余 CSS，仅保留伪类样式
-2. [src/label/useLabelStyles.styles.ts](src/label/useLabelStyles.styles.ts) - 移除修饰符类生成，添加详细文档
-3. [src/label/docs/SPEC.md](src/label/docs/SPEC.md) - 添加样式实现策略说明
-4. [src/label/docs/Label.story.vue](src/label/docs/Label.story.vue) - 添加组合矩阵测试变体
-5. [src/label/tests/Label.test.ts](src/label/tests/Label.test.ts) - 创建综合测试套件
+### 版本 1.2.0 详细变更（2026-02-27）
 
-**具体变更：**
-- ❌ 移除：Size variant CSS 规则 (`.t-label.size-*`)
-- ❌ 移除：Weight variant CSS 规则 (`.t-label.weight-*`)
-- ❌ 移除：Disabled state CSS 规则 (`.t-label.disabled`)
-- ❌ 移除：Required indicator CSS 规则 (`.t-label__required-indicator`)
-- ❌ 移除：修饰符类生成 (`size-${state.size}`, `weight-${state.weight}`, `disabled`)
-- ✅ 保留：伪类样式 (`:hover`, `:focus-within`)
-- ✅ 添加：详细的样式策略文档
-- ✅ 添加：全面的单元测试
+**迁移目标：**
+- 从 Griffel CSS-in-JS 迁移到纯 CSS Variables
+- 使用 BEM 命名规范提供语义化类名
+- 移除运行时样式开销，提升性能
+- 简化样式架构，提高可维护性
+
+**新增文件：**
+- ✅ `useLabelClasses.ts` - 纯 CSS 类名钩子
+
+**删除文件：**
+- ❌ `useLabelStyles.styles.ts` - Griffel 样式钩子
+- ❌ `label.styles.ts` - Griffel 样式定义
+
+**修改文件：**
+- 🔄 `Label.tsx` - 更新为使用 `useLabelClasses`
+- 🔄 `label.css` - 更新为完整样式（包含所有变体）
+- 🔄 `index.ts` - 更新导出
+
+**改进：**
+- ✅ 包体积减少
+- ✅ 完全支持 SSR
+- ✅ 更好的开发体验和调试体验
+- ✅ 类型安全的类名生成
+- ✅ 移除 Griffel 依赖
 
 **向后兼容性：**
 - ✅ 所有 props 功能保持不变
 - ✅ 所有 slots 功能保持不变
 - ✅ 视觉输出完全一致
-- ✅ 类名仍然应用（只是应用方式不同）
-- ✅ 语义 HTML 结构不变
-
----
+- ✅ API 接口保持不变
