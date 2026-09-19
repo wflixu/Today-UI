@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { h, nextTick, ref } from 'vue';
+import { defineComponent, h, nextTick, ref } from 'vue';
 import TPopover from '../Popover';
 
 const CONTENT = 'popover-content';
@@ -197,6 +197,77 @@ describe('Popover 组件', () => {
 
       wrapper.unmount();
     });
+
+    /**
+     * 回归：受控浮层 + 外部切换按钮。
+     *
+     * 这个组合非常自然，但曾因外部点击监听用 `pointerdown` 而失效：
+     *   pointerdown（先于 click）→ 判定外部点击 → 关闭，外部状态变 false
+     *   click → 按钮的 `!visible` 又变回 true
+     * 结果是浮层永远展开，且不报任何错。
+     *
+     * **必须按真实浏览器顺序派发 pointerdown → click**：test-utils 的
+     * `trigger('click')` 只发 click 一个事件，不会触发 pointerdown，
+     * 那样写出来的用例无论实现用哪个事件都会通过，等于没有守护。
+     */
+    it('受控浮层 + 外部切换按钮：连续点击应正常开合', async () => {
+      const visible = ref(false);
+
+      const Host = defineComponent({
+        setup() {
+          return () =>
+            h('div', [
+              h(
+                'button',
+                {
+                  class: 'external-toggle',
+                  onClick: () => {
+                    visible.value = !visible.value;
+                  },
+                },
+                '切换',
+              ),
+              h(
+                TPopover,
+                {
+                  disabled: true,
+                  visible: visible.value,
+                  'onUpdate:visible': (v: boolean) => {
+                    visible.value = v;
+                  },
+                },
+                {
+                  default: () => h('button', { class: 'trigger' }, '触发'),
+                  content: () => h('div', { class: CONTENT }, '浮层'),
+                },
+              ),
+            ]);
+        },
+      });
+
+      const wrapper = mount(Host, { attachTo: document.body });
+      const toggle = wrapper.find('.external-toggle');
+
+      /** 模拟真实点击：先 pointerdown（在 document 上冒泡），再 click */
+      const realClick = async () => {
+        toggle.element.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+        await toggle.trigger('click');
+        await nextTick();
+      };
+
+      await realClick();
+      expect(findContent(wrapper).exists()).toBe(true);
+
+      // 第二次点击应关闭
+      await realClick();
+      expect(findContent(wrapper).exists()).toBe(false);
+
+      // 第三次再打开
+      await realClick();
+      expect(findContent(wrapper).exists()).toBe(true);
+
+      wrapper.unmount();
+    });
   });
 
   describe('关闭行为', () => {
@@ -206,7 +277,7 @@ describe('Popover 组件', () => {
 
       const outside = document.createElement('div');
       document.body.appendChild(outside);
-      outside.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+      outside.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
 
       expect(findContent(wrapper).exists()).toBe(false);
@@ -217,7 +288,7 @@ describe('Popover 组件', () => {
       const wrapper = mountPopover({ props: { defaultVisible: true } });
       const content = findContent(wrapper);
 
-      content.element.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+      content.element.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
 
       expect(findContent(wrapper).exists()).toBe(true);
@@ -231,7 +302,7 @@ describe('Popover 组件', () => {
 
       const outside = document.createElement('div');
       document.body.appendChild(outside);
-      outside.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+      outside.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
 
       expect(findContent(wrapper).exists()).toBe(true);
@@ -266,13 +337,13 @@ describe('Popover 组件', () => {
       await nextTick();
 
       // 点击外部关闭
-      document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+      document.body.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
       expect(findContent(wrapper).exists()).toBe(false);
 
       const removedEvents = removeSpy.mock.calls.map((call) => call[0]);
       expect(removedEvents).toContain('keydown');
-      expect(removedEvents).toContain('pointerdown');
+      expect(removedEvents).toContain('click');
 
       removeSpy.mockRestore();
       wrapper.unmount();

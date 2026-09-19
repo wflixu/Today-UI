@@ -257,7 +257,7 @@ describe('Dropdown 组件', () => {
       await nextTick();
       expect(findMenu(wrapper).exists()).toBe(true);
 
-      document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+      document.body.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
 
       expect(findMenu(wrapper).exists()).toBe(false);

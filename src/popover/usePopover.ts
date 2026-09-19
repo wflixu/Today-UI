@@ -187,7 +187,21 @@ export function usePopover(
     return Boolean(triggerRef.value?.contains(target) || floatingRef.value?.contains(target));
   };
 
-  const onDocumentPointerDown = (event: Event) => {
+  /**
+   * 外部点击关闭。
+   *
+   * 用 `click` 而非 `pointerdown`。原因是一段很自然的用法会踩坑：
+   * 一个受控的浮层 + 一个外部按钮切换它的开合状态。
+   *
+   * 若监听 `pointerdown`，事件顺序是：
+   *   1. pointerdown（先于 click）→ 判定为外部点击 → 关闭 → 外部状态变 false
+   *   2. click → 按钮的 `!visible` 又把它变回 true
+   * 结果浮层永远是展开的，而且不报任何错。
+   *
+   * 换成 `click` 后，目标元素自身的处理器先执行（冒泡顺序），外部关闭再做判断时
+   * 状态已经是 false，`setOpen` 的同值检查让它成为无操作。
+   */
+  const onDocumentClick = (event: Event) => {
     if (isEventInsidePopover(event)) return;
     setOpen(false);
   };
@@ -205,14 +219,14 @@ export function usePopover(
       if (!open || typeof document === 'undefined') return;
 
       if (props.closeOnClickOutside) {
-        document.addEventListener('pointerdown', onDocumentPointerDown, true);
+        document.addEventListener('click', onDocumentClick);
       }
       if (props.closeOnEscape) {
         document.addEventListener('keydown', onDocumentKeydown);
       }
 
       onCleanup(() => {
-        document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+        document.removeEventListener('click', onDocumentClick);
         document.removeEventListener('keydown', onDocumentKeydown);
       });
     },
