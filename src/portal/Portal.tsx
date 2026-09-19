@@ -3,7 +3,10 @@ import { portalProps, type PortalProps, type PortalSlots } from './Portal.types'
 import { usePortal, useScrollLock } from './usePortal';
 import { renderPortal } from './renderPortal';
 
-import './portal.css';
+// 注意：这里**不** import './portal.css'。
+// CSS 由 src/style/index.css 统一引入（src/index.ts 会加载它），这是唯一的入口。
+// 若组件再自己 import 一次，Vite 会把同一份 CSS 收进产物两次 —— 实测
+// .t-button / .t-menu 等既有组件都有这个重复（详见 specs/component-roadmap.md 的欠账）。
 
 export const TPortal = defineComponent({
   name: 'TPortal',

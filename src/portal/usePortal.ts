@@ -33,12 +33,16 @@ export function resolveAttach(
     return resolveAttach(resolved as AttachNode, triggerNode);
   }
 
-  // 走到这里是 HTMLElement（或 Document / Element —— 统一取 body 兜底）
-  if (typeof document !== 'undefined' && node instanceof Document) {
-    return (node.body as HTMLElement) ?? (fallback as HTMLElement);
+  // 只接受真正的 DOM 节点。类型系统在运行时不存在，使用者可能传入数字、
+  // 普通对象等任意值 —— 直接交给 Teleport 会在 insertBefore 处崩溃。
+  if (typeof Node !== 'undefined' && node instanceof Node) {
+    if (node instanceof Document) {
+      return (node.body as HTMLElement) ?? (fallback as HTMLElement);
+    }
+    return node as unknown as HTMLElement;
   }
 
-  return node as HTMLElement;
+  return fallback as HTMLElement;
 }
 
 // ========== 滚动锁 ==========

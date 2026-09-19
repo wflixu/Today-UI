@@ -283,6 +283,26 @@ describe('Portal 组件', () => {
       wrapper.unmount();
     });
 
+    // 类型系统在运行时不存在，使用者可能传入任意值。
+    // 曾经这里会把非 DOM 值原样交给 Teleport，导致 insertBefore 抛 TypeError。
+    it.each([
+      ['数字', 123],
+      ['普通对象', { notAnElement: true }],
+      ['数组', []],
+      ['布尔值', true],
+    ])('attach 传入非法值（%s）时回退到 body 且不崩溃', async (_label, value) => {
+      const wrapper = mount(TPortal, {
+        props: { attach: value as never },
+        slots: { default: () => h('div', { class: CONTENT }, '内容') },
+        attachTo: document.body,
+      });
+      await nextTick();
+
+      expect(document.body.querySelector(`.${CONTENT}`)).not.toBeNull();
+
+      wrapper.unmount();
+    });
+
     it('没有默认插槽时不报错', async () => {
       const wrapper = mount(TPortal, { attachTo: document.body });
       await nextTick();
