@@ -30,6 +30,7 @@ const TodayUI = {
 export {
   TButton,
   TDropdown,
+  TDialog,
   TField,
   TFileTree,
   TIcon,

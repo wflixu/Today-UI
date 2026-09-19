@@ -8,12 +8,12 @@
 
 /* 组件样式 */
 @import '../button/button.css';
-@import '../dropdown/dropdown.css';
 @import '../dialog/style.css';
+@import '../dropdown/dropdown.css';
 @import '../icon/icon.css';
 @import '../menu/menu.css';
-@import '../portal/portal.css';
 @import '../popover/popover.css';
+@import '../portal/portal.css';
 @import '../tabs/tabs.css';
 @import '../tabs/tablist.css';
 @import '../toast/toast.css';

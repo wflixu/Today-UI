@@ -11,7 +11,14 @@ export const TPopover = defineComponent({
   emits: ['update:visible', 'visibleChange'],
   setup(props: PopoverProps, { emit, expose, slots }) {
     const popover = usePopover(props);
-    const { wrapTrigger, contentHandlers } = usePopoverTrigger(props, popover);
+    const { wrapTrigger, contentHandlers } = usePopoverTrigger({
+      trigger: props.trigger,
+      triggerRef: popover.triggerRef,
+      toggle: popover.toggle,
+      openWithDelay: popover.openWithDelay,
+      closeWithDelay: popover.closeWithDelay,
+      clearTimers: popover.clearTimers,
+    });
 
     // 状态变化时向外通知。
     // 用 watch 而不是在 setOpen 里 emit：受控模式下状态由 props 驱动，

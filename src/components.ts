@@ -1,6 +1,7 @@
 export { default as TButton } from './button';
 export { default as TDropdown } from './dropdown/';
 export { default as TField } from './field';
+export { default as TDialog } from './dialog';
 export { default as TFileTree } from './file-tree/';
 export { default as TIcon } from './icon';
 export { default as TInput } from './input';

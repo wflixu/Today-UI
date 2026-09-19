@@ -1,7 +1,6 @@
-import { cloneVNode, withDirectives, type Directive, type VNode } from 'vue';
+import { cloneVNode, withDirectives, type Directive, type Ref, type VNode } from 'vue';
 import { getFirstValidChild } from '../shared/util';
-import type { PopoverProps } from './Popover.types';
-import type { UsePopoverReturn } from './usePopover';
+import type { PopoverTrigger } from './Popover.types';
 
 /**
  * 合并事件处理器。
@@ -44,6 +43,21 @@ export interface UsePopoverTriggerReturn {
   contentHandlers: Record<string, unknown>;
 }
 
+export interface UsePopoverTriggerOptions {
+  /** 触发方式 */
+  trigger: PopoverTrigger;
+  /** 触发元素的 DOM ref，由本 composable 回填 */
+  triggerRef: Ref<HTMLElement | null>;
+  /** click / contextmenu 触发时调用 */
+  toggle: () => void;
+  /** hover / focus 触发时延迟显示；不传则退化为立即切换 */
+  openWithDelay?: () => void;
+  /** hover / focus 触发时延迟隐藏；不传则退化为立即切换 */
+  closeWithDelay?: () => void;
+  /** hover 触发时鼠标移入浮层调用，用于取消待执行的关闭 */
+  clearTimers?: () => void;
+}
+
 /**
  * 触发元素处理。
  *
@@ -52,15 +66,19 @@ export interface UsePopoverTriggerReturn {
  *
  * 用指令而非 `cloneVNode(..., { ref })` 来捕获 DOM 元素：指令的 `mounted(el)`
  * 拿到的始终是真实元素，而 ref 在触发元素是组件时会拿到组件实例。
+ *
+ * 参数是聚焦的选项对象而非整个 PopoverProps —— 这样无需定位能力的组件
+ * （如 Dialog）也能复用同一套触发逻辑。
  */
-export function usePopoverTrigger(
-  props: PopoverProps,
-  popover: Pick<
-    UsePopoverReturn,
-    'triggerRef' | 'isOpen' | 'toggle' | 'openWithDelay' | 'closeWithDelay' | 'clearTimers'
-  >,
-): UsePopoverTriggerReturn {
-  const { triggerRef, toggle, openWithDelay, closeWithDelay, clearTimers } = popover;
+export function usePopoverTrigger(options: UsePopoverTriggerOptions): UsePopoverTriggerReturn {
+  const {
+    trigger,
+    triggerRef,
+    toggle,
+    openWithDelay = toggle,
+    closeWithDelay = toggle,
+    clearTimers = () => {},
+  } = options;
 
   // 元素可能在更新时被替换（例如 v-if 切换），因此 mounted 与 updated 都要写
   const captureRef: Directive<HTMLElement> = {
@@ -77,7 +95,7 @@ export function usePopoverTrigger(
 
   // 触发事件。manual 模式不注册任何事件，完全由 visible 控制。
   const buildHandlers = (): Record<string, (event: Event) => void> => {
-    switch (props.trigger) {
+    switch (trigger) {
       case 'click':
         return {
           onClick: () => toggle(),
@@ -125,7 +143,7 @@ export function usePopoverTrigger(
   // hover 触发时，鼠标从触发元素移入浮层不应关闭 ——
   // 进入浮层取消待执行的关闭，离开时才重新计时。
   const contentHandlers: Record<string, unknown> =
-    props.trigger === 'hover'
+    trigger === 'hover'
       ? {
           onMouseenter: () => clearTimers(),
           onMouseleave: () => closeWithDelay(),

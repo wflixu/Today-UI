@@ -1,55 +1,50 @@
-import { computed, defineComponent, provide, ref, Teleport, watch } from 'vue';
-import props from './props';
-import './style.css';
-import { DIALOG_TRIGGER_TOKEN } from './util';
-import DialogTrigger from './DialogTrigger';
-import TButton from './../button/Button';
+import { computed, defineComponent, SlotsType } from 'vue';
+import { dialogProps, type DialogProps, type DialogSlots } from './Dialog.types';
+import { useDialog } from './useDialog';
+import { usePopoverTrigger } from '../popover/usePopoverTrigger';
+import { renderDialog } from './renderDialog';
 
-export default defineComponent({
+export const TDialog = defineComponent({
   name: 'TDialog',
-  props,
-  emits: ['update:show'],
-  setup(props, { slots, emit }) {
-    const triggerRef = ref<HTMLElement | undefined>();
-    provide(DIALOG_TRIGGER_TOKEN, triggerRef);
+  props: dialogProps,
+  slots: Object as SlotsType<DialogSlots>,
+  emits: ['update:show', 'confirm'],
+  setup(props: DialogProps, { emit, expose, slots }) {
+    const dialog = useDialog(props, (event, value) => emit(event, value));
 
-    const visibleStyleObj = computed(() => {
-      return {
-        display: props.show ? '' : 'none',
-      };
-    });
-    watch([triggerRef], () => {
-      if (triggerRef.value) {
-        triggerRef.value.addEventListener('click', () => {
-          emit('update:show', !props.show);
-        });
-      }
+    // 复用 Popover 的触发元素处理。
+    // Dialog 不做定位，所以只用触发部分，不需要 useFloating 那套机制。
+    // 触发方式固定为 click。
+    const { wrapTrigger } = usePopoverTrigger({
+      trigger: 'click',
+      triggerRef: dialog.triggerRef,
+      toggle: dialog.toggle,
     });
 
-    const onCancel = () => {
-      emit('update:show', false);
+    const onConfirm = () => {
+      emit('confirm');
+      dialog.requestClose();
     };
 
-    return () => {
-      return (
-        <>
-          <DialogTrigger>{slots.default && slots.default()}</DialogTrigger>
-          <Teleport to="body">
-            <div class="t-overlay" style={visibleStyleObj.value}>
-              <div class="t-dialog">
-                <div class="t-dialog-body">
-                  <div class="header">{props.title}</div>
-                  <div class="content">{slots.content && slots.content()}</div>
-                  <div class="actions">
-                    <TButton onClick={onCancel}>取消</TButton>
-                    <TButton type="primary">确认</TButton>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Teleport>
-        </>
-      );
-    };
+    expose({
+      setShow: dialog.setShow,
+      requestClose: dialog.requestClose,
+      toggle: dialog.toggle,
+      triggerRef: dialog.triggerRef,
+    });
+
+    const context = computed(() => ({
+      state: dialog.state.value,
+      attach: props.attach,
+      disabled: props.disabled,
+      lockScroll: props.lockScroll,
+      onOverlayClick: dialog.onOverlayClick,
+      onCancel: dialog.requestClose,
+      onConfirm,
+    }));
+
+    return () => renderDialog(context.value, slots, wrapTrigger);
   },
 });
+
+export default TDialog;
