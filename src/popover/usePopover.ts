@@ -218,15 +218,36 @@ export function usePopover(
     (open, _prev, onCleanup) => {
       if (!open || typeof document === 'undefined') return;
 
-      if (props.closeOnClickOutside) {
-        document.addEventListener('click', onDocumentClick);
-      }
+      // keydown 与点击是不同事件，不会被当前这次点击影响，立即挂上。
       if (props.closeOnEscape) {
         document.addEventListener('keydown', onDocumentKeydown);
       }
 
+      /**
+       * click 监听必须**推迟到当前事件传播结束之后**再挂。
+       *
+       * 真实浏览器中的问题（已用 CDP 真实鼠标事件复现并抓到同一个 timeStamp）：
+       * 触发打开的那次点击在 button 的 target 阶段改变了状态，Vue 的刷新让本函数
+       * 在同一次事件传播**途中**把监听挂到 document；事件继续冒泡到 document 时，
+       * 这个新挂上的监听被**同一个事件**触发（DOM 规范中监听器列表是在到达该节点时
+       * 才克隆的），于是刚打开的浮层立刻被判定为「外部点击」而关闭。
+       *
+       * 表现：点一下，浮层闪一下就消失 —— 而且没有同步开销能解释它。
+       * jsdom 无法复现：那里的状态刷新发生在事件派发之外。
+       */
+      let clickListenerAttached = false;
+      const attachTimer = setTimeout(() => {
+        if (props.closeOnClickOutside) {
+          document.addEventListener('click', onDocumentClick);
+        }
+        clickListenerAttached = true;
+      }, 0);
+
       onCleanup(() => {
-        document.removeEventListener('click', onDocumentClick);
+        clearTimeout(attachTimer);
+        if (clickListenerAttached) {
+          document.removeEventListener('click', onDocumentClick);
+        }
         document.removeEventListener('keydown', onDocumentKeydown);
       });
     },

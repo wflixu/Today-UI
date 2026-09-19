@@ -257,6 +257,9 @@ describe('Dropdown 组件', () => {
       await nextTick();
       expect(findMenu(wrapper).exists()).toBe(true);
 
+      // 外部点击监听是异步挂载的（见 usePopover 中的说明），等它挂上再点
+      await new Promise((r) => setTimeout(r, 0));
+
       document.body.dispatchEvent(new Event('click', { bubbles: true }));
       await nextTick();
 

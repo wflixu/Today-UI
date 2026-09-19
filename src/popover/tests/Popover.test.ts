@@ -34,6 +34,9 @@ const mountPopover = (options: Record<string, unknown> = {}) => {
 /** 浮层容器 —— 定位属性、类名、事件都挂在它上面 */
 const findFloating = (wrapper: VueWrapper) => wrapper.find('.t-popover__content');
 
+/** 外部点击监听是异步挂载的（见 usePopover 中的说明），等待它挂上 */
+const waitAttach = () => new Promise((r) => setTimeout(r, 0));
+
 /** 插槽内容 —— 用于判断浮层是否渲染 */
 const findContent = (wrapper: VueWrapper) => wrapper.find(`.${CONTENT}`);
 
@@ -275,6 +278,9 @@ describe('Popover 组件', () => {
       const wrapper = mountPopover({ props: { defaultVisible: true } });
       expect(findContent(wrapper).exists()).toBe(true);
 
+      // 外部点击监听是异步挂载的，等它挂上再点
+      await waitAttach();
+
       const outside = document.createElement('div');
       document.body.appendChild(outside);
       outside.dispatchEvent(new Event('click', { bubbles: true }));
@@ -292,6 +298,39 @@ describe('Popover 组件', () => {
       await nextTick();
 
       expect(findContent(wrapper).exists()).toBe(true);
+      wrapper.unmount();
+    });
+
+    /**
+     * 回归：外部点击监听必须在当前事件传播结束之后再挂。
+     *
+     * 真实浏览器中的故障（已用 CDP 真实鼠标事件复现，并抓到与触发点击相同的
+     * timeStamp）：点击触发元素时，事件传到 target 阶段改变状态，Vue 的刷新让
+     * 「外部点击」监听在同一次事件传播**途中**挂到 document；事件继续冒泡到
+     * document 时，这个新挂上的监听被**同一个事件**触发（DOM 规范中监听器列表
+     * 在到达该节点时才克隆），于是刚打开的浮层被自己这次点击关掉 ——
+     * 表现为「点一下，闪一下就没了」。
+     *
+     * jsdom 无法复现该时序（状态刷新发生在事件派发之外），所以这里直接守护
+     * 修复机制本身：监听不能在同一次传播周期内挂上。
+     */
+    it('外部点击监听应异步挂载，不得在状态变更的同一周期内', async () => {
+      const addSpy = vi.spyOn(document, 'addEventListener');
+      const wrapper = mountPopover();
+
+      await wrapper.find('.trigger').trigger('click');
+      await nextTick();
+
+      const clickAddsNow = addSpy.mock.calls.filter((call) => call[0] === 'click').length;
+      expect(
+        clickAddsNow,
+        '监听若此刻已挂上，触发打开的那次点击会继续冒泡到 document 并立即关闭浮层',
+      ).toBe(0);
+
+      await waitAttach();
+      expect(addSpy.mock.calls.filter((call) => call[0] === 'click').length).toBe(1);
+
+      addSpy.mockRestore();
       wrapper.unmount();
     });
 
@@ -334,7 +373,7 @@ describe('Popover 组件', () => {
     it('关闭后应移除全局监听', async () => {
       const removeSpy = vi.spyOn(document, 'removeEventListener');
       const wrapper = mountPopover({ props: { defaultVisible: true } });
-      await nextTick();
+      await waitAttach();
 
       // 点击外部关闭
       document.body.dispatchEvent(new Event('click', { bubbles: true }));
