@@ -35,7 +35,9 @@
     "test:coverage": "vitest --environment jsdom --coverage",
     "typecheck": "vue-tsc --noEmit",
     "lint": "oxlint --fix .",
-    "lint:check": "oxlint ."
+    "lint:check": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
   },
   "devDependencies": {
     "@fluentui/react-components": "^9.74.7",
@@ -54,6 +56,7 @@
     "histoire": "1.0.0-beta.1",
     "jsdom": "^30.1.0",
     "npm-run-all": "^4.1.5",
+    "oxfmt": "0.68.0",
     "oxlint": "^1.83.0",
     "pinia": "4.0.3",
     "postcss": "^8.5.28",
