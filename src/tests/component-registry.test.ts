@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as components from '../components';
+import * as entry from '../index';
 
 /**
  * 组件注册的守护测试
@@ -61,6 +62,24 @@ describe('组件注册', () => {
       const c = component as Record<string, unknown>;
       const isComponent = typeof c.setup === 'function' || typeof c.render === 'function';
       expect(isComponent, `${exportName} 看起来不是 Vue 组件`).toBe(true);
+    });
+  });
+
+  /**
+   * components.ts 与 index.ts 之间存在一份**手写的显式导出列表**。
+   * 往 components.ts 加了组件却忘记同步 index.ts，组件就不会出现在包入口 ——
+   * 构建照常成功，测试也照常通过，只是使用者 import 不到。
+   *
+   * 这个漂移已经发生过两次（TLabel、TPortal），所以在这里守住。
+   */
+  describe('包入口必须导出 components.ts 里的每个组件', () => {
+    entries.forEach(([exportName, component]) => {
+      it(`${exportName} 可从包入口导入`, () => {
+        expect(
+          (entry as Record<string, unknown>)[exportName],
+          `${exportName} 在 src/components.ts 里注册了，但没有同步到 src/index.ts 的显式导出列表`,
+        ).toBe(component);
+      });
     });
   });
 });

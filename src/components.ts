@@ -6,5 +6,6 @@ export { default as TIcon } from './icon';
 export { default as TInput } from './input';
 export { default as TLabel } from './label';
 export { default as TMenu } from './menu/';
+export { default as TPortal } from './portal';
 export { default as TTooltip } from './tooltip/';
 export { default as TTabs, TTablist, TTabPanel } from './tabs';
