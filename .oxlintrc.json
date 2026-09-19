@@ -11,13 +11,7 @@
     "browser": true,
     "es2024": true
   },
-  "ignorePatterns": [
-    "dist",
-    ".histoire",
-    "node_modules",
-    "react-components",
-    "**/*.d.ts"
-  ],
+  "ignorePatterns": ["dist", ".histoire", "node_modules", "react-components", "**/*.d.ts"],
   "rules": {
     "no-unused-vars": [
       "warn",

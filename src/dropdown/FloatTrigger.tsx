@@ -1,9 +1,9 @@
-import { cloneVNode, defineComponent, withDirectives, inject } from "vue";
-import type { SetupContext, Ref } from "vue";
-import { FLOAT_TRIGGER_TOKEN, getFirstValidChild } from "./util";
+import { cloneVNode, defineComponent, withDirectives, inject } from 'vue';
+import type { SetupContext, Ref } from 'vue';
+import { FLOAT_TRIGGER_TOKEN, getFirstValidChild } from './util';
 
 export default defineComponent({
-  name: "FloatTrigger",
+  name: 'FloatTrigger',
   inheritAttrs: false,
   setup(_, ctx: SetupContext) {
     const { slots, attrs } = ctx;

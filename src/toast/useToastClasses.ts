@@ -12,10 +12,7 @@ export const toastClassNames = {
  * Toast 组件类名 Hook
  * 根据组件 state 生成对应的 BEM 类名
  */
-export function useToastClasses(state: {
-  provider?: any;
-  root?: any;
-}): {
+export function useToastClasses(state: { provider?: any; root?: any }): {
   provider?: string;
   root: string;
 } {

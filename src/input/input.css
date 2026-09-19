@@ -1,4 +1,4 @@
-@import "./../style/base.css";
+@import './../style/base.css';
 
 /* ========== Input Root ========== */
 .t-input {
@@ -195,7 +195,9 @@
 /* ========== Interactive States ========== */
 
 /* Hover */
-.t-input__input-wrapper:hover:not(:has(.t-input__input:disabled)):not(.t-input--error):not(.error):not(.validation-invalid) {
+.t-input__input-wrapper:hover:not(:has(.t-input__input:disabled)):not(.t-input--error):not(
+    .error
+  ):not(.validation-invalid) {
   border-color: var(--colorNeutralStroke1Hover);
 }
 
@@ -246,8 +248,9 @@
   justify-content: center;
   padding: var(--spacingHorizontalXS);
   border-radius: var(--borderRadiusSmall);
-  transition: background-color var(--durationFast) var(--curveEasyEaseMax),
-              color var(--durationFast) var(--curveEasyEaseMax);
+  transition:
+    background-color var(--durationFast) var(--curveEasyEaseMax),
+    color var(--durationFast) var(--curveEasyEaseMax);
 }
 
 .t-input__clear-button:hover:not(:disabled) {
@@ -276,8 +279,9 @@
   justify-content: center;
   padding: var(--spacingHorizontalXS);
   border-radius: var(--borderRadiusSmall);
-  transition: background-color var(--durationFast) var(--curveEasyEaseMax),
-              color var(--durationFast) var(--curveEasyEaseMax);
+  transition:
+    background-color var(--durationFast) var(--curveEasyEaseMax),
+    color var(--durationFast) var(--curveEasyEaseMax);
 }
 
 .t-input__password-toggle:hover:not(:disabled) {

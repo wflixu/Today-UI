@@ -9,7 +9,7 @@ describe('Tooltip 组件', () => {
     it('应该渲染触发元素包装器', () => {
       const wrapper = mount(TTooltip, {
         props: { content: 'Tooltip content' },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -18,7 +18,7 @@ describe('Tooltip 组件', () => {
     it('应该渲染 content prop 内容', () => {
       const wrapper = mount(TTooltip, {
         props: { content: 'Test content' },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -44,7 +44,7 @@ describe('Tooltip 组件', () => {
         it(`应该渲染 placement="${placement}"`, () => {
           const wrapper = mount(TTooltip, {
             props: { placement, content: 'Test' },
-            slots: { default: () => h('button', 'Trigger') }
+            slots: { default: () => h('button', 'Trigger') },
           });
 
           expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -63,7 +63,7 @@ describe('Tooltip 组件', () => {
         it(`应该渲染 relationship="${relationship}"`, () => {
           const wrapper = mount(TTooltip, {
             props: { relationship, content: 'Test' },
-            slots: { default: () => h('button', 'Trigger') }
+            slots: { default: () => h('button', 'Trigger') },
           });
 
           expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -75,7 +75,7 @@ describe('Tooltip 组件', () => {
       it('应该渲染自定义 maxWidth', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', maxWidth: 300 },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -84,7 +84,7 @@ describe('Tooltip 组件', () => {
       it('应该渲染默认 maxWidth (200)', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test' },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -95,7 +95,7 @@ describe('Tooltip 组件', () => {
       it('应该渲染自定义 offset', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', offset: 10 },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -106,7 +106,7 @@ describe('Tooltip 组件', () => {
       it('withArrow=true 应该渲染箭头', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', withArrow: true },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -115,7 +115,7 @@ describe('Tooltip 组件', () => {
       it('withArrow=false 不应该渲染箭头', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', withArrow: false },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -126,7 +126,7 @@ describe('Tooltip 组件', () => {
       it('wrapText=true 应该允许文本换行', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', wrapText: true },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -135,7 +135,7 @@ describe('Tooltip 组件', () => {
       it('wrapText=false 应该禁止文本换行', () => {
         const wrapper = mount(TTooltip, {
           props: { content: 'Test', wrapText: false },
-          slots: { default: () => h('button', 'Trigger') }
+          slots: { default: () => h('button', 'Trigger') },
         });
 
         expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -488,7 +488,7 @@ describe('Tooltip 组件', () => {
     it('应该渲染默认插槽（触发元素）', () => {
       const wrapper = mount(TTooltip, {
         props: { content: 'Test' },
-        slots: { default: () => h('button', 'Trigger Button') }
+        slots: { default: () => h('button', 'Trigger Button') },
       });
 
       const trigger = wrapper.find('.t-tooltip-trigger');
@@ -501,8 +501,8 @@ describe('Tooltip 组件', () => {
         props: {},
         slots: {
           default: () => h('button', 'Trigger'),
-          content: () => h('span', 'Custom content')
-        }
+          content: () => h('span', 'Custom content'),
+        },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -513,8 +513,8 @@ describe('Tooltip 组件', () => {
         props: { content: 'Prop content' },
         slots: {
           default: () => h('button', 'Trigger'),
-          content: () => h('span', 'Slot content')
-        }
+          content: () => h('span', 'Slot content'),
+        },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -590,7 +590,7 @@ describe('Tooltip 组件', () => {
     it('不应该包含 ARIA 属性（项目规范）', () => {
       const wrapper = mount(TTooltip, {
         props: { content: 'Test' },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       const trigger = wrapper.find('.t-tooltip-trigger');
@@ -603,7 +603,7 @@ describe('Tooltip 组件', () => {
     it('应该处理空内容', () => {
       const wrapper = mount(TTooltip, {
         props: { content: undefined },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -613,7 +613,7 @@ describe('Tooltip 组件', () => {
       const longText = '这是一个非常非常非常长的提示文本内容';
       const wrapper = mount(TTooltip, {
         props: { content: longText },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);
@@ -622,7 +622,7 @@ describe('Tooltip 组件', () => {
     it('应该处理 HTML 字符实体', () => {
       const wrapper = mount(TTooltip, {
         props: { content: '<>&"' },
-        slots: { default: () => h('button', 'Trigger') }
+        slots: { default: () => h('button', 'Trigger') },
       });
 
       expect(wrapper.find('.t-tooltip-trigger').exists()).toBe(true);

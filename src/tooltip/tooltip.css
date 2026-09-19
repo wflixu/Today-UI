@@ -28,19 +28,19 @@
 }
 
 /* Arrow positioning based on data-placement attribute */
-.t-tooltip__arrow[data-placement^="top"] {
+.t-tooltip__arrow[data-placement^='top'] {
   bottom: -4px;
 }
 
-.t-tooltip__arrow[data-placement^="bottom"] {
+.t-tooltip__arrow[data-placement^='bottom'] {
   top: -4px;
 }
 
-.t-tooltip__arrow[data-placement^="left"] {
+.t-tooltip__arrow[data-placement^='left'] {
   right: -4px;
 }
 
-.t-tooltip__arrow[data-placement^="right"] {
+.t-tooltip__arrow[data-placement^='right'] {
   left: -4px;
 }
 

@@ -1,37 +1,31 @@
-import { type Ref, type SetupContext } from "vue";
-import type {
-  IInnerTreeNode,
-  IUseCore,
-  IUseToggle,
-  IUseLazyLoad,
-} from "./type";
+import { type Ref, type SetupContext } from 'vue';
+import type { IInnerTreeNode, IUseCore, IUseToggle, IUseLazyLoad } from './type';
 
 export function useToggle() {
   return function useToggleFn(
     data: Ref<IInnerTreeNode[]>,
     core: IUseCore,
     context: SetupContext,
-    lazyLode: IUseLazyLoad
+    lazyLode: IUseLazyLoad,
   ): IUseToggle {
     const { getNode, setNodeValue } = core;
     const { lazyLoadNodes } = lazyLode;
 
     const expandNode = (node: IInnerTreeNode): void => {
-      
       if (node.disableToggle || node.loading) {
         return;
       }
 
-      setNodeValue(node, "expanded", true);
-      context.emit("toggle", node);
+      setNodeValue(node, 'expanded', true);
+      context.emit('toggle', node);
     };
 
     const collapseNode = (node: IInnerTreeNode): void => {
       if (node.disableToggle || node.loading) {
         return;
       }
-      setNodeValue(node, "expanded", false);
-      context.emit("toggle", node);
+      setNodeValue(node, 'expanded', false);
+      context.emit('toggle', node);
     };
 
     const toggleNode = (node: IInnerTreeNode): void => {

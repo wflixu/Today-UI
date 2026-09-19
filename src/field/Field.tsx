@@ -23,53 +23,53 @@ import { renderField } from './renderField';
  * ```
  */
 export const TField = defineComponent({
-    name: 'TField',
+  name: 'TField',
 
-    props: fieldProps,
+  props: fieldProps,
 
-    slots: Object as SlotsType<FieldSlots>,
+  slots: Object as SlotsType<FieldSlots>,
 
-    setup(props, { expose, slots }) {
-        // Compute the complete state by applying hooks
-        const state = computed(() => {
-            const fieldState = useField(props, slots);
+  setup(props, { expose, slots }) {
+    // Compute the complete state by applying hooks
+    const state = computed(() => {
+      const fieldState = useField(props, slots);
 
-            // 使用纯 CSS 类名 Hook
-            const classes = useFieldClasses({
-                orientation: fieldState.orientation,
-                validationState: fieldState.validationState as any,
-            });
+      // 使用纯 CSS 类名 Hook
+      const classes = useFieldClasses({
+        orientation: fieldState.orientation,
+        validationState: fieldState.validationState as any,
+      });
 
-            // 应用类名到状态
-            if (fieldState.root) {
-                fieldState.root.className = classes.root;
-            }
+      // 应用类名到状态
+      if (fieldState.root) {
+        fieldState.root.className = classes.root;
+      }
 
-            if (fieldState.content) {
-                fieldState.content = {
-                    ...fieldState.content,
-                    className: classes.content,
-                };
-            }
+      if (fieldState.content) {
+        fieldState.content = {
+          ...fieldState.content,
+          className: classes.content,
+        };
+      }
 
-            if (fieldState.validationMessageProps && classes.validationMessage) {
-                fieldState.validationMessageProps = {
-                    ...fieldState.validationMessageProps,
-                    className: classes.validationMessage,
-                };
-            }
+      if (fieldState.validationMessageProps && classes.validationMessage) {
+        fieldState.validationMessageProps = {
+          ...fieldState.validationMessageProps,
+          className: classes.validationMessage,
+        };
+      }
 
-            return fieldState;
-        });
+      return fieldState;
+    });
 
-        // Expose the component's public API
-        expose({
-            state,
-        });
+    // Expose the component's public API
+    expose({
+      state,
+    });
 
-        // Render function
-        return () => renderField(state.value, slots);
-    },
+    // Render function
+    return () => renderField(state.value, slots);
+  },
 });
 
 export default TField;

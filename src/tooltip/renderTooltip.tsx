@@ -28,18 +28,8 @@ const getAttach = (attach: AttachNode): HTMLElement | string => {
 /**
  * Tooltip 渲染函数
  */
-export const renderTooltip = (
-  state: TooltipState,
-  slots: TooltipSlots,
-  context: RenderContext
-) => {
-  const {
-    referenceRef,
-    floatingRef,
-    arrowRef,
-    positioningStyle,
-    arrowStyle,
-  } = context;
+export const renderTooltip = (state: TooltipState, slots: TooltipSlots, context: RenderContext) => {
+  const { referenceRef, floatingRef, arrowRef, positioningStyle, arrowStyle } = context;
 
   const {
     className,
@@ -56,39 +46,48 @@ export const renderTooltip = (
   } = state;
 
   // 触发元素包装器
-  const triggerWrapper = h('span', {
-    ref: (el: any) => { referenceRef.value = el; },
-    class: 't-tooltip-trigger',
-    onMouseenter: handleMouseEnter,
-    onMouseleave: handleMouseLeave,
-    onFocusin: handleFocus,
-    onFocusout: handleBlur,
-  }, slots.default?.());
+  const triggerWrapper = h(
+    'span',
+    {
+      ref: (el: any) => {
+        referenceRef.value = el;
+      },
+      class: 't-tooltip-trigger',
+      onMouseenter: handleMouseEnter,
+      onMouseleave: handleMouseLeave,
+      onFocusin: handleFocus,
+      onFocusout: handleBlur,
+    },
+    slots.default?.(),
+  );
 
   // Tooltip 内容
-  const tooltipContent = h('div', {
-    ref: (el: any) => { floatingRef.value = el; },
-    class: className,
-    style: positioningStyle,
-    'data-placement': placement,
-  }, [
-    h('div', { class: 't-tooltip__content' },
-      slots.content?.() || content
-    ),
-    withArrow && h('div', {
-      ref: (el: any) => { arrowRef.value = el; },
-      class: arrowClassName,
-      style: arrowStyle,
-      'data-placement': placement,
-    }),
-  ].filter(Boolean));
-
-  return h(
+  const tooltipContent = h(
     'div',
-    null,
+    {
+      ref: (el: any) => {
+        floatingRef.value = el;
+      },
+      class: className,
+      style: positioningStyle,
+      'data-placement': placement,
+    },
     [
-      triggerWrapper,
-      isVisible && h(Teleport, { to: getAttach(attach) }, [tooltipContent]),
-    ]
+      h('div', { class: 't-tooltip__content' }, slots.content?.() || content),
+      withArrow &&
+        h('div', {
+          ref: (el: any) => {
+            arrowRef.value = el;
+          },
+          class: arrowClassName,
+          style: arrowStyle,
+          'data-placement': placement,
+        }),
+    ].filter(Boolean),
   );
+
+  return h('div', null, [
+    triggerWrapper,
+    isVisible && h(Teleport, { to: getAttach(attach) }, [tooltipContent]),
+  ]);
 };

@@ -38,17 +38,13 @@ export function useTooltipClasses(state: {
   root: string;
   arrow?: string;
 } {
-  const {
-    isVisible = false,
-    relationship = 'description',
-    withArrow = false,
-  } = state;
+  const { isVisible = false, relationship = 'description', withArrow = false } = state;
 
   return {
     root: cn(
       tooltipClassNames.root,
       relationship !== 'description' && tooltipVariants.relationship[relationship],
-      isVisible && tooltipVariants.state.visible
+      isVisible && tooltipVariants.state.visible,
     ),
     arrow: withArrow ? tooltipClassNames.arrow : undefined,
   };

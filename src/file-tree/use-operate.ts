@@ -7,7 +7,11 @@ export function useOperate() {
   return function useOperateFn(data: Ref<IInnerTreeNode[]>, core: IUseCore): IUseOperate {
     const { setNodeValue, getChildren, getIndex, getLevel, getParent } = core;
 
-    const insertBefore = (parentNode: IInnerTreeNode, node: ITreeNode, referenceNode?: ITreeNode): void => {
+    const insertBefore = (
+      parentNode: IInnerTreeNode,
+      node: ITreeNode,
+      referenceNode?: ITreeNode,
+    ): void => {
       const children = getChildren(parentNode, {
         recursive: false,
       });
@@ -38,14 +42,20 @@ export function useOperate() {
         parentId: parentNode.id,
         isLeaf: true,
         parentChildNodeCount: children.length + 1,
-        currentIndex: lastChild && typeof lastChild.currentIndex === 'number' ? lastChild.currentIndex + 1 : 0,
+        currentIndex:
+          lastChild && typeof lastChild.currentIndex === 'number' ? lastChild.currentIndex + 1 : 0,
       });
 
       if (currentNode.value.id === undefined) {
         currentNode.value.id = randomId();
       }
 
-      data.value = data.value.slice(0, insertedIndex).concat(currentNode.value as IInnerTreeNode, data.value.slice(insertedIndex, data.value.length));
+      data.value = data.value
+        .slice(0, insertedIndex)
+        .concat(
+          currentNode.value as IInnerTreeNode,
+          data.value.slice(insertedIndex, data.value.length),
+        );
     };
 
     const removeNode = (node: IInnerTreeNode, config = { recursive: true }): void => {

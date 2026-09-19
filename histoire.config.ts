@@ -1,5 +1,5 @@
-import { defineConfig } from 'histoire'
-import { HstVue } from '@histoire/plugin-vue'
+import { defineConfig } from 'histoire';
+import { HstVue } from '@histoire/plugin-vue';
 
 // Vite 相关配置（plugins / resolve.alias / css.postcss）统一由根目录的
 // vite.config.mts 提供 —— Histoire 会自动加载并合并它。
@@ -21,4 +21,4 @@ export default defineConfig({
       dark: './src/assets/icons/logo.png',
     },
   },
-})
+});

@@ -4,13 +4,13 @@
  */
 
 /* 默认亮色主题 */
-@import "./light.css";
+@import './light.css';
 
 /* 暗色主题 */
-@import "./dark.css";
+@import './dark.css';
 
 /* Teams 亮色主题 */
-@import "./teams-light.css";
+@import './teams-light.css';
 
 /* Teams 暗色主题 */
-@import "./teams-dark.css";
+@import './teams-dark.css';

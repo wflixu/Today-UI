@@ -1,13 +1,13 @@
-import { Fragment, h, type VNode } from "vue";
+import { Fragment, h, type VNode } from 'vue';
 
 export function isObject(val: any): val is object {
-  return val !== null && typeof val === "object";
+  return val !== null && typeof val === 'object';
 }
 
 export function randomId(n = 8): string {
   // 生成n位长度的字符串
-  const str = "abcdefghijklmnopqrstuvwxyz0123456789"; // 可以作为常量放到random外面
-  let result = "";
+  const str = 'abcdefghijklmnopqrstuvwxyz0123456789'; // 可以作为常量放到random外面
+  let result = '';
   for (let i = 0; i < n; i++) {
     result += str[parseInt((Math.random() * str.length).toString())];
   }
@@ -15,7 +15,7 @@ export function randomId(n = 8): string {
 }
 
 function wrapContent(content: string | VNode) {
-  return h("span", { class: "trigger-wrap" }, content);
+  return h('span', { class: 'trigger-wrap' }, content);
 }
 
 export function getFirstValidChild(nodes: VNode[]): VNode | null {
@@ -24,7 +24,7 @@ export function getFirstValidChild(nodes: VNode[]): VNode | null {
       if (child.type === Comment) {
         continue;
       }
-      if (child.type === "svg" || child.type === Text) {
+      if (child.type === 'svg' || child.type === Text) {
         return wrapContent(child);
       }
       if (child.type === Fragment) {

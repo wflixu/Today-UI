@@ -27,9 +27,7 @@ export const spinnerVariants = {
  * Spinner 组件类名 Hook
  * 根据组件 props 生成对应的 BEM 类名
  */
-export function useSpinnerClasses(props: {
-  size?: SpinnerSize;
-}): {
+export function useSpinnerClasses(props: { size?: SpinnerSize }): {
   root: string;
   svg: string;
   circle: string;

@@ -1,40 +1,33 @@
-import {
-  computed,
-  defineComponent,
-  provide,
-  ref,
-  Teleport,
-  watch,
-} from "vue";
-import props from "./props";
-import "./style.css";
-import { DIALOG_TRIGGER_TOKEN } from "./util";
-import DialogTrigger from "./DialogTrigger";
-import TButton from "./../button/Button";
+import { computed, defineComponent, provide, ref, Teleport, watch } from 'vue';
+import props from './props';
+import './style.css';
+import { DIALOG_TRIGGER_TOKEN } from './util';
+import DialogTrigger from './DialogTrigger';
+import TButton from './../button/Button';
 
 export default defineComponent({
-  name: "TDialog",
+  name: 'TDialog',
   props,
-  emits: ["update:show"],
+  emits: ['update:show'],
   setup(props, { slots, emit }) {
     const triggerRef = ref<HTMLElement | undefined>();
     provide(DIALOG_TRIGGER_TOKEN, triggerRef);
 
     const visibleStyleObj = computed(() => {
       return {
-        display: props.show ? "" : "none",
+        display: props.show ? '' : 'none',
       };
     });
     watch([triggerRef], () => {
       if (triggerRef.value) {
-        triggerRef.value.addEventListener("click", () => {
-          emit("update:show", !props.show);
+        triggerRef.value.addEventListener('click', () => {
+          emit('update:show', !props.show);
         });
       }
     });
 
     const onCancel = () => {
-      emit("update:show", false);
+      emit('update:show', false);
     };
 
     return () => {

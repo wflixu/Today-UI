@@ -1,7 +1,6 @@
-
-import { camel, dash, isString, isFunction, isEmpty } from 'radash'
-import { h, type ComponentPublicInstance, type VNode, isVNode } from "vue";
-import { isObject } from "./util";
+import { camel, dash, isString, isFunction, isEmpty } from 'radash';
+import { h, type ComponentPublicInstance, type VNode, isVNode } from 'vue';
+import { isObject } from './util';
 
 export interface JSXRenderContext {
   defaultNode?: VNode | string;
@@ -12,14 +11,14 @@ export interface JSXRenderContext {
 
 export type OptionsType = VNode | JSXRenderContext | string;
 export function getParams(options?: OptionsType) {
-  return isObject(options) && "params" in options ? options.params : null;
+  return isObject(options) && 'params' in options ? options.params : null;
 }
 
 // 同时支持驼峰命名和中划线命名的插槽，示例：value-display 和 valueDisplay
 export function handleSlots(
   instance: ComponentPublicInstance,
   params: Record<string, any>,
-  name: string
+  name: string,
 ) {
   // 检查是否存在 驼峰命名 的插槽
   let node = instance.$slots[camel(name)]?.(params);
@@ -32,7 +31,7 @@ export function handleSlots(
 
 export function getDefaultNode(options?: OptionsType) {
   let defaultNode;
-  if (isObject(options) && "defaultNode" in options) {
+  if (isObject(options) && 'defaultNode' in options) {
     defaultNode = options.defaultNode;
   } else if (isVNode(options) || isString(options)) {
     defaultNode = options;
@@ -53,7 +52,7 @@ export function getDefaultNode(options?: OptionsType) {
 export const renderTNodeJSX = (
   instance: ComponentPublicInstance,
   name: string,
-  options?: OptionsType
+  options?: OptionsType,
 ) => {
   // assemble params && defaultNode
   const params = getParams(options);
@@ -82,12 +81,9 @@ export const renderTNodeJSX = (
 
   // 同名 props 和 slot 优先处理 props
   if (isFunction(propsNode)) return propsNode(h, params);
-  const isPropsEmpty = [undefined, params, ""].includes(propsNode);
+  const isPropsEmpty = [undefined, params, ''].includes(propsNode);
   // Props 为空，但插槽存在
-  if (
-    isPropsEmpty &&
-    (instance.$slots[camel(name)] || instance.$slots[dash(name)])
-  ) {
+  if (isPropsEmpty && (instance.$slots[camel(name)] || instance.$slots[dash(name)])) {
     // @ts-ignore
     return handleSlots(instance, params, name);
   }
@@ -108,7 +104,7 @@ export const renderContent = (
   vm: ComponentPublicInstance,
   name1: string,
   name2: string,
-  options?: OptionsType
+  options?: OptionsType,
 ) => {
   const params = getParams(options);
   const defaultNode = getDefaultNode(options);

@@ -12,7 +12,7 @@ interface TooltipStateInternal extends TooltipState {
  */
 export const useTooltip = (
   props: TooltipProps,
-  referenceRef?: Ref<HTMLElement | null>
+  referenceRef?: Ref<HTMLElement | null>,
 ): TooltipStateInternal => {
   // 内部可见性状态（非受控模式）
   const internalVisible = ref(props.defaultVisible);

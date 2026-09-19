@@ -1,12 +1,12 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import postcssImport from 'postcss-import'
-import postcssNested from 'postcss-nested'
-import { fileURLToPath } from 'node:url'
-import { resolve } from 'node:path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import postcssImport from 'postcss-import';
+import postcssNested from 'postcss-nested';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
-const root = fileURLToPath(new URL('.', import.meta.url))
+const root = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   plugins: [vue(), vueJsx()],
@@ -54,4 +54,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

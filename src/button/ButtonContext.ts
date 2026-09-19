@@ -6,7 +6,7 @@ import type { ButtonSize } from './Button.types';
  * Internal context value used to update default values between internal components
  */
 export interface ButtonContextValue {
-    size?: Ref<ButtonSize | undefined>;
+  size?: Ref<ButtonSize | undefined>;
 }
 
 // 创建唯一的注入键
@@ -17,7 +17,7 @@ export const ButtonContextKey = Symbol('ButtonContext');
  * Internal context provider used to update default values between internal components
  */
 export const useButtonContextProvider = (value: ButtonContextValue) => {
-    provide(ButtonContextKey, value);
+  provide(ButtonContextKey, value);
 };
 
 /**
@@ -25,7 +25,7 @@ export const useButtonContextProvider = (value: ButtonContextValue) => {
  * Internal context hook used to update default values between internal components
  */
 export const useButtonContext = (): ButtonContextValue => {
-    const context = inject(ButtonContextKey, undefined) as ButtonContextValue | undefined;
-    // 如果没有提供 Context，返回 undefined
-    return context ?? {};
+  const context = inject(ButtonContextKey, undefined) as ButtonContextValue | undefined;
+  // 如果没有提供 Context，返回 undefined
+  return context ?? {};
 };

@@ -1,11 +1,5 @@
-import type { PropType } from "vue";
-import type {
-  ICheck,
-  IDragdrop,
-  IInnerTreeNode,
-  IOperate,
-  ITreeNode,
-} from "./type";
+import type { PropType } from 'vue';
+import type { ICheck, IDragdrop, IInnerTreeNode, IOperate, ITreeNode } from './type';
 
 const commonProps = {
   /**

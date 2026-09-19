@@ -1,6 +1,5 @@
-import type { PropType } from "vue";
-import type { IDropdownOption, TriggerType } from "./type";
-
+import type { PropType } from 'vue';
+import type { IDropdownOption, TriggerType } from './type';
 
 export const dropdownProps = {
   visible: {
@@ -12,16 +11,12 @@ export const dropdownProps = {
    */
   trigger: {
     type: String as PropType<TriggerType>,
-    default: "click",
+    default: 'click',
   },
   options: {
     type: Array as PropType<Array<IDropdownOption>>,
     default: function () {
-        return [] as Array<IDropdownOption>;
-    }
-  }
-
+      return [] as Array<IDropdownOption>;
+    },
+  },
 };
-
-
-

@@ -24,39 +24,39 @@ import { renderHelperText } from './renderHelperText';
  * ```
  */
 export const THelperText = defineComponent({
-    name: 'THelperText',
+  name: 'THelperText',
 
-    props: helperTextProps,
+  props: helperTextProps,
 
-    slots: Object as SlotsType<HelperTextSlots>,
+  slots: Object as SlotsType<HelperTextSlots>,
 
-    setup(props, { expose, slots }) {
-        // Compute the complete state by applying hooks
-        const state = computed(() => {
-            const helperTextState = useHelperText(props);
+  setup(props, { expose, slots }) {
+    // Compute the complete state by applying hooks
+    const state = computed(() => {
+      const helperTextState = useHelperText(props);
 
-            // 使用纯 CSS 类名 Hook
-            const classes = useHelperTextClasses({
-                disabled: helperTextState.disabled,
-                validationState: helperTextState.validationState,
-            });
+      // 使用纯 CSS 类名 Hook
+      const classes = useHelperTextClasses({
+        disabled: helperTextState.disabled,
+        validationState: helperTextState.validationState,
+      });
 
-            // 应用类名到状态
-            if (helperTextState.root) {
-                helperTextState.root.className = classes;
-            }
+      // 应用类名到状态
+      if (helperTextState.root) {
+        helperTextState.root.className = classes;
+      }
 
-            return helperTextState;
-        });
+      return helperTextState;
+    });
 
-        // Expose the component's public API
-        expose({
-            state,
-        });
+    // Expose the component's public API
+    expose({
+      state,
+    });
 
-        // Render function
-        return () => renderHelperText(state.value, slots);
-    },
+    // Render function
+    return () => renderHelperText(state.value, slots);
+  },
 });
 
 export default THelperText;

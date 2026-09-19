@@ -3,7 +3,7 @@
  * 基于 @fluentui/tokens 的 webDarkTheme
  */
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   /* 覆盖为暗色主题的关键颜色 */
   --colorNeutralForeground1: #ffffff;
   --colorNeutralForeground1Hover: #ffffff;

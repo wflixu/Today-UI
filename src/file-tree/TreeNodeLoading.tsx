@@ -1,12 +1,12 @@
-import { defineComponent, getCurrentInstance, getCurrentScope } from "vue";
-import { useNamespace } from "./util";
+import { defineComponent, getCurrentInstance, getCurrentScope } from 'vue';
+import { useNamespace } from './util';
 
 export default defineComponent({
-  name: "TTreeNodeLoading",
+  name: 'TTreeNodeLoading',
   setup() {
     const app = getCurrentInstance();
 
-    const ns = useNamespace("loading-children ");
+    const ns = useNamespace('loading-children ');
 
     return () => {
       return <span class={ns.b()}>{`Loading...`}</span>;

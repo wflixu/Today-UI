@@ -1,10 +1,10 @@
-import { type App } from "vue";
+import { type App } from 'vue';
 
 // 导入统一样式
 import './style/index.css';
 
-import * as components from "./components";
-import { version } from "../package.json";
+import * as components from './components';
+import { version } from '../package.json';
 
 function install(app: App): void {
   // 注册所有组件到全局
@@ -21,7 +21,7 @@ function install(app: App): void {
 
 const TodayUI = {
   install,
-  version: version ?? "",
+  version: version ?? '',
 };
 // 组件：显式列出，不从 `./components` 星号导出。
 // 原因：下面的 `./field`、`./label`、`./input` 星号导出也提供同名组件，
@@ -40,13 +40,13 @@ export {
   TTabs,
   TTablist,
   TTabPanel,
-} from "./components";
+} from './components';
 
 // 各组件的 hooks / 渲染函数 / 附加类型（THelperText 只在这里有）
-export * from "./field";
-export * from "./label";
-export * from "./input";
-export type * from "./interface";
-export * from "./icon/";
-export type * from "./shared/type";
+export * from './field';
+export * from './label';
+export * from './input';
+export type * from './interface';
+export * from './icon/';
+export type * from './shared/type';
 export default TodayUI;

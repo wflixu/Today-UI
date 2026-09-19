@@ -6,13 +6,13 @@ import {
   useSlots,
   inject,
   type ComponentInternalInstance,
-} from "vue";
+} from 'vue';
 import {
   type IInnerTreeNode,
   type TreeNodeProps,
   type IUseTree,
   type ITreeContextMenu,
-} from "./type";
+} from './type';
 import {
   useNamespace,
   omit,
@@ -20,20 +20,20 @@ import {
   NODE_HEIGHT,
   USE_TREE_TOKEN,
   TREE_INSTANCE,
-} from "./util";
-import TTreeNodeToggle from "./TreeNodeToggle";
+} from './util';
+import TTreeNodeToggle from './TreeNodeToggle';
 
-import TDropdown from "../dropdown/Dropdown";
-import { treeNodeProps } from "./props";
+import TDropdown from '../dropdown/Dropdown';
+import { treeNodeProps } from './props';
 
 export default defineComponent({
-  name: "TTreeNode",
+  name: 'TTreeNode',
   inheritAttrs: false,
   props: treeNodeProps,
-  emits: ["operate"],
+  emits: ['operate'],
   setup(props: TreeNodeProps, { slots, emit }) {
     const { data } = toRefs(props);
-    const ns = useNamespace("file-tree");
+    const ns = useNamespace('file-tree');
     const {
       nodeClass,
       nodeStyle,
@@ -44,33 +44,27 @@ export default defineComponent({
       nodeTitleClass,
     } = useTreeNode(data as ComputedRef<IInnerTreeNode>);
     const { toggleNode, toggleSelectNode, getChildren, getNode } = inject(
-      USE_TREE_TOKEN
+      USE_TREE_TOKEN,
     ) as Partial<IUseTree>;
-    const treeInstance = inject(
-      TREE_INSTANCE
-    ) as ComponentInternalInstance | null;
+    const treeInstance = inject(TREE_INSTANCE) as ComponentInternalInstance | null;
 
     const handleOperate = (option: ITreeContextMenu, event: any) => {
-      emit("operate", option.key, data);
+      emit('operate', option.key, data);
     };
     const handleDbClick = (event: MouseEvent) => {
-      treeInstance?.emit("dbclick", data.value, event);
+      treeInstance?.emit('dbclick', data.value, event);
     };
 
     return () => {
       return (
-        <div
-          class={nodeClass.value}
-          style={nodeStyle.value}
-          onDblclick={handleDbClick}
-        >
+        <div class={nodeClass.value} style={nodeStyle.value} onDblclick={handleDbClick}>
           {nodeVLineStyles.value.map((item: any) => (
             <span class={nodeVLineClass.value} style={item}></span>
           ))}
 
           <span
             class={nodeHLineClass.value}
-            style={omit(nodeVLineStyles.value[0], ["height", "top"])}
+            style={omit(nodeVLineStyles.value[0], ['height', 'top'])}
           ></span>
           {data.value.contextMenu ? (
             <TDropdown
@@ -82,15 +76,15 @@ export default defineComponent({
                 class={nodeContentClass.value}
                 onClick={() => {
                   toggleSelectNode?.(data.value);
-                  treeInstance?.emit("node-click", data.value);
+                  treeInstance?.emit('node-click', data.value);
                 }}
               >
                 <div
-                  class={ns.em("node-content", "value-wrapper")}
+                  class={ns.em('node-content', 'value-wrapper')}
                   style={{ height: `${NODE_HEIGHT}px` }}
                 >
                   <TTreeNodeToggle data={data.value} />
-                  {renderSlot(useSlots(), "icon", {
+                  {renderSlot(useSlots(), 'icon', {
                     nodeData: data,
                   })}
                   <span class={nodeTitleClass.value}>{data.value?.label}</span>
@@ -102,15 +96,15 @@ export default defineComponent({
               class={nodeContentClass.value}
               onClick={() => {
                 toggleSelectNode?.(data.value);
-                treeInstance?.emit("node-click", data.value);
+                treeInstance?.emit('node-click', data.value);
               }}
             >
               <div
-                class={ns.em("node-content", "value-wrapper")}
+                class={ns.em('node-content', 'value-wrapper')}
                 style={{ height: `${NODE_HEIGHT}px` }}
               >
                 <TTreeNodeToggle data={data.value} />
-                {renderSlot(useSlots(), "icon", {
+                {renderSlot(useSlots(), 'icon', {
                   nodeData: data,
                 })}
 

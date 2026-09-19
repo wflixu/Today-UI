@@ -42,16 +42,11 @@ export function useFieldClasses(props: {
   const { orientation = 'horizontal', validationState = 'none' } = props;
 
   return {
-    root: cn(
-      fieldClassNames.root,
-      fieldVariants.orientation[orientation]
-    ),
+    root: cn(fieldClassNames.root, fieldVariants.orientation[orientation]),
     content: fieldClassNames.content,
-    validationMessage: validationState !== 'none'
-      ? cn(
-          fieldClassNames.validationMessage,
-          fieldVariants.validationState[validationState]
-        )
-      : undefined,
+    validationMessage:
+      validationState !== 'none'
+        ? cn(fieldClassNames.validationMessage, fieldVariants.validationState[validationState])
+        : undefined,
   };
 }

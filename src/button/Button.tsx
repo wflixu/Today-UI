@@ -1,6 +1,10 @@
-
 import { renderButton } from './renderButton';
-import { useButtonClasses, type ButtonAppearance, type ButtonSize, type ButtonShape } from './useButtonClasses';
+import {
+  useButtonClasses,
+  type ButtonAppearance,
+  type ButtonSize,
+  type ButtonShape,
+} from './useButtonClasses';
 import { buttonProps, type ButtonProps, type ButtonSlots } from './Button.types';
 import './button.css';
 
@@ -43,7 +47,7 @@ export const TButton = defineComponent({
 
     // 返回渲染函数
     return () => renderButton(state.value, slots);
-  }
+  },
 });
 
 export default TButton;

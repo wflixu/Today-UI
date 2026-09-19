@@ -1,12 +1,5 @@
 import { defineComponent, ref, SlotsType, computed, onUnmounted } from 'vue';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  arrow,
-  type Placement,
-} from '@floating-ui/vue';
+import { useFloating, offset, flip, shift, arrow, type Placement } from '@floating-ui/vue';
 import { renderTooltip } from './renderTooltip';
 import { useTooltipClasses, tooltipClassNames } from './useTooltipClasses';
 import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
@@ -46,19 +39,10 @@ export const TTooltip = defineComponent({
     });
 
     // Floating UI 定位
-    const { x, y, middlewareData, update } = useFloating(
-      referenceRef,
-      floatingRef,
-      {
-        placement: tooltipState.placement as Placement,
-        middleware: [
-          offset(tooltipState.offset),
-          flip(),
-          shift(),
-          arrow({ element: arrowRef }),
-        ],
-      }
-    );
+    const { x, y, middlewareData, update } = useFloating(referenceRef, floatingRef, {
+      placement: tooltipState.placement as Placement,
+      middleware: [offset(tooltipState.offset), flip(), shift(), arrow({ element: arrowRef })],
+    });
 
     // 计算箭头样式
     const arrowStyle = computed(() => {
@@ -90,18 +74,15 @@ export const TTooltip = defineComponent({
     });
 
     // 返回渲染函数
-    return () => renderTooltip(
-      state.value,
-      slots,
-      {
+    return () =>
+      renderTooltip(state.value, slots, {
         referenceRef,
         floatingRef,
         arrowRef,
         positioningStyle: positioningStyle.value,
         arrowStyle: arrowStyle.value,
-      }
-    );
-  }
+      });
+  },
 });
 
 export default TTooltip;

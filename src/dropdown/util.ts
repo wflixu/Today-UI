@@ -1,12 +1,11 @@
-import { h, Comment, Text, Fragment, type InjectionKey, type Ref } from "vue";
-import { isObject } from "../shared/util";
-import type { ComponentPublicInstance, VNode } from "vue";
+import { h, Comment, Text, Fragment, type InjectionKey, type Ref } from 'vue';
+import { isObject } from '../shared/util';
+import type { ComponentPublicInstance, VNode } from 'vue';
 
-export const FLOAT_TRIGGER_TOKEN: InjectionKey<Ref> =
-  Symbol("floating-trigger");
+export const FLOAT_TRIGGER_TOKEN: InjectionKey<Ref> = Symbol('floating-trigger');
 
 function wrapContent(content: string | VNode) {
-  return h("span", { class: "trigger-wrap" }, content);
+  return h('span', { class: 'trigger-wrap' }, content);
 }
 
 export function getFirstValidChild(nodes: VNode[]): VNode | null {
@@ -15,7 +14,7 @@ export function getFirstValidChild(nodes: VNode[]): VNode | null {
       if (child.type === Comment) {
         continue;
       }
-      if (child.type === "svg" || child.type === Text) {
+      if (child.type === 'svg' || child.type === Text) {
         return wrapContent(child);
       }
       if (child.type === Fragment) {
@@ -34,17 +33,11 @@ export function getFirstValidChild(nodes: VNode[]): VNode | null {
  * @param {any} element
  * @returns {Element | null}
  */
-export function getElement(
-  element: Element | ComponentPublicInstance | null
-): Element | null {
+export function getElement(element: Element | ComponentPublicInstance | null): Element | null {
   if (element instanceof Element) {
     return element;
   }
-  if (
-    element &&
-    typeof element === "object" &&
-    element.$el instanceof Element
-  ) {
+  if (element && typeof element === 'object' && element.$el instanceof Element) {
     return element.$el;
   }
   return null;
@@ -53,7 +46,7 @@ export function getElement(
 export function subscribeEvent(
   dom: Element | Document | null | undefined,
   type: string,
-  callback: EventListenerOrEventListenerObject
+  callback: EventListenerOrEventListenerObject,
 ): () => void {
   dom?.addEventListener(type, callback);
   return () => {

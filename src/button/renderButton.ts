@@ -7,46 +7,56 @@ import { TSpinner } from './Spinner';
  * 基于 Vue 3 的 h 函数
  */
 export const renderButton = (state: ButtonState, slots: ButtonSlots) => {
-    console.log('Rendering Button with state:', state);
-    const { iconOnly, iconPosition, loading, loadingText, showSpinner } = state;
-    const rootElement = state.as || 'button';
+  console.log('Rendering Button with state:', state);
+  const { iconOnly, iconPosition, loading, loadingText, showSpinner } = state;
+  const rootElement = state.as || 'button';
 
-    const children = [];
+  const children = [];
 
-    // 添加 Spinner（loading 状态）
-    if (showSpinner) {
-        children.push(
-            h('span', { class: 't-button__spinner-wrapper' }, [
-                h(TSpinner, { size: state.size === 'large' ? 'medium' : state.size === 'small' ? 'tiny' : 'small' }),
-                loadingText && ` ${loadingText}`
-            ].filter(Boolean))
-        );
-    }
+  // 添加 Spinner（loading 状态）
+  if (showSpinner) {
+    children.push(
+      h(
+        'span',
+        { class: 't-button__spinner-wrapper' },
+        [
+          h(TSpinner, {
+            size: state.size === 'large' ? 'medium' : state.size === 'small' ? 'tiny' : 'small',
+          }),
+          loadingText && ` ${loadingText}`,
+        ].filter(Boolean),
+      ),
+    );
+  }
 
-    // 添加图标（在前面）
-    if (!loading && iconPosition !== 'after' && slots.icon) {
-        children.push(slots.icon());
-    }
+  // 添加图标（在前面）
+  if (!loading && iconPosition !== 'after' && slots.icon) {
+    children.push(slots.icon());
+  }
 
-    // 添加文本内容（非 loading 且非 iconOnly）
-    if (!loading && !iconOnly && slots.default) {
-        children.push(slots.default());
-    }
+  // 添加文本内容（非 loading 且非 iconOnly）
+  if (!loading && !iconOnly && slots.default) {
+    children.push(slots.default());
+  }
 
-    // 添加图标（在后面）
-    if (!loading && iconPosition === 'after' && slots.icon) {
-        children.push(slots.icon());
-    }
+  // 添加图标（在后面）
+  if (!loading && iconPosition === 'after' && slots.icon) {
+    children.push(slots.icon());
+  }
 
-    // 提取所有 root 属性
-    const { className, onClick, ...otherRootProps } = state.root;
+  // 提取所有 root 属性
+  const { className, onClick, ...otherRootProps } = state.root;
 
-    return h(rootElement, {
-        class: className,
-        disabled: state.disabled,
-        onClick,
-        ...otherRootProps,
-    }, children);
+  return h(
+    rootElement,
+    {
+      class: className,
+      disabled: state.disabled,
+      onClick,
+      ...otherRootProps,
+    },
+    children,
+  );
 };
 
 /**

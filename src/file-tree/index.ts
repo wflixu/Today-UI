@@ -1,5 +1,5 @@
 import { withInstall, type WithInstallType } from '../shared/withInstall';
-import _FileTree from "./FileTree";
+import _FileTree from './FileTree';
 
 export const TFileTree: WithInstallType<typeof _FileTree> = withInstall(_FileTree);
 export default TFileTree;

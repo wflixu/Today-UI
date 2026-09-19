@@ -45,6 +45,6 @@ export function useLabelClasses(props: {
     labelClassNames.root,
     size !== 'medium' && labelVariants.size[size],
     weight !== 'semibold' && labelVariants.weight[weight],
-    disabled && labelVariants.state.disabled
+    disabled && labelVariants.state.disabled,
   );
 }

@@ -22,8 +22,24 @@ export const TSpinner = defineComponent({
         <svg
           class={classes.svg}
           viewBox="0 0 24 24"
-          width={props.size === 'tiny' ? '16' : props.size === 'small' ? '20' : props.size === 'medium' ? '24' : '28'}
-          height={props.size === 'tiny' ? '16' : props.size === 'small' ? '20' : props.size === 'medium' ? '24' : '28'}
+          width={
+            props.size === 'tiny'
+              ? '16'
+              : props.size === 'small'
+                ? '20'
+                : props.size === 'medium'
+                  ? '24'
+                  : '28'
+          }
+          height={
+            props.size === 'tiny'
+              ? '16'
+              : props.size === 'small'
+                ? '20'
+                : props.size === 'medium'
+                  ? '24'
+                  : '28'
+          }
         >
           <circle class={classes.circle} cx="12" cy="12" r="10" />
         </svg>

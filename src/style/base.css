@@ -4,7 +4,7 @@
  */
 
 /* 导入所有主题令牌 */
-@import "./../theme/tokens/index.css";
+@import './../theme/tokens/index.css';
 
 /* 以下是通用基础样式 */
 * {

@@ -1,27 +1,27 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import TInput from '../Input'
-import type { InputProps } from '../Input.types'
+import { ref } from 'vue';
+import TInput from '../Input';
+import type { InputProps } from '../Input.types';
 
 // 基础状态
-const value = ref('')
-const controlledValue = ref('受控输入')
-const uncontrolledValue = ref('非受控初始值')
+const value = ref('');
+const controlledValue = ref('受控输入');
+const uncontrolledValue = ref('非受控初始值');
 
 // 清除按钮演示
-const clearableValue = ref('可以清除的文本')
+const clearableValue = ref('可以清除的文本');
 
 // 密码演示
-const passwordValue = ref('')
+const passwordValue = ref('');
 
 // 验证状态演示
-const validValue = ref('valid@example.com')
-const warningValue = ref('warning@example')
-const invalidValue = ref('invalid-email')
+const validValue = ref('valid@example.com');
+const warningValue = ref('warning@example');
+const invalidValue = ref('invalid-email');
 
 // 进度指示器演示
-const progressValue = ref('')
-const progress = ref(60)
+const progressValue = ref('');
+const progress = ref(60);
 
 // 状态对象
 const inputState = () => ({
@@ -33,38 +33,38 @@ const inputState = () => ({
   size: 'medium' as InputProps['size'],
   type: 'text' as InputProps['type'],
   validationState: 'none' as InputProps['validationState'],
-})
+});
 
 const appearanceOptions = {
-  'outline': 'outline',
-  'filled': 'filled',
-  'underlined': 'underlined',
+  outline: 'outline',
+  filled: 'filled',
+  underlined: 'underlined',
   'inline-dark': 'inline-dark',
-  'inline-light': 'inline-light'
-}
+  'inline-light': 'inline-light',
+};
 
 const sizeOptions = {
-  'small': 'small',
-  'medium': 'medium',
-  'large': 'large'
-}
+  small: 'small',
+  medium: 'medium',
+  large: 'large',
+};
 
 const typeOptions = {
-  'text': 'text',
-  'password': 'password',
-  'email': 'email',
-  'number': 'number',
-  'tel': 'tel',
-  'url': 'url',
-  'search': 'search'
-}
+  text: 'text',
+  password: 'password',
+  email: 'email',
+  number: 'number',
+  tel: 'tel',
+  url: 'url',
+  search: 'search',
+};
 
 const validationStateOptions = {
-  'none': 'none',
-  'valid': 'valid',
-  'warning': 'warning',
-  'invalid': 'invalid'
-}
+  none: 'none',
+  valid: 'valid',
+  warning: 'warning',
+  invalid: 'invalid',
+};
 </script>
 
 <template>
@@ -73,7 +73,11 @@ const validationStateOptions = {
       <HstSelect v-model="state.appearance" title="appearance" :options="appearanceOptions" />
       <HstSelect v-model="state.size" title="size" :options="sizeOptions" />
       <HstSelect v-model="state.type" title="type" :options="typeOptions" />
-      <HstSelect v-model="state.validationState" title="validationState" :options="validationStateOptions" />
+      <HstSelect
+        v-model="state.validationState"
+        title="validationState"
+        :options="validationStateOptions"
+      />
       <HstCheckbox v-model="state.disabled" title="disabled" />
       <HstCheckbox v-model="state.readonly" title="readonly" />
       <HstCheckbox v-model="state.required" title="required" />
@@ -96,7 +100,7 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="外观变体">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <div v-for="(_, appearance) in appearanceOptions" :key="appearance">
           <label>{{ appearance }}</label>
           <TInput :appearance="appearance as InputProps['appearance']" placeholder="外观变体" />
@@ -105,7 +109,7 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="尺寸变体">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <div v-for="(_, sizeValue) in sizeOptions" :key="sizeValue">
           <label>{{ sizeValue }}</label>
           <TInput :size="sizeValue as InputProps['size']" placeholder="尺寸变体" />
@@ -114,7 +118,7 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="输入框类型">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <div v-for="(_, inputType) in typeOptions" :key="inputType">
           <label>{{ inputType }}</label>
           <TInput :type="inputType as InputProps['type']" :placeholder="`${inputType} 输入框`" />
@@ -123,7 +127,7 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="状态">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <TInput placeholder="正常状态" />
         <TInput placeholder="禁用状态" :disabled="true" />
         <TInput placeholder="只读状态" :readonly="true" value="只读内容" />
@@ -133,17 +137,26 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="清除按钮">
-      <TInput v-model="clearableValue" placeholder="输入内容后显示清除按钮" :show-clear-button="true" />
+      <TInput
+        v-model="clearableValue"
+        placeholder="输入内容后显示清除按钮"
+        :show-clear-button="true"
+      />
       <p>当前值: {{ clearableValue }}</p>
     </Variant>
 
     <Variant title="密码输入">
-      <TInput v-model="passwordValue" type="password" placeholder="输入密码" :show-password-toggle="true" />
+      <TInput
+        v-model="passwordValue"
+        type="password"
+        placeholder="输入密码"
+        :show-password-toggle="true"
+      />
       <p>当前值: {{ passwordValue }}</p>
     </Variant>
 
     <Variant title="验证状态">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <div>
           <label>无验证状态</label>
           <TInput value="normal@example.com" />
@@ -154,11 +167,19 @@ const validationStateOptions = {
         </div>
         <div>
           <label>警告</label>
-          <TInput v-model="warningValue" validation-state="warning" validation-message="邮箱可能是临时邮箱" />
+          <TInput
+            v-model="warningValue"
+            validation-state="warning"
+            validation-message="邮箱可能是临时邮箱"
+          />
         </div>
         <div>
           <label>验证失败</label>
-          <TInput v-model="invalidValue" validation-state="invalid" validation-message="邮箱格式不正确" />
+          <TInput
+            v-model="invalidValue"
+            validation-state="invalid"
+            validation-message="邮箱格式不正确"
+          />
         </div>
       </div>
     </Variant>
@@ -166,14 +187,14 @@ const validationStateOptions = {
     <Variant title="进度指示器">
       <TInput v-model="progressValue" placeholder="上传中..." :progress="progress" />
       <p>进度: {{ progress }}%</p>
-      <div style="margin-top: 12px;">
+      <div style="margin-top: 12px">
         <button @click="progress = Math.max(0, progress - 10)">-10%</button>
         <button @click="progress = Math.min(100, progress + 10)">+10%</button>
       </div>
     </Variant>
 
     <Variant title="前置和后置内容">
-      <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; flex-direction: column; gap: 12px">
         <TInput placeholder="带前置图标">
           <template #contentBefore>
             <span>🔍</span>
@@ -219,41 +240,42 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 
 ### Props
 
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|--------|------|
-| `appearance` | `'outline' \| 'filled' \| 'underlined' \| 'inline-dark' \| 'inline-light'` | `'outline'` | 输入框的外观样式 |
-| `size` | `'small' \| 'medium' \| 'large'` | `'medium'` | 输入框的尺寸 |
-| `type` | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'` | 输入框的 HTML 类型 |
-| `disabled` | `boolean` | `false` | 是否禁用输入框 |
-| `readonly` | `boolean` | `false` | 是否只读 |
-| `required` | `boolean` | `false` | 是否必填 |
-| `error` | `boolean` | `false` | 是否显示错误状态 |
-| `validation-state` | `'none' \| 'valid' \| 'warning' \| 'invalid'` | `'none'` | 验证状态 |
-| `validation-message` | `string` | `undefined` | 验证消息 |
-| `show-clear-button` | `boolean` | `true` | 是否显示清除按钮 |
-| `show-password-toggle` | `boolean` | `false` | 是否显示密码切换按钮 |
-| `progress` | `number` | `undefined` | 进度值（0-100） |
-| `default-value` | `string` | `undefined` | 非受控模式的默认值 |
-| `model-value` | `string` | `undefined` | 受控模式的值（v-model） |
-| `name` | `string` | `undefined` | 表单提交时的字段名 |
-| `placeholder` | `string` | `undefined` | 占位符文本 |
-| `autocomplete` | `string` | `undefined` | 自动完成类型 |
-| `max-length` | `number` | `undefined` | 最大字符长度 |
-| `min-length` | `number` | `undefined` | 最小字符长度 |
+| 属性                   | 类型                                                                        | 默认值      | 描述                    |
+| ---------------------- | --------------------------------------------------------------------------- | ----------- | ----------------------- |
+| `appearance`           | `'outline' \| 'filled' \| 'underlined' \| 'inline-dark' \| 'inline-light'`  | `'outline'` | 输入框的外观样式        |
+| `size`                 | `'small' \| 'medium' \| 'large'`                                            | `'medium'`  | 输入框的尺寸            |
+| `type`                 | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`    | 输入框的 HTML 类型      |
+| `disabled`             | `boolean`                                                                   | `false`     | 是否禁用输入框          |
+| `readonly`             | `boolean`                                                                   | `false`     | 是否只读                |
+| `required`             | `boolean`                                                                   | `false`     | 是否必填                |
+| `error`                | `boolean`                                                                   | `false`     | 是否显示错误状态        |
+| `validation-state`     | `'none' \| 'valid' \| 'warning' \| 'invalid'`                               | `'none'`    | 验证状态                |
+| `validation-message`   | `string`                                                                    | `undefined` | 验证消息                |
+| `show-clear-button`    | `boolean`                                                                   | `true`      | 是否显示清除按钮        |
+| `show-password-toggle` | `boolean`                                                                   | `false`     | 是否显示密码切换按钮    |
+| `progress`             | `number`                                                                    | `undefined` | 进度值（0-100）         |
+| `default-value`        | `string`                                                                    | `undefined` | 非受控模式的默认值      |
+| `model-value`          | `string`                                                                    | `undefined` | 受控模式的值（v-model） |
+| `name`                 | `string`                                                                    | `undefined` | 表单提交时的字段名      |
+| `placeholder`          | `string`                                                                    | `undefined` | 占位符文本              |
+| `autocomplete`         | `string`                                                                    | `undefined` | 自动完成类型            |
+| `max-length`           | `number`                                                                    | `undefined` | 最大字符长度            |
+| `min-length`           | `number`                                                                    | `undefined` | 最小字符长度            |
 
 ### Slots
 
-| 插槽名 | 描述 |
-|--------|------|
-| `content-before` | 输入框前的内容（如图标） |
-| `content-after` | 输入框后的内容（如单位、后缀等） |
-| `clear-button` | 自定义清除按钮 |
-| `password-toggle-button` | 自定义密码切换按钮 |
-| `progress-indicator` | 自定义进度指示器 |
+| 插槽名                   | 描述                             |
+| ------------------------ | -------------------------------- |
+| `content-before`         | 输入框前的内容（如图标）         |
+| `content-after`          | 输入框后的内容（如单位、后缀等） |
+| `clear-button`           | 自定义清除按钮                   |
+| `password-toggle-button` | 自定义密码切换按钮               |
+| `progress-indicator`     | 自定义进度指示器                 |
 
 ## 外观变体
 
 ### Outline（默认）
+
 标准的边框样式，适用于大多数场景。
 
 ```vue
@@ -261,6 +283,7 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 ```
 
 ### Filled
+
 填充背景色，适合需要强调输入区域的场景。
 
 ```vue
@@ -268,6 +291,7 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 ```
 
 ### Underlined
+
 仅底部边框，适合简洁的表单设计。
 
 ```vue
@@ -275,6 +299,7 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 ```
 
 ### Inline-Dark / Inline-Light
+
 内联样式，适合在深色或浅色背景中使用。
 
 ```vue
@@ -284,11 +309,11 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 
 ## 尺寸变体
 
-| 尺寸 | 高度 | 使用场景 |
-|------|------|----------|
-| `small` | 28px | 密集布局、表格操作 |
+| 尺寸     | 高度 | 使用场景               |
+| -------- | ---- | ---------------------- |
+| `small`  | 28px | 密集布局、表格操作     |
 | `medium` | 32px | 默认尺寸，表单和对话框 |
-| `large` | 40px | 主要操作、移动端友好 |
+| `large`  | 40px | 主要操作、移动端友好   |
 
 ```vue
 <TInput size="small" placeholder="小输入框" />
@@ -349,9 +374,9 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('可以清除的文本')
+const value = ref('可以清除的文本');
 </script>
 
 <template>
@@ -360,6 +385,7 @@ const value = ref('可以清除的文本')
 ```
 
 **注意：** 清除按钮仅在以下条件同时满足时显示：
+
 - `showClearButton` 为 `true`
 - 输入框有值
 - 输入框非禁用
@@ -371,9 +397,9 @@ const value = ref('可以清除的文本')
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const password = ref('')
+const password = ref('');
 </script>
 
 <template>
@@ -387,10 +413,10 @@ const password = ref('')
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const email = ref('')
-const isValidEmail = computed(() => /@/.test(email.value))
+const email = ref('');
+const isValidEmail = computed(() => /@/.test(email.value));
 </script>
 
 <template>
@@ -406,12 +432,12 @@ const isValidEmail = computed(() => /@/.test(email.value))
 
 ### 验证状态类型
 
-| 状态 | 颜色 | 使用场景 |
-|------|------|----------|
-| `none` | 默认 | 无验证状态（默认） |
-| `valid` | 绿色 | 验证通过 |
-| `warning` | 橙色 | 警告信息 |
-| `invalid` | 红色 | 验证失败 |
+| 状态      | 颜色 | 使用场景           |
+| --------- | ---- | ------------------ |
+| `none`    | 默认 | 无验证状态（默认） |
+| `valid`   | 绿色 | 验证通过           |
+| `warning` | 橙色 | 警告信息           |
+| `invalid` | 红色 | 验证失败           |
 
 ## 进度指示器
 
@@ -419,29 +445,25 @@ const isValidEmail = computed(() => /@/.test(email.value))
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('')
-const progress = ref(60)
+const value = ref('');
+const progress = ref(60);
 
 // 模拟上传进度
 const startUpload = () => {
-  progress.value = 0
+  progress.value = 0;
   const interval = setInterval(() => {
-    progress.value += 10
+    progress.value += 10;
     if (progress.value >= 100) {
-      clearInterval(interval)
+      clearInterval(interval);
     }
-  }, 500)
-}
+  }, 500);
+};
 </script>
 
 <template>
-  <TInput
-    v-model="value"
-    placeholder="上传文件中..."
-    :progress="progress"
-  />
+  <TInput v-model="value" placeholder="上传文件中..." :progress="progress" />
   <p>进度: {{ progress }}%</p>
 </template>
 ```
@@ -488,9 +510,9 @@ const startUpload = () => {
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const value = ref('')
+const value = ref('');
 </script>
 
 <template>
@@ -517,20 +539,20 @@ const value = ref('')
 
 ```vue
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
-const username = ref('')
-const password = ref('')
+const username = ref('');
+const password = ref('');
 
 const isFormValid = computed(() => {
-  return username.value.length >= 3 && password.value.length >= 6
-})
+  return username.value.length >= 3 && password.value.length >= 6;
+});
 
 const handleSubmit = () => {
   if (isFormValid.value) {
-    console.log('登录:', { username: username.value, password: password.value })
+    console.log('登录:', { username: username.value, password: password.value });
   }
-}
+};
 </script>
 
 <template>
@@ -552,9 +574,7 @@ const handleSubmit = () => {
         :validation-message="password.length >= 6 ? '密码强度足够' : '密码太短'"
       />
 
-      <button type="submit" :disabled="!isFormValid">
-        登录
-      </button>
+      <button type="submit" :disabled="!isFormValid">登录</button>
     </div>
   </form>
 </template>
@@ -564,17 +584,17 @@ const handleSubmit = () => {
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const searchQuery = ref('')
-const isSearching = ref(false)
+const searchQuery = ref('');
+const isSearching = ref(false);
 
 const handleSearch = async () => {
-  isSearching.value = true
+  isSearching.value = true;
   // 执行搜索
-  await performSearch(searchQuery.value)
-  isSearching.value = false
-}
+  await performSearch(searchQuery.value);
+  isSearching.value = false;
+};
 </script>
 
 <template>
@@ -586,9 +606,7 @@ const handleSearch = async () => {
       :show-clear-button="true"
       :disabled="isSearching"
     />
-    <button type="button" :disabled="isSearching" @click="handleSearch">
-      搜索
-    </button>
+    <button type="button" :disabled="isSearching" @click="handleSearch">搜索</button>
   </div>
 </template>
 ```
@@ -597,26 +615,26 @@ const handleSearch = async () => {
 
 ```vue
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const fileName = ref('')
-const uploadProgress = ref(0)
+const fileName = ref('');
+const uploadProgress = ref(0);
 
 const handleFileSelect = async (event) => {
-  const file = event.target.files[0]
-  if (!file) return
+  const file = event.target.files[0];
+  if (!file) return;
 
-  fileName.value = file.name
-  uploadProgress.value = 0
+  fileName.value = file.name;
+  uploadProgress.value = 0;
 
   // 模拟上传
   const interval = setInterval(() => {
-    uploadProgress.value += 10
+    uploadProgress.value += 10;
     if (uploadProgress.value >= 100) {
-      clearInterval(interval)
+      clearInterval(interval);
     }
-  }, 500)
-}
+  }, 500);
+};
 </script>
 
 <template>
@@ -635,28 +653,33 @@ const handleFileSelect = async (event) => {
 ## 最佳实践
 
 ### 1. 外观选择
+
 - 表单默认使用 `outline`
 - 搜索框使用 `filled` 强调输入区域
 - 简洁场景使用 `underlined`
 - 内联输入使用 `inline-dark` 或 `inline-light`
 
 ### 2. 尺寸选择
+
 - 表单和对话框使用 `medium`（默认）
 - 移动端或主要操作使用 `large`
 - 密集布局（表格、工具栏）使用 `small`
 
 ### 3. 验证反馈
+
 - 即时验证使用 `validationState`
 - 提供明确的 `validationMessage`
 - 使用合适的颜色（绿色=成功，橙色=警告，红色=错误）
 
 ### 4. 用户体验
+
 - 密码输入始终提供 `showPasswordToggle`
 - 长文本输入提供 `showClearButton`
 - 文件上传使用 `progress` 显示进度
 - 合理使用 `contentBefore` 和 `contentAfter` 提示输入格式
 
 ### 5. 无障碍性
+
 - 始终提供 `placeholder` 占位符
 - 使用 `autocomplete` 帮助自动填充
 - 必填项设置 `required`

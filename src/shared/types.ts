@@ -21,7 +21,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type DistributiveOmit<T, K extends keyof any> = T extends unknown ? Omit<T, K> : T;
 
-
 /**
  * Matches any slot props type.
  *
@@ -29,6 +28,6 @@ export type DistributiveOmit<T, K extends keyof any> = T extends unknown ? Omit<
  * it shouldn't be used as the type of a slot.
  */
 export type UnknownSlotProps = Pick<React.HTMLAttributes<HTMLElement>, 'className' | 'style'> & {
-    as?: JSXIntrinsicElementKeys;
-    children?: ReactNode;
+  as?: JSXIntrinsicElementKeys;
+  children?: ReactNode;
 };

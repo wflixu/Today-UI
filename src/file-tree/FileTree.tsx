@@ -7,40 +7,31 @@ import {
   provide,
   getCurrentInstance,
   watch,
-} from "vue";
-import { type IInnerTreeNode, type TreeProps } from "./type";
-import {
-  TREE_INSTANCE,
-  USE_TREE_TOKEN,
-  formatBasicTree,
-  useNamespace,
-} from "./util";
-import TTreeNode from "./TreeNode";
-import TTreeNodeContent from "./TreeNodeContent";
-import TTreeNodeToggle from "./TreeNodeToggle";
-import TTreeNodeLoading from "./TreeNodeLoading";
+} from 'vue';
+import { type IInnerTreeNode, type TreeProps } from './type';
+import { TREE_INSTANCE, USE_TREE_TOKEN, formatBasicTree, useNamespace } from './util';
+import TTreeNode from './TreeNode';
+import TTreeNodeContent from './TreeNodeContent';
+import TTreeNodeToggle from './TreeNodeToggle';
+import TTreeNodeLoading from './TreeNodeLoading';
 
-import "./file-tree.css";
-import { useTree } from "./use-tree";
-import { useSelect } from "./use-select";
-import { useOperate } from "./use-operate";
-import { treeProps } from "./props";
+import './file-tree.css';
+import { useTree } from './use-tree';
+import { useSelect } from './use-select';
+import { useOperate } from './use-operate';
+import { treeProps } from './props';
 
 export default defineComponent({
-  name: "TFileTree",
+  name: 'TFileTree',
   props: treeProps,
-  emits: ["operate", "node-click", "select", "dbclick", "toggle", "lazy-load"],
+  emits: ['operate', 'node-click', 'select', 'dbclick', 'toggle', 'lazy-load'],
   setup(props: TreeProps, context: SetupContext) {
     const { slots, expose } = context;
     const treeInstance = getCurrentInstance();
-    const ns = useNamespace("file-tree");
+    const ns = useNamespace('file-tree');
     const data = ref<IInnerTreeNode[]>(formatBasicTree(props.data));
 
-    const treeFactory = useTree(
-      data.value,
-      [useSelect(), useOperate()],
-      context
-    );
+    const treeFactory = useTree(data.value, [useSelect(), useOperate()], context);
 
     const { setTree, getExpendedTree, toggleNode } = treeFactory;
 
@@ -54,10 +45,10 @@ export default defineComponent({
       () => props.data,
       (newVal) => {
         data.value = formatBasicTree(newVal);
-      }
+      },
     );
     const onOperate = (key: string, data: any) => {
-      context.emit("operate", { key, node: data });
+      context.emit('operate', { key, node: data });
     };
     expose({
       treeFactory,
@@ -68,20 +59,20 @@ export default defineComponent({
         {{
           default: () =>
             slots.content ? (
-              renderSlot(useSlots(), "content", { nodeData: treeNode })
+              renderSlot(useSlots(), 'content', { nodeData: treeNode })
             ) : (
               <TTreeNodeContent data={treeNode} />
             ),
           icon: () =>
             slots.icon
-              ? renderSlot(useSlots(), "icon", {
+              ? renderSlot(useSlots(), 'icon', {
                   nodeData: treeNode,
                   toggleNode,
                 })
               : null,
           loading: () =>
             slots.loading ? (
-              renderSlot(useSlots(), "loading", { nodeData: treeNode })
+              renderSlot(useSlots(), 'loading', { nodeData: treeNode })
             ) : (
               <TTreeNodeLoading />
             ),

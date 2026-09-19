@@ -24,7 +24,7 @@ export function cn(...classes: ClassValue[]): string {
 export function buildVariantClasses<T extends Record<string, Record<string, string>>>(
   baseClass: string,
   variantMaps: T,
-  props: { [K in keyof T]?: keyof T[K] }
+  props: { [K in keyof T]?: keyof T[K] },
 ): string {
   const classes: string[] = [baseClass];
 

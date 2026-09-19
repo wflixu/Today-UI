@@ -1,6 +1,6 @@
-import { onMounted, onUnmounted, toRefs, watch, type Ref } from "vue";
-import type { EmitEvent, UseDropdownProps } from "./type";
-import { getElement, subscribeEvent } from "./util";
+import { onMounted, onUnmounted, toRefs, watch, type Ref } from 'vue';
+import type { EmitEvent, UseDropdownProps } from './type';
+import { getElement, subscribeEvent } from './util';
 
 const dropdownMap = new Map();
 export const useDropdownEvent = ({
@@ -16,17 +16,11 @@ export const useDropdownEvent = ({
   const { trigger } = toRefs(props);
   const toggle = (status: boolean) => {
     isOpen.value = status;
-    emit("toggle", isOpen.value);
+    emit('toggle', isOpen.value);
   };
-  const handleLeave = async (
-    elementType: "origin" | "dropdown",
-    closeAll?: boolean
-  ) => {
+  const handleLeave = async (elementType: 'origin' | 'dropdown', closeAll?: boolean) => {
     await new Promise((resolve) => setTimeout(resolve, 50));
-    if (
-      (elementType === "origin" && overlayEnter) ||
-      (elementType === "dropdown" && originEnter)
-    ) {
+    if ((elementType === 'origin' && overlayEnter) || (elementType === 'dropdown' && originEnter)) {
       return;
     }
     if (closeAll) {
@@ -38,79 +32,70 @@ export const useDropdownEvent = ({
     }
     toggle(false);
   };
-  watch(
-    [trigger, origin, dropdownRef],
-    ([triggerVal, originVal, dropdownEl], ov, onInvalidate) => {
-      const originEl = getElement(originVal!);
-      const subscriptions: (() => void)[] = [];
-      setTimeout(() => {
-        subscriptions.push(
-          subscribeEvent(document, "click", (e: Event) => {
-            e.stopPropagation();
-            const dropdownValues = [...dropdownMap.values()];
-            if (
-              !isOpen.value ||
-              (dropdownValues.some((item) =>
-                item.toggleEl?.contains(e.target)
-              ) &&
-                dropdownValues.some((item) => item.menuEl?.contains(e.target)))
-            ) {
-              return;
-            }
-            [...dropdownMap.values()].reverse().forEach((item) => {
-              setTimeout(() => {
-                if (!item.toggleEl?.contains(e.target)) {
-                  item.toggle?.();
-                }
-              }, 0);
-            });
-            overlayEnter = false;
-          })
-        );
-      }, 0);
-      if (triggerVal === "click") {
-        subscriptions.push(
-          subscribeEvent(originEl, "click", () => toggle(!isOpen.value))
-        );
-      } else if (triggerVal === "contextmenu") {
-        subscriptions.push(
-          subscribeEvent(originEl, "contextmenu", (e) => {
-            e.preventDefault();
-            toggle(!isOpen.value);
-          })
-        );
-      } else if (triggerVal === "hover") {
-        subscriptions.push(
-          subscribeEvent(originEl, "mouseenter", () => {
-            originEnter = true;
-            toggle(true);
-          }),
-          subscribeEvent(originEl, "mouseleave", () => {
-            originEnter = false;
-            handleLeave("origin");
-          }),
-          subscribeEvent(dropdownEl, "mouseenter", () => {
-            overlayEnter = true;
-            isOpen.value = true;
-          }),
-          subscribeEvent(dropdownEl, "mouseleave", (e: Event) => {
-            overlayEnter = false;
-            if (
-              (e as MouseEvent).relatedTarget &&
-              (originEl?.contains((e as MouseEvent).relatedTarget as Node) ||
-                dropdownMap
-                  .get(id)
-                  .child?.contains((e as MouseEvent).relatedTarget))
-            ) {
-              return;
-            }
-            handleLeave("dropdown", true);
-          })
-        );
-      }
-      onInvalidate(() => subscriptions.forEach((v) => v()));
+  watch([trigger, origin, dropdownRef], ([triggerVal, originVal, dropdownEl], ov, onInvalidate) => {
+    const originEl = getElement(originVal!);
+    const subscriptions: (() => void)[] = [];
+    setTimeout(() => {
+      subscriptions.push(
+        subscribeEvent(document, 'click', (e: Event) => {
+          e.stopPropagation();
+          const dropdownValues = [...dropdownMap.values()];
+          if (
+            !isOpen.value ||
+            (dropdownValues.some((item) => item.toggleEl?.contains(e.target)) &&
+              dropdownValues.some((item) => item.menuEl?.contains(e.target)))
+          ) {
+            return;
+          }
+          [...dropdownMap.values()].reverse().forEach((item) => {
+            setTimeout(() => {
+              if (!item.toggleEl?.contains(e.target)) {
+                item.toggle?.();
+              }
+            }, 0);
+          });
+          overlayEnter = false;
+        }),
+      );
+    }, 0);
+    if (triggerVal === 'click') {
+      subscriptions.push(subscribeEvent(originEl, 'click', () => toggle(!isOpen.value)));
+    } else if (triggerVal === 'contextmenu') {
+      subscriptions.push(
+        subscribeEvent(originEl, 'contextmenu', (e) => {
+          e.preventDefault();
+          toggle(!isOpen.value);
+        }),
+      );
+    } else if (triggerVal === 'hover') {
+      subscriptions.push(
+        subscribeEvent(originEl, 'mouseenter', () => {
+          originEnter = true;
+          toggle(true);
+        }),
+        subscribeEvent(originEl, 'mouseleave', () => {
+          originEnter = false;
+          handleLeave('origin');
+        }),
+        subscribeEvent(dropdownEl, 'mouseenter', () => {
+          overlayEnter = true;
+          isOpen.value = true;
+        }),
+        subscribeEvent(dropdownEl, 'mouseleave', (e: Event) => {
+          overlayEnter = false;
+          if (
+            (e as MouseEvent).relatedTarget &&
+            (originEl?.contains((e as MouseEvent).relatedTarget as Node) ||
+              dropdownMap.get(id).child?.contains((e as MouseEvent).relatedTarget))
+          ) {
+            return;
+          }
+          handleLeave('dropdown', true);
+        }),
+      );
     }
-  );
+    onInvalidate(() => subscriptions.forEach((v) => v()));
+  });
 };
 
 export function useDropdown(
@@ -120,18 +105,17 @@ export function useDropdown(
   origin: Ref<HTMLElement | undefined>,
   dropdownRef: Ref<HTMLElement | undefined>,
   popDirection: Ref<string>,
-  emit: EmitEvent
+  emit: EmitEvent,
 ): void {
   const calcPopDirection = (dropdownEl: HTMLElement) => {
     const elementHeight = dropdownEl.offsetHeight;
     const bottomDistance =
-      window.innerHeight -
-      (origin.value as HTMLElement).getBoundingClientRect().bottom;
+      window.innerHeight - (origin.value as HTMLElement).getBoundingClientRect().bottom;
     const isBottomEnough = bottomDistance >= elementHeight;
     if (!isBottomEnough) {
-      popDirection.value = "top";
+      popDirection.value = 'top';
     } else {
-      popDirection.value = "bottom";
+      popDirection.value = 'bottom';
     }
   };
 
@@ -142,9 +126,9 @@ export function useDropdown(
         return;
       }
       isOpen.value = newVal;
-      emit("toggle", isOpen.value);
+      emit('toggle', isOpen.value);
     },
-    { immediate: true }
+    { immediate: true },
   );
   watch([isOpen, dropdownRef], ([isOpenVal, dropdownEl]) => {
     if (isOpenVal) {
@@ -153,7 +137,7 @@ export function useDropdown(
         menuEl: dropdownEl,
         toggle: () => {
           isOpen.value = false;
-          emit("toggle", isOpen.value);
+          emit('toggle', isOpen.value);
         },
       });
       for (const value of dropdownMap.values()) {

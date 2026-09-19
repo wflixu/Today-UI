@@ -80,6 +80,6 @@ export function useButtonClasses(props: {
     // 状态类名
     disabled && buttonVariants.state.disabled,
     loading && buttonVariants.state.loading,
-    iconOnly && buttonVariants.state.iconOnly
+    iconOnly && buttonVariants.state.iconOnly,
   );
 }

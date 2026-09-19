@@ -38,6 +38,6 @@ export function useHelperTextClasses(state: {
   return cn(
     helperTextClassNames.root,
     disabled && helperTextVariants.state.disabled,
-    validationState !== 'none' && helperTextVariants.validationState[validationState]
+    validationState !== 'none' && helperTextVariants.validationState[validationState],
   );
 }

@@ -1,38 +1,37 @@
-import { Teleport, defineComponent, provide, ref, toRefs } from "vue";
-import TMenu from "./../menu/Menu";
-import FloatTrigger from "./FloatTrigger";
-import "./dropdown.css";
-import { type IDropdownProps, type IDropdownOption } from "./type";
-import { flip, shift, useFloating } from "@floating-ui/vue";
-import { FLOAT_TRIGGER_TOKEN } from "./util";
-import { dropdownProps } from "./props";
-import { useDropdown, useDropdownEvent } from "./hooks";
+import { Teleport, defineComponent, provide, ref, toRefs } from 'vue';
+import TMenu from './../menu/Menu';
+import FloatTrigger from './FloatTrigger';
+import './dropdown.css';
+import { type IDropdownProps, type IDropdownOption } from './type';
+import { flip, shift, useFloating } from '@floating-ui/vue';
+import { FLOAT_TRIGGER_TOKEN } from './util';
+import { dropdownProps } from './props';
+import { useDropdown, useDropdownEvent } from './hooks';
 
 let dropdownId = 1;
 export default defineComponent({
-  name: "TDropdown",
+  name: 'TDropdown',
   inheritAttrs: false,
   props: dropdownProps,
-  emits: ["toggle", "select"],
+  emits: ['toggle', 'select'],
   setup(props: IDropdownProps, { attrs, slots, emit }) {
-
     const { trigger, visible } = toRefs(props);
     const origin = ref<HTMLElement | undefined>();
     const show = ref(false);
     const dropdownRef = ref<HTMLElement | undefined>();
-    const currentPosition = ref("bottom-start");
+    const currentPosition = ref('bottom-start');
     const id = `dropdown_${dropdownId++}`;
     const { x, y, floatingStyles } = useFloating(origin, dropdownRef, {
       open: show,
-      strategy: "fixed",
-      placement: "bottom-start",
+      strategy: 'fixed',
+      placement: 'bottom-start',
       middleware: [flip(), shift()],
     });
     provide(FLOAT_TRIGGER_TOKEN, origin);
 
     const toggle = (status: boolean) => {
       show.value = status;
-      emit("toggle", show.value);
+      emit('toggle', show.value);
     };
 
     useDropdownEvent({
@@ -48,15 +47,13 @@ export default defineComponent({
 
     const onClickItem = (item: IDropdownOption, event: Event) => {
       toggle(false);
-      emit("select", item, event);
+      emit('select', item, event);
     };
 
     return () => {
       return (
         <>
-          <FloatTrigger class="t-dropdown-ref">
-            {slots.default?.()}
-          </FloatTrigger>
+          <FloatTrigger class="t-dropdown-ref">{slots.default?.()}</FloatTrigger>
           <Teleport to="body">
             <div
               ref={dropdownRef}
@@ -65,10 +62,7 @@ export default defineComponent({
               style={floatingStyles.value}
               {...attrs}
             >
-              <TMenu
-                options={props.options}
-                onSelect={(data, e) => onClickItem(data, e)}
-              ></TMenu>
+              <TMenu options={props.options} onSelect={(data, e) => onClickItem(data, e)}></TMenu>
             </div>
           </Teleport>
         </>

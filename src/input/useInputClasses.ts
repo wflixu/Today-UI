@@ -89,7 +89,7 @@ export function useInputClasses(state: {
       disabled && inputVariants.state.disabled,
       error && inputVariants.state.error,
       readonly && inputVariants.state.readonly,
-      validationState !== 'none' && inputVariants.validationState[validationState]
+      validationState !== 'none' && inputVariants.validationState[validationState],
     ),
     input: inputClassNames.input,
     contentBefore: inputClassNames.contentBefore,

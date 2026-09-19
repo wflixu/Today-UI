@@ -1,82 +1,86 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
-import TInput from '../../input/Input'
-import TField from '../Field'
-import TLabel from '../../label/Label'
-import THelperText from '../HelperText'
-import type { FieldProps } from '../Field.types'
+import { ref, computed } from 'vue';
+import TInput from '../../input/Input';
+import TField from '../Field';
+import TLabel from '../../label/Label';
+import THelperText from '../HelperText';
+import type { FieldProps } from '../Field.types';
 
 // 表单演示数据
-const emailValue = ref('')
-const passwordValue = ref('')
-const usernameValue = ref('')
-const bioValue = ref('')
+const emailValue = ref('');
+const passwordValue = ref('');
+const usernameValue = ref('');
+const bioValue = ref('');
 
 // 验证状态计算
 const emailState = computed(() => {
-  if (!emailValue.value) return 'none'
-  if (emailValue.value.includes('@')) return 'valid'
-  return 'invalid'
-})
+  if (!emailValue.value) return 'none';
+  if (emailValue.value.includes('@')) return 'valid';
+  return 'invalid';
+});
 
 const emailMessage = computed(() => {
-  if (emailState.value === 'valid') return '邮箱格式正确'
-  if (emailState.value === 'invalid') return '请输入有效的邮箱地址'
-  return ''
-})
+  if (emailState.value === 'valid') return '邮箱格式正确';
+  if (emailState.value === 'invalid') return '请输入有效的邮箱地址';
+  return '';
+});
 
 const passwordState = computed(() => {
-  if (!passwordValue.value) return 'none'
-  if (passwordValue.value.length >= 8) return 'valid'
-  return 'invalid'
-})
+  if (!passwordValue.value) return 'none';
+  if (passwordValue.value.length >= 8) return 'valid';
+  return 'invalid';
+});
 
 const passwordMessage = computed(() => {
-  if (passwordState.value === 'valid') return '密码强度足够'
-  if (passwordState.value === 'invalid') return '密码至少需要 8 位字符'
-  return ''
-})
+  if (passwordState.value === 'valid') return '密码强度足够';
+  if (passwordState.value === 'invalid') return '密码至少需要 8 位字符';
+  return '';
+});
 
 // 状态对象
 const fieldState = () => ({
   orientation: 'vertical' as FieldProps['orientation'],
   validationState: 'none' as FieldProps['validationState'],
-})
+});
 
 const orientationOptions = {
-  'vertical': 'vertical',
-  'horizontal': 'horizontal'
-}
+  vertical: 'vertical',
+  horizontal: 'horizontal',
+};
 
 const validationStateOptions = {
-  'none': 'none',
-  'valid': 'valid',
-  'warning': 'warning',
-  'invalid': 'invalid'
-}
+  none: 'none',
+  valid: 'valid',
+  warning: 'warning',
+  invalid: 'invalid',
+};
 </script>
 
 <template>
   <Story title="Components/Field" :initState="() => fieldState">
     <template #controls="{ state }">
       <HstSelect v-model="state.orientation" title="orientation" :options="orientationOptions" />
-      <HstSelect v-model="state.validationState" title="validationState" :options="validationStateOptions" />
+      <HstSelect
+        v-model="state.validationState"
+        title="validationState"
+        :options="validationStateOptions"
+      />
     </template>
 
     <Variant title="基础用法（使用独立组件）">
-      <div style="max-width: 400px;">
+      <div style="max-width: 400px">
         <TField>
           <template #label>
             <TLabel for="username" required>用户名</TLabel>
           </template>
           <TInput id="username" v-model="usernameValue" placeholder="请输入用户名" />
         </TField>
-        <p style="margin-top: 16px;">当前值: {{ usernameValue }}</p>
+        <p style="margin-top: 16px">当前值: {{ usernameValue }}</p>
       </div>
     </Variant>
 
     <Variant title="带辅助文字">
-      <div style="max-width: 400px;">
+      <div style="max-width: 400px">
         <TField>
           <template #label>
             <TLabel for="password" required>密码</TLabel>
@@ -86,27 +90,24 @@ const validationStateOptions = {
             <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
           </template>
         </TField>
-        <p style="margin-top: 16px;">当前值: {{ passwordValue ? '******' : '' }}</p>
+        <p style="margin-top: 16px">当前值: {{ passwordValue ? '******' : '' }}</p>
       </div>
     </Variant>
 
     <Variant title="带验证消息">
-      <div style="max-width: 400px;">
-        <TField
-          :validation-state="emailState"
-          :validation-message="emailMessage"
-        >
+      <div style="max-width: 400px">
+        <TField :validation-state="emailState" :validation-message="emailMessage">
           <template #label>
             <TLabel for="email" required>邮箱地址</TLabel>
           </template>
           <TInput id="email" v-model="emailValue" type="email" placeholder="your@email.com" />
         </TField>
-        <p style="margin-top: 16px;">当前值: {{ emailValue }}</p>
+        <p style="margin-top: 16px">当前值: {{ emailValue }}</p>
       </div>
     </Variant>
 
     <Variant title="水平布局">
-      <div style="max-width: 500px;">
+      <div style="max-width: 500px">
         <TField orientation="horizontal">
           <template #label>
             <TLabel for="username-horizontal">用户名</TLabel>
@@ -117,25 +118,27 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="完整表单字段（Label + HelperText + Validation）">
-      <div style="max-width: 400px;">
-        <TField
-          :validation-state="passwordState"
-          :validation-message="passwordMessage"
-        >
+      <div style="max-width: 400px">
+        <TField :validation-state="passwordState" :validation-message="passwordMessage">
           <template #label>
             <TLabel for="full-password" required>密码</TLabel>
           </template>
-          <TInput id="full-password" v-model="passwordValue" type="password" placeholder="请输入密码" />
+          <TInput
+            id="full-password"
+            v-model="passwordValue"
+            type="password"
+            placeholder="请输入密码"
+          />
           <template #helperText>
             <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
           </template>
         </TField>
-        <p style="margin-top: 16px;">密码强度: {{ passwordState }}</p>
+        <p style="margin-top: 16px">密码强度: {{ passwordState }}</p>
       </div>
     </Variant>
 
     <Variant title="简单场景（不使用 Field）">
-      <div style="max-width: 400px;">
+      <div style="max-width: 400px">
         <TLabel for="simple-username">用户名</TLabel>
         <TInput id="simple-username" placeholder="请输入用户名" />
         <THelperText>请输入您的用户名</THelperText>
@@ -143,39 +146,43 @@ const validationStateOptions = {
     </Variant>
 
     <Variant title="登录表单示例">
-      <form @submit.prevent style="max-width: 400px;">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <TField
-            :validation-state="emailState"
-            :validation-message="emailMessage"
-          >
+      <form @submit.prevent style="max-width: 400px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <TField :validation-state="emailState" :validation-message="emailMessage">
             <template #label>
               <TLabel for="login-email" required>邮箱地址</TLabel>
             </template>
-            <TInput id="login-email" v-model="emailValue" type="email" placeholder="your@email.com" />
+            <TInput
+              id="login-email"
+              v-model="emailValue"
+              type="email"
+              placeholder="your@email.com"
+            />
           </TField>
 
-          <TField
-            :validation-state="passwordState"
-            :validation-message="passwordMessage"
-          >
+          <TField :validation-state="passwordState" :validation-message="passwordMessage">
             <template #label>
               <TLabel for="login-password" required>密码</TLabel>
             </template>
-            <TInput id="login-password" v-model="passwordValue" type="password" placeholder="请输入密码" />
+            <TInput
+              id="login-password"
+              v-model="passwordValue"
+              type="password"
+              placeholder="请输入密码"
+            />
             <template #helperText>
               <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
             </template>
           </TField>
 
-          <button type="submit" style="padding: 8px 16px;">登录</button>
+          <button type="submit" style="padding: 8px 16px">登录</button>
         </div>
       </form>
     </Variant>
 
     <Variant title="注册表单示例">
-      <form @submit.prevent style="max-width: 400px;">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
+      <form @submit.prevent style="max-width: 400px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
           <TField>
             <template #label>
               <TLabel for="reg-username" required>用户名</TLabel>
@@ -197,20 +204,25 @@ const validationStateOptions = {
             <template #label>
               <TLabel for="reg-password" required>密码</TLabel>
             </template>
-            <TInput id="reg-password" v-model="passwordValue" type="password" placeholder="至少 8 位字符" />
+            <TInput
+              id="reg-password"
+              v-model="passwordValue"
+              type="password"
+              placeholder="至少 8 位字符"
+            />
             <template #helperText>
               <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
             </template>
           </TField>
 
-          <button type="submit" style="padding: 8px 16px;">注册</button>
+          <button type="submit" style="padding: 8px 16px">注册</button>
         </div>
       </form>
     </Variant>
 
     <Variant title="个人资料表单（水平布局）">
-      <form @submit.prevent style="max-width: 600px;">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
+      <form @submit.prevent style="max-width: 600px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
           <TField orientation="horizontal">
             <template #label>
               <TLabel for="profile-username">用户名</TLabel>
@@ -222,7 +234,12 @@ const validationStateOptions = {
             <template #label>
               <TLabel for="profile-email" required>邮箱地址</TLabel>
             </template>
-            <TInput id="profile-email" v-model="emailValue" type="email" placeholder="your@email.com" />
+            <TInput
+              id="profile-email"
+              v-model="emailValue"
+              type="email"
+              placeholder="your@email.com"
+            />
           </TField>
 
           <TField orientation="horizontal">
@@ -232,7 +249,7 @@ const validationStateOptions = {
             <TInput id="profile-bio" v-model="bioValue" placeholder="简单介绍一下自己" />
           </TField>
 
-          <button type="submit" style="padding: 8px 16px;">保存</button>
+          <button type="submit" style="padding: 8px 16px">保存</button>
         </div>
       </form>
     </Variant>
@@ -264,20 +281,20 @@ Field 组件已经重新设计为**完全独立的布局容器**：
 
 ### Props
 
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|--------|------|
-| `validationMessage` | `string` | `undefined` | 验证消息 |
-| `validationState` | `'none' \| 'valid' \| 'warning' \| 'invalid'` | `'none'` | 验证状态 |
-| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | 布局方向 |
+| 属性                | 类型                                          | 默认值       | 描述     |
+| ------------------- | --------------------------------------------- | ------------ | -------- |
+| `validationMessage` | `string`                                      | `undefined`  | 验证消息 |
+| `validationState`   | `'none' \| 'valid' \| 'warning' \| 'invalid'` | `'none'`     | 验证状态 |
+| `orientation`       | `'vertical' \| 'horizontal'`                  | `'vertical'` | 布局方向 |
 
 ### Slots
 
-| 插槽名 | 描述 |
-|--------|------|
-| `default` | 表单控件（Input 等） |
-| `label` | Label 组件（用户手动放置） |
-| `helperText` | HelperText 组件（用户手动放置） |
-| `validationMessage` | 自定义验证消息 |
+| 插槽名              | 描述                            |
+| ------------------- | ------------------------------- |
+| `default`           | 表单控件（Input 等）            |
+| `label`             | Label 组件（用户手动放置）      |
+| `helperText`        | HelperText 组件（用户手动放置） |
+| `validationMessage` | 自定义验证消息                  |
 
 ## 使用示例
 
@@ -309,10 +326,7 @@ Field 组件已经重新设计为**完全独立的布局容器**：
 ### 带验证消息
 
 ```vue
-<TField
-  :validation-state="emailState"
-  :validation-message="emailMessage"
->
+<TField :validation-state="emailState" :validation-message="emailMessage">
   <template #label>
     <TLabel for="email" required>邮箱地址</TLabel>
   </template>
@@ -323,10 +337,7 @@ Field 组件已经重新设计为**完全独立的布局容器**：
 ### 完整表单字段
 
 ```vue
-<TField
-  :validation-state="passwordState"
-  :validation-message="passwordMessage"
->
+<TField :validation-state="passwordState" :validation-message="passwordMessage">
   <template #label>
     <TLabel for="password" required>密码</TLabel>
   </template>
@@ -360,21 +371,21 @@ Field 组件已经重新设计为**完全独立的布局容器**：
 
 ```vue
 <script setup>
-import { ref, computed } from 'vue'
-import { TField, TLabel, TInput, THelperText } from 'today-ui'
+import { ref, computed } from 'vue';
+import { TField, TLabel, TInput, THelperText } from 'today-ui';
 
-const email = ref('')
-const password = ref('')
+const email = ref('');
+const password = ref('');
 
 const emailState = computed(() => {
-  if (!email.value) return 'none'
-  return email.value.includes('@') ? 'valid' : 'invalid'
-})
+  if (!email.value) return 'none';
+  return email.value.includes('@') ? 'valid' : 'invalid';
+});
 
 const emailMessage = computed(() => {
-  if (emailState.value === 'valid') return '邮箱格式正确'
-  return '请输入有效的邮箱地址'
-})
+  if (emailState.value === 'valid') return '邮箱格式正确';
+  return '请输入有效的邮箱地址';
+});
 </script>
 
 <template>
@@ -429,6 +440,7 @@ const emailMessage = computed(() => {
 ### 1. 组件独立性
 
 Label 和 Field 是完全独立的组件：
+
 - Label 可以单独使用
 - Field 只负责布局和验证
 - 用户完全控制如何组合组件
@@ -443,6 +455,7 @@ Label 和 Field 是完全独立的组件：
 ### 3. 灵活性
 
 用户可以根据需要选择：
+
 - 简单场景：只使用 Label + Input
 - 复杂场景：使用 Field + Label + HelperText
 - 自定义场景：自由组合组件
@@ -459,13 +472,10 @@ Field 组件通过以下方式支持无障碍性：
 
 Field 支持四种验证状态：
 
-| 状态 | 颜色 | 图标 | 使用场景 |
-|------|------|------|----------|
-| `none` | 默认 | 无 | 无验证状态（默认） |
-| `valid` | 绿色 | ✓ | 验证通过 |
-| `warning` | 橙色 | ⚠ | 警告信息 |
-| `invalid` | 红色 | ✕ | 验证失败 |
-
-
+| 状态      | 颜色 | 图标 | 使用场景           |
+| --------- | ---- | ---- | ------------------ |
+| `none`    | 默认 | 无   | 无验证状态（默认） |
+| `valid`   | 绿色 | ✓    | 验证通过           |
+| `warning` | 橙色 | ⚠    | 警告信息           |
+| `invalid` | 红色 | ✕    | 验证失败           |
 </docs>
-

@@ -6,24 +6,21 @@ import type { FieldProps, FieldState, FieldSlots } from './Field.types';
  * @param props - User provided props to Field component.
  * @param slots - Component slots instance.
  */
-export const useField = (
-    props: FieldProps,
-    slots: Slots,
-): FieldState => {
-    const hasValidationMessageSlot = () => {
-        return !!(slots.validationMessage && slots.validationMessage().length > 0);
-    };
+export const useField = (props: FieldProps, slots: Slots): FieldState => {
+  const hasValidationMessageSlot = () => {
+    return !!(slots.validationMessage && slots.validationMessage().length > 0);
+  };
 
-    // 返回状态
-    return {
-        // Props 传递的状态
-        validationMessage: props.validationMessage,
-        validationState: props.validationState || 'none',
-        orientation: props.orientation || 'vertical',
+  // 返回状态
+  return {
+    // Props 传递的状态
+    validationMessage: props.validationMessage,
+    validationState: props.validationState || 'none',
+    orientation: props.orientation || 'vertical',
 
-        // 元素配置
-        root: {},
-        content: {},
-        validationMessageProps: (props.validationMessage && !hasValidationMessageSlot()) ? {} : undefined,
-    };
+    // 元素配置
+    root: {},
+    content: {},
+    validationMessageProps: props.validationMessage && !hasValidationMessageSlot() ? {} : undefined,
+  };
 };

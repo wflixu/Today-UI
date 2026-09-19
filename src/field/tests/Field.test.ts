@@ -15,11 +15,12 @@ const MockInput = defineComponent({
     modelValue: String,
   },
   setup(props, { emit }) {
-    return () => h('input', {
-      id: props.id,
-      value: props.modelValue,
-      onInput: (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value),
-    });
+    return () =>
+      h('input', {
+        id: props.id,
+        value: props.modelValue,
+        onInput: (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value),
+      });
   },
 });
 
@@ -34,7 +35,7 @@ describe('Field 组件', () => {
 
     it('默认 orientation 为 vertical', () => {
       const wrapper = mount(TField, {
-        props: { orientation: 'vertical' as FieldProps['orientation'] }
+        props: { orientation: 'vertical' as FieldProps['orientation'] },
       });
 
       const root = wrapper.find('.t-field');
@@ -47,7 +48,7 @@ describe('Field 组件', () => {
       orientations.forEach((orientation) => {
         it(`应该渲染 orientation="${orientation}"`, () => {
           const wrapper = mount(TField, {
-            props: { orientation }
+            props: { orientation },
           });
 
           const root = wrapper.find('.t-field');
@@ -61,13 +62,13 @@ describe('Field 组件', () => {
         'none',
         'valid',
         'warning',
-        'invalid'
+        'invalid',
       ];
 
       validationStates.forEach((validationState) => {
         it(`应该渲染 validationState="${validationState}"`, () => {
           const wrapper = mount(TField, {
-            props: { validationState }
+            props: { validationState },
           });
 
           const root = wrapper.find('.t-field');
@@ -81,8 +82,8 @@ describe('Field 组件', () => {
     it('应该渲染 label 插槽', () => {
       const wrapper = mount(TField, {
         slots: {
-          label: '<label class="test-label">Test Label</label>'
-        }
+          label: '<label class="test-label">Test Label</label>',
+        },
       });
 
       const label = wrapper.find('.test-label');
@@ -93,8 +94,8 @@ describe('Field 组件', () => {
     it('应该渲染 default 插槽（内容区域）', () => {
       const wrapper = mount(TField, {
         slots: {
-          default: '<input class="test-input" />'
-        }
+          default: '<input class="test-input" />',
+        },
       });
 
       const content = wrapper.find('.t-field__content');
@@ -106,8 +107,8 @@ describe('Field 组件', () => {
     it('应该渲染 helperText 插槽', () => {
       const wrapper = mount(TField, {
         slots: {
-          helperText: '<p class="test-helper">Helper text</p>'
-        }
+          helperText: '<p class="test-helper">Helper text</p>',
+        },
       });
 
       const helperText = wrapper.find('.test-helper');
@@ -118,8 +119,8 @@ describe('Field 组件', () => {
     it('应该渲染 validationMessage 插槽', () => {
       const wrapper = mount(TField, {
         slots: {
-          validationMessage: '<div class="custom-validation">Custom validation message</div>'
-        }
+          validationMessage: '<div class="custom-validation">Custom validation message</div>',
+        },
       });
 
       const validationMessage = wrapper.find('.custom-validation');
@@ -133,7 +134,7 @@ describe('Field 组件', () => {
           label: '<label class="test-label">Label</label>',
           default: '<input class="test-input" />',
           helperText: '<p class="test-helper">Helper</p>',
-        }
+        },
       });
 
       const label = wrapper.find('.test-label');
@@ -151,8 +152,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'This field is required',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -164,8 +165,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Valid email format',
-          validationState: 'valid'
-        }
+          validationState: 'valid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -177,8 +178,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Email might be temporary',
-          validationState: 'warning'
-        }
+          validationState: 'warning',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -190,8 +191,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Invalid email format',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -203,8 +204,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Just a message',
-          validationState: 'none'
-        }
+          validationState: 'none',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -216,11 +217,11 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Prop message',
-          validationState: 'invalid'
+          validationState: 'invalid',
         },
         slots: {
-          validationMessage: '<div class="custom-validation">Slot message</div>'
-        }
+          validationMessage: '<div class="custom-validation">Slot message</div>',
+        },
       });
 
       const customValidation = wrapper.find('.custom-validation');
@@ -235,8 +236,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Error message',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -248,7 +249,7 @@ describe('Field 组件', () => {
   describe('布局方向', () => {
     it('orientation="vertical" 时应用垂直布局类名', () => {
       const wrapper = mount(TField, {
-        props: { orientation: 'vertical' }
+        props: { orientation: 'vertical' },
       });
 
       const root = wrapper.find('.t-field');
@@ -258,7 +259,7 @@ describe('Field 组件', () => {
 
     it('orientation="horizontal" 时应用水平布局类名', () => {
       const wrapper = mount(TField, {
-        props: { orientation: 'horizontal' }
+        props: { orientation: 'horizontal' },
       });
 
       const root = wrapper.find('.t-field');
@@ -271,8 +272,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         slots: {
           label: '<label for="test-input" class="test-label">用户名</label>',
-          default: '<input id="test-input" class="test-input" />'
-        }
+          default: '<input id="test-input" class="test-input" />',
+        },
       });
 
       const label = wrapper.find('.test-label');
@@ -298,7 +299,7 @@ describe('Field 组件', () => {
         setup() {
           const value = ref('');
           return { value };
-        }
+        },
       });
 
       const wrapper = mount(TestComponent);
@@ -315,8 +316,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         slots: {
           default: '<input class="test-input" />',
-          helperText: '<p class="test-helper">请输入您的用户名</p>'
-        }
+          helperText: '<p class="test-helper">请输入您的用户名</p>',
+        },
       });
 
       const input = wrapper.find('.test-input');
@@ -333,13 +334,13 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: '邮箱格式不正确',
-          validationState: 'invalid'
+          validationState: 'invalid',
         },
         slots: {
           label: '<label for="email" class="test-label">邮箱地址</label>',
           default: '<input id="email" class="test-input" />',
-          helperText: '<p class="test-helper">请输入您的工作邮箱</p>'
-        }
+          helperText: '<p class="test-helper">请输入您的工作邮箱</p>',
+        },
       });
 
       const label = wrapper.find('.test-label');
@@ -363,8 +364,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Error message',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       let validationMessage = wrapper.find('.t-field__validation-message');
@@ -380,8 +381,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: 'Initial message',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       let validationMessage = wrapper.find('.t-field__validation-message');
@@ -395,7 +396,7 @@ describe('Field 组件', () => {
 
     it('应该响应 orientation prop 变化', async () => {
       const wrapper = mount(TField, {
-        props: { orientation: 'vertical' }
+        props: { orientation: 'vertical' },
       });
 
       let root = wrapper.find('.t-field');
@@ -413,8 +414,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         attrs: {
           'data-testid': 'test-field',
-          'aria-describedby': 'field-description'
-        }
+          'aria-describedby': 'field-description',
+        },
       });
 
       const root = wrapper.find('.t-field');
@@ -437,8 +438,8 @@ describe('Field 组件', () => {
     it('应该处理只有 default 插槽的情况', () => {
       const wrapper = mount(TField, {
         slots: {
-          default: '<input class="test-input" />'
-        }
+          default: '<input class="test-input" />',
+        },
       });
 
       const input = wrapper.find('.test-input');
@@ -449,8 +450,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: undefined,
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -461,8 +462,8 @@ describe('Field 组件', () => {
       const wrapper = mount(TField, {
         props: {
           validationMessage: '',
-          validationState: 'invalid'
-        }
+          validationState: 'invalid',
+        },
       });
 
       const validationMessage = wrapper.find('.t-field__validation-message');
@@ -494,7 +495,7 @@ describe('Field 组件', () => {
           const validationMessage = ref('邮箱格式不正确');
 
           return { email, emailState, validationMessage };
-        }
+        },
       });
 
       const wrapper = mount(TestComponent);
@@ -515,8 +516,8 @@ describe('Field 组件', () => {
         props: { orientation: 'horizontal' },
         slots: {
           label: '<label class="test-label">用户名</label>',
-          default: '<input class="test-input" />'
-        }
+          default: '<input class="test-input" />',
+        },
       });
 
       const root = wrapper.find('.t-field');
