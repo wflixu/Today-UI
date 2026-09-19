@@ -1,87 +1,76 @@
-import { defineComponent, ref, SlotsType, computed, onUnmounted } from 'vue';
-import { useFloating, offset, flip, shift, arrow, type Placement } from '@floating-ui/vue';
-import { renderTooltip } from './renderTooltip';
-import { useTooltipClasses, tooltipClassNames } from './useTooltipClasses';
+import { defineComponent, h, SlotsType } from 'vue';
+import TPopover from '../popover/Popover';
+import { useTooltipClasses, type TooltipRelationship } from './useTooltipClasses';
 import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
-import { useTooltip } from './useTooltip';
+
 import './tooltip.css';
+
+/**
+ * 触发元素的包装类名。
+ *
+ * Tooltip 与 Dropdown / Dialog 不同：它给触发内容套一层 span，而不是直接克隆
+ * 使用者传入的元素。原因有二：
+ *
+ * 1. 这层 span 承载 `display: inline-block`，使行内内容（如纯文本）也能作为定位锚点
+ * 2. 保持既有 DOM 结构不变 —— 迁移前就是这个结构，既有测试也据此断言
+ *
+ * 该 span 会被 Popover 克隆并绑定事件与 ref，因此它同时也是实际的触发元素。
+ */
+const TRIGGER_CLASS = 't-tooltip-trigger';
 
 export const TTooltip = defineComponent({
   name: 'TTooltip',
   props: tooltipProps,
   slots: Object as SlotsType<TooltipSlots>,
-
-  setup(props: TooltipProps, { expose, slots }) {
-    const referenceRef = ref<HTMLElement | null>(null);
-    const floatingRef = ref<HTMLElement | null>(null);
-    const arrowRef = ref<HTMLElement | null>(null);
-
-    // 创建 Tooltip 状态（只在 setup 时执行一次）
-    const tooltipState = useTooltip(props, referenceRef);
-
-    // 使用 computed 创建响应式状态（与 Button 模式一致）
-    const state = computed(() => {
-      // 更新 isVisible 值以保持响应性
-      tooltipState.isVisible = tooltipState._isVisible.value;
-
-      // 使用纯 CSS 类名 Hook
+  setup(props: TooltipProps, { slots }) {
+    return () => {
       const classes = useTooltipClasses({
-        isVisible: tooltipState.isVisible,
-        relationship: tooltipState.relationship,
-        withArrow: tooltipState.withArrow,
+        isVisible: true,
+        relationship: props.relationship as TooltipRelationship,
+        withArrow: props.withArrow,
       });
 
-      // 应用类名到状态
-      tooltipState.className = classes.root;
-      tooltipState.arrowClassName = classes.arrow;
-
-      return tooltipState;
-    });
-
-    // Floating UI 定位
-    const { x, y, middlewareData, update } = useFloating(referenceRef, floatingRef, {
-      placement: tooltipState.placement as Placement,
-      middleware: [offset(tooltipState.offset), flip(), shift(), arrow({ element: arrowRef })],
-    });
-
-    // 计算箭头样式
-    const arrowStyle = computed(() => {
-      const { x: arrowX, y: arrowY } = middlewareData.value.arrow ?? { x: 0, y: 0 };
-      return {
-        left: arrowX ? `${arrowX}px` : '',
-        top: arrowY ? `${arrowY}px` : '',
+      /**
+       * 内容样式。
+       *
+       * 迁移前 `maxWidth` 与 `wrapText` 只被透传到 state，渲染层从未读取 ——
+       * 两个 prop 完全失效。这里让它们真正生效。
+       */
+      const contentStyle: Record<string, string> = {
+        maxWidth: `${props.maxWidth}px`,
+        whiteSpace: props.wrapText ? 'normal' : 'nowrap',
       };
-    });
 
-    // 计算定位样式
-    const positioningStyle = computed(() => ({
-      position: 'fixed',
-      left: `${x.value}px`,
-      top: `${y.value}px`,
-    }));
-
-    // 清理定时器
-    onUnmounted(() => {
-      tooltipState.clearTimers();
-    });
-
-    // 暴露引用和方法
-    expose({
-      referenceRef,
-      floatingRef,
-      arrowRef,
-      update,
-    });
-
-    // 返回渲染函数
-    return () =>
-      renderTooltip(state.value, slots, {
-        referenceRef,
-        floatingRef,
-        arrowRef,
-        positioningStyle: positioningStyle.value,
-        arrowStyle: arrowStyle.value,
-      });
+      return h(
+        TPopover,
+        {
+          visible: props.visible,
+          defaultVisible: props.defaultVisible,
+          trigger: props.trigger,
+          placement: props.placement,
+          offset: props.offset,
+          // Tooltip 用 delay / closeDelay 命名，Popover 用 openDelay / closeDelay
+          openDelay: props.delay,
+          closeDelay: props.closeDelay,
+          attach: props.attach,
+          withArrow: props.withArrow,
+          contentClass: classes.root,
+          // 箭头由 Popover 渲染并定位（它持有 arrowRef 与 arrowStyles），
+          // Tooltip 只把类名换掉，以便用 tooltip 的配色覆盖
+          arrowClass: classes.arrow,
+          'onUpdate:visible': (visible: boolean) => props.onVisibleChange?.(visible),
+        },
+        {
+          default: () => h('span', { class: TRIGGER_CLASS }, slots.default?.()),
+          content: () =>
+            h(
+              'div',
+              { class: 't-tooltip__content', style: contentStyle },
+              slots.content?.() ?? props.content,
+            ),
+        },
+      );
+    };
   },
 });
 

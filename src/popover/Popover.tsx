@@ -46,6 +46,7 @@ export const TPopover = defineComponent({
       lockScroll: props.lockScroll,
       contentHandlers,
       contentClass: props.contentClass,
+      arrowClass: props.arrowClass,
       floatingRef: popover.floatingRef,
       arrowRef: popover.arrowRef,
     }));

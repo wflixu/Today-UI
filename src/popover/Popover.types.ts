@@ -4,8 +4,8 @@ import type { AttachNode } from '../shared/type';
 
 // ========== 1. 字面量 union 类型 ==========
 
-/** 触发方式 */
-export type PopoverTrigger = 'click' | 'hover' | 'focus' | 'contextmenu' | 'manual';
+/** 触发方式。`both` 表示 hover 与 focus 任一满足即显示（Tooltip 常用） */
+export type PopoverTrigger = 'click' | 'hover' | 'focus' | 'both' | 'contextmenu' | 'manual';
 
 /** 定位策略。`fixed` 用于浮层需要在滚动容器外保持位置的场景 */
 export type PopoverStrategy = 'absolute' | 'fixed';
@@ -95,6 +95,7 @@ export const popoverProps = {
    * - 'click'：点击切换
    * - 'hover'：悬停显示，移开隐藏
    * - 'focus'：聚焦显示，失焦隐藏
+   * - 'both'：hover 或 focus 任一满足即显示
    * - 'contextmenu'：右键显示
    * - 'manual'：不注册任何触发事件，完全由 visible 控制
    *
@@ -198,6 +199,16 @@ export const popoverProps = {
    * @default undefined
    */
   triggerClass: {
+    type: String,
+    default: undefined as undefined,
+  },
+
+  /**
+   * 追加到箭头元素上的类名。仅在 `withArrow` 为 true 时有意义。
+   *
+   * @default undefined
+   */
+  arrowClass: {
     type: String,
     default: undefined as undefined,
   },

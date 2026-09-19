@@ -119,6 +119,14 @@ export function usePopoverTrigger(options: UsePopoverTriggerOptions): UsePopover
           onFocusout: () => closeWithDelay(),
         };
 
+      case 'both':
+        return {
+          onMouseenter: () => openWithDelay(),
+          onMouseleave: () => closeWithDelay(),
+          onFocusin: () => openWithDelay(),
+          onFocusout: () => closeWithDelay(),
+        };
+
       case 'contextmenu':
         return {
           onContextmenu: (event: Event) => {

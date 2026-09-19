@@ -20,6 +20,8 @@ export interface UsePopoverClassesOptions {
   visible?: boolean;
   /** 追加到浮层容器的类名，供消费组件定制外观 */
   extra?: string;
+  /** 追加到箭头元素上的类名 */
+  arrowExtra?: string;
 }
 
 export interface PopoverClasses {
@@ -35,12 +37,12 @@ export interface PopoverClasses {
  * 用 `data-placement` 属性承载，CSS 里以属性选择器匹配（见 popover.css）。
  */
 export function usePopoverClasses(options: UsePopoverClassesOptions = {}): PopoverClasses {
-  const { visible = false, extra } = options;
+  const { visible = false, extra, arrowExtra } = options;
   const stateClass = visible ? popoverStateClasses.visible : '';
 
   return {
     root: popoverClassNames.root,
     content: cn(popoverClassNames.root, popoverClassNames.content, stateClass, extra),
-    arrow: cn(popoverClassNames.arrow, stateClass),
+    arrow: cn(popoverClassNames.arrow, stateClass, arrowExtra),
   };
 }
