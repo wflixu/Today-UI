@@ -20,7 +20,7 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - `pnpm doc` - 构建 Histoire 文档
 
 ### 构建与类型生成
-- `pnpm build` - 使用 tsdown 构建库（ESM 格式 + TypeScript 类型定义）
+- `pnpm build` - 使用 Vite 构建库（`vite build` + `vue-tsc` 生成类型）
 - `pnpm build:watch` - 监听模式构建
 
 ### 测试与代码质量
@@ -36,7 +36,7 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - **@floating-ui/vue** - 弹出层组件的核心定位引擎
 - **纯 CSS Variables** - 样式方案，440+ Fluent Design 令牌，无运行时开销
 - **TypeScript 5.x** - 完整的类型安全支持
-- **tsdown** - 库构建工具（ESM 格式输出）
+- **Vite** - 库构建工具（library mode，纯 ESM 输出）
 - **pnpm** - 使用pnpm 作为包管理器
 - **Histoire** - 组件文档和测试
 - **Vitest** - 单元测试框架
@@ -122,14 +122,15 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - 组件 CSS **允许**原生 CSS 嵌套（`&:hover`），但 `&` 必须显式书写，嵌套不超过 3 层
 - 消费者未分层的样式天然优先，这是「用户覆盖组件样式」的机制
 
-**浏览器基线**：Chrome/Edge 120+、Safari 17.2+、Firefox 117+（由原生 CSS 嵌套决定，构建链路不做降级）
+**浏览器基线**：Chrome/Edge 105+、Safari 15.4+、Firefox 121+（由 `:has()` 决定，嵌套已在构建期由 `postcss-nested` 扁平化，不是门槛）
 
 ### 构建配置
-- **构建工具**: tsdown（纯 ESM 输出）
-- **输出格式**: 仅 ESM（.mjs 文件）
+- **构建工具**: Vite library mode（`vite.config.mts`）
+- **输出格式**: 仅 ESM（`.js`，`preserveModules` 保留模块结构）
 - **外部依赖**: Vue、@floating-ui/vue、radash
-- **CSS 处理**: tsdown 自动处理 CSS 导入和提取
-- **类型生成**: tsdown 自动生成 .d.mts 类型定义文件
+- **CSS 处理**: `postcss-import` 展开 `@import` → `postcss-nested` 扁平化嵌套 → 合并为单个 `dist/style.css`
+- **类型生成**: `vue-tsc --noCheck --emitDeclarationOnly`（独立步骤，见 `build:types`）
+- **dev 与 build 共用同一份 Vite 配置**：Histoire 会自动加载根配置，不要在 `histoire.config.ts` 里重复声明 `vue()`/`vueJsx()`
 - **按需导入**: 保留模块结构，支持按需导入组件
 
 ### 文档系统

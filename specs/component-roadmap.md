@@ -292,7 +292,7 @@ Dropdown、Tooltip、Dialog **各自独立**实现定位与挂载，没有共享
 |----|------|
 | 产物 `dist/style.css` | 聚合样式入口，见 [style.md](style.md#打包产物约定) |
 | 样式分层改造 | `src/style/index.css` 落地 `@layer`；清理 5 个组件 CSS 中的重复 `@import` |
-| 清理迁移遗留 | `src/shared/theme/`（死代码）、`use*Styles.styles.ts` 残留、`tsdown.config.ts` 的 `griffel-vue` |
+| 清理迁移遗留 | `src/shared/theme/`（死代码）、`use*Styles.styles.ts` 残留 |
 | 处理 `react-components/` | 上游对照源码，确定是保留为参考还是移出仓库 |
 
 ---

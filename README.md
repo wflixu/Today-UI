@@ -9,23 +9,6 @@
 
 Today-UI is a Vue 3 component library that brings Microsoft's [Fluent Design System](https://www.fluentui.com/) to the Vue ecosystem. It transcribes `@fluentui/react-components` to Vue 3 while maintaining API compatibility and visual fidelity.
 
----
-
-> ### ⚠️ 当前不可安装使用
->
-> `package.json` 的 `exports` 字段指向了**不存在的产物文件**，因此 `import ... from 'today-ui'` 会解析失败：
->
-> | 声明 | dist 实际产物 |
-> |---|---|
-> | `./dist/index.d.ts` ❌ | `index.d.mts` |
-> | `./dist/index.js` ❌ | `index.mjs` |
-> | `./dist/style.css` ❌ | 不存在 |
->
-> 根因是 `tsdown` 输出 `.mjs` / `.d.mts`（纯 ESM），而 `exports` 写的是 `.js` / `.d.ts`。
-> 修正方式是改 `package.json` 的 `exports` 指向，或改 tsdown 的输出扩展名 —— **尚未修复**。
->
-> 本文档描述的 API 是**目标状态**。在修复前，请从源码直接引用，或等待修复。
-
 ## ✨ Features
 
 - **🎨 Fluent Design** - Implementation of Microsoft's Fluent Design System specifications
@@ -77,9 +60,16 @@ import { TButton } from 'today-ui'
 
 ### Styles
 
-**No manual style import is needed.** Each component's ESM entry imports its own CSS, so any bundled setup (Vite, webpack, Rspack, etc.) picks it up automatically with `import { TButton } from 'today-ui'`.
+Import the stylesheet once in your app entry:
 
-> ⏳ **Planned**: a single aggregated entry `import 'today-ui/style.css'` is specified in [specs/style.md](specs/style.md) but not yet emitted by the build. Until it lands, rely on the automatic per-component imports above.
+```ts
+// main.ts
+import 'today-ui/style.css';
+```
+
+All component CSS is bundled into that single file (173 KB, 440+ design tokens) — `@import` chains and CSS nesting are resolved at build time, so there is nothing else to configure.
+
+> Component styles are **not** auto-imported by the JS entries. Importing `today-ui/style.css` explicitly is required.
 
 ### Global Registration (Optional)
 
@@ -174,11 +164,9 @@ Tokens are plain CSS variables — override them anywhere they cascade from:
 
 ### Browser Support
 
-No CSS downleveling is applied, so the browser baseline is set by native CSS nesting:
+**Chrome/Edge 105+ · Safari 15.4+ · Firefox 121+**
 
-**Chrome/Edge 120+ · Safari 17.2+ · Firefox 117+**
-
-Older browsers drop rules containing `&` entirely, so components render unstyled on hover/active/focus. See [specs/style.md](specs/style.md#浏览器基线) for the rationale and the escape hatch.
+CSS nesting (`&:hover`) and `@import` are resolved at build time, so they are not a constraint. The baseline is set by **`:has()`**, used in the Input component's disabled/hover/autofill states. Browsers without `:has()` drop those specific rules — other components are unaffected. See [specs/style.md](specs/style.md#浏览器基线) for the details and how to lower the baseline.
 
 ## 📚 Component List
 
@@ -315,7 +303,7 @@ today-ui/
 ├── react-components/        # Upstream React sources kept for transcription reference
 ├── specs/                   # Design & component specification documents
 ├── histoire.config.ts       # Histoire configuration
-├── tsdown.config.ts        # tsdown build configuration
+├── vite.config.mts         # Vite build config (shared with Histoire)
 └── dist/                    # Build output (ESM)
 ```
 
@@ -332,7 +320,7 @@ today-ui/
 - **Vue 3.5+** - Composition API + TSX
 - **TypeScript 5.9.2** - Full type support
 - **CSS Variables** - 440+ Fluent Design tokens, zero runtime
-- **tsdown** - Library build tool (ESM output)
+- **Vite** - Library build tool (library mode, ESM output)
 - **@floating-ui/vue** - Floating UI positioning engine
 - **Histoire** - Component documentation tool
 - **Vitest** - Unit testing framework
@@ -364,14 +352,13 @@ See [CLAUDE.md](CLAUDE.md) for details.
 
 ## 🏗️ Build System
 
-Today-UI uses [tsdown](https://tsdown.dev/) for building:
+Today-UI uses [Vite](https://vite.dev/) in library mode (`vite.config.mts`):
 
-- **Output Format**: Pure ESM (`*.mjs` files)
-- **Type Definitions**: Auto-generated `.d.mts` files
-- **CSS Processing**: Automatic per-component CSS extraction (`dist/**/*-<hash>.css`); each component's ESM entry imports its own CSS
-- **Code Splitting**: Preserved module structure for tree-shaking
+- **Output Format**: Pure ESM (`*.js`), `preserveModules` keeps the module structure for tree-shaking
+- **Type Definitions**: `vue-tsc --emitDeclarationOnly` in a second pass (`pnpm build:types`)
+- **CSS Processing**: `postcss-import` resolves the `@import` chain, then `postcss-nested` flattens nesting, then everything is merged into a single `dist/style.css`
+- **Shared Config**: Histoire loads the same `vite.config.mts`, so docs and the library build use one CSS pipeline — no dev/prod divergence
 - **Source Maps**: Included for debugging
-- **No CSS Downleveling**: Native CSS nesting is emitted as-is — see [Browser Support](#browser-support)
 
 ## 🤝 Contributing
 

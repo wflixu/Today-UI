@@ -9,7 +9,7 @@ Today-UI 使用 **纯 CSS Variables** 实现 Microsoft Fluent Design System。�
 | 章节 | 回答的问题 |
 |------|-----------|
 | [样式分层架构](#样式分层架构css-cascade-layers) | 消费者如何覆盖库的样式？ |
-| [浏览器基线](#浏览器基线) | 支持哪些浏览器？为什么不做降级？ |
+| [浏览器基线](#浏览器基线) | 支持哪些浏览器？嵌套在构建期怎么处理？ |
 | [BEM 命名规范](#bem-命名规范) | 类名怎么起？ |
 | [设计令牌系统](#设计令牌系统) | 440+ 令牌怎么组织和使用？ |
 | [主题切换机制](#主题切换机制) | 怎么换肤？怎么实现局部主题？ |
@@ -137,23 +137,44 @@ for (const key of Object.keys(theme)) {
 
 ## 浏览器基线
 
-本项目**不做 CSS 语法降级**，构建产物保留原生 CSS 写法（见「构建产物」一节的取舍说明），因此存在明确的最低浏览器要求。
+### 构建期的语法处理（先说清楚，避免误判）
 
-| 特性 | 用途 | Chrome / Edge | Safari | Firefox |
-|------|------|---------------|--------|---------|
-| **CSS Nesting** | 组件 CSS 中的 `&:hover` 等嵌套写法 | **120+** | **17.2+** | **117+** |
-| CSS Cascade Layers | `@layer` 分层 | 99+ | 15.4+ | 97+ |
+组件 CSS 里写的 `&:hover` 等**原生 CSS 嵌套，在构建时就被扁平化**成完整选择器，**不会进入产物**：
+
+```
+src: .t-button { &:hover { … } }     →     dist: .t-button:hover { … }
+```
+
+因此「需要支持原生 CSS 嵌套的浏览器」（Chrome 120+ / Safari 17.2+ / Firefox 117+）**不是**本项目的门槛。实际约束来自组件样式里**无法在构建期降级**的现代选择器。
+
+> 交叉验证：`grep -c '&' dist/style.css` 为 **0**，`@import` 同样为 0 —— 两者都已在构建期处理完毕。
+
+### 真实基线
+
+| 特性 | 用在哪 | Chrome / Edge | Safari | Firefox |
+|------|--------|---------------|--------|---------|
+| **`:has()`** | `input.css` 4 处，如 `.t-input__input-wrapper:has(.t-input__input:disabled)` | **105+** | **15.4+** | **121+** |
+| `:not()`（复合选择器） | 44 处，多为 `:not([disabled])` | 88+ | 9+ | 84+ |
+| `:focus-visible` | 6 处 | 86+ | 15.4+ | 85+ |
+| `:is()` | 4 处 | 88+ | 14+ | 78+ |
 | CSS Custom Properties | 全部设计令牌 | 49+ | 9.1+ | 31+ |
 
-**综合基线：Chrome/Edge 120+、Safari 17.2+、Firefox 117+** —— 由最严格的 CSS 嵌套决定。
+**综合基线：Chrome/Edge 105+、Safari 15.4+、Firefox 121+**
+
+由 **`:has()`** 决定。注意约束已经从 Chrome 转移到了 **Firefox**（121 是 2023-12 才发布的版本）—— 若要做取舍，这里是最值得动的地方。
 
 ### 旧浏览器上的表现
 
-CSS 嵌套不被支持时，浏览器**整条丢弃**包含 `&` 的规则块（而非仅忽略嵌套部分）。因此旧浏览器上组件会退化为「只有基础盒模型、没有 hover / active / focus 状态」—— 不会崩溃，但状态样式明显缺失。
+`:has()` 不被支持时，浏览器按「未知选择器」处理：**整条规则被丢弃**，而不是部分生效。受影响的是 Input 组件的禁用态、hover 态与自动填充态样式。其余组件不受影响，也不会崩溃。
 
-### 若需放宽基线
+### 若要放宽基线
 
-在构建链路接入 `postcss-nesting`（把 `&` 展开为完整选择器）或 Lightning CSS 做降级即可，产物可支持到 Safari 15+。**当前明确选择不做**，以换取构建链路的简单与产物的可读性。
+去掉对 `:has()` 的依赖即可把 Firefox 门槛降到 85 以下。两种做法：
+
+1. **改写选择器** —— `input.css` 里那 4 处 `:has()` 多为「父元素根据子元素状态变化」的用法，可用状态类名替代（由 `useInputClasses` 输出 `.is-disabled` 之类的类到父元素上）。代价是 JS 侧要参与，但换来的是更低门槛与更好的可预测性
+2. **构建期降级** —— 引入 Lightning CSS 或 `postcss-preset-env` 转换 `:has()`。注意 `:has()` 无法真正降级（它没有等价的旧语法），这类工具通常只能提示，实际仍需方案 1
+
+> 目前**未做**处理。新增组件时若用到 `:has()`，请意识到它会把基线抬到 Firefox 121+。
 
 ---
 
@@ -1924,7 +1945,7 @@ griffel-vue → (移除)
 
 #### CSS 嵌套规范
 
-产物保留原生 CSS 嵌套（见「浏览器基线」），因此组件 CSS **允许且鼓励**用 `&` 组织同块的状态与组合变体：
+组件 CSS **允许且鼓励**用 `&` 组织同块的状态与组合变体（构建时由 `postcss-nested` 扁平化，不影响浏览器基线 —— 见「浏览器基线」）：
 
 ```css
 /* ✅ 推荐：用嵌套归拢同一 Block 的状态与组合变体 */
@@ -2032,41 +2053,43 @@ export const buttonVariants = {
 
 #### 打包产物约定
 
-构建使用 `tsdown`，`unbundle: true`（保留模块结构以支持按需导入）。这决定了 CSS 产物的形态：
+构建使用 **Vite library mode**（`vite.config.mts`），`preserveModules: true` 保留模块结构以支持按需导入。
 
-| 产物 | 说明 | 当前状态 |
-|------|------|:--------:|
-| `dist/**/xxx-<hash>.css` | 每个组件的 CSS chunk，文件名含内容哈希 | ✅ 已产出 |
-| `dist/style.css` | **聚合入口**，按 `@layer` 顺序合并全部 CSS，文件名固定 | ❌ **未产出** |
+| 产物 | 说明 |
+|------|------|
+| `dist/**/*.js` | 按模块结构保留的 ESM 产物，与 `src/` 一一对应 |
+| `dist/**/*.d.ts` | 类型声明，由 `vue-tsc --emitDeclarationOnly` 单独生成 |
+| **`dist/style.css`** | **聚合样式入口**（约 173 KB / 453 个令牌），文件名固定 |
 
-**`dist/style.css` 是必须存在的产物**。原因是 `package.json` 将其作为公开导出：
+**`dist/style.css` 是必须存在的产物**，因为 `package.json` 将其作为公开导出：
 
 ```json
 {
   "exports": {
-    "./style.css": "./dist/style.css"
+    ".":            { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./style.css":  "./dist/style.css"
   }
 }
 ```
 
-哈希命名的 chunk 无法作为稳定的公开入口，因此需要一个**文件名固定**的聚合产物，由构建流程在 `tsdown` 之后生成，拼接顺序即 `@layer` 声明顺序：
+**聚合方式**：`build.cssCodeSplit: false` 让 Vite 把全部 CSS 合并为单文件，文件名由 `build.lib.cssFileName` 指定（Vite 会自动补 `.css` 后缀）。顺序即 CSS 的 `@import` 解析顺序 —— tokens → base → components。
 
-```
-@layer tui.tokens, tui.base, tui.components;
-  ├─ tokens：light → dark → teams-light → teams-dark（顺序影响主题覆盖，不可打乱）
-  ├─ base：  reset / body
-  └─ components：button → dropdown → dialog → icon → menu → tabs → toast → tooltip → file-tree
-```
+**构建期的 CSS 处理**（由 `vite.config.mts` 的 postcss 配置完成）：
 
-> **注意**：聚合脚本必须显式定义这个顺序，不能依赖文件系统遍历顺序。
+- `postcss-import` —— 展开全部 `@import`（`src/style/index.css` 的内容全是 `@import`，不展开则 440+ 令牌全部丢失）
+- `postcss-nested` —— 把 `&:hover` 等原生嵌套扁平化为完整选择器
 
-**当前状态的实证（2026-09-19）**：
+> **顺序不可调换**：必须先展开 `@import`，再处理嵌套。
 
-- `dist/style.css` **不存在**
-- `dist/style/index-<hash>.css` 存在但**内容为空**——只有 `src/style/index.css` 里的注释（`/* 设计令牌 */`、`/* 基础样式 */`、`/* 组件样式 */`），所有 `@import` 都被拆进了独立的 chunk 文件
-- 因此 `package.json` 里 `"./style.css": "./dist/style.css"` 这条导出指向一个**不存在的文件**，按 README 写的 `import 'today-ui/style.css'` 会构建失败
+**消费者须显式引入**：CSS 不再由组件的 JS 入口自动 `import`（Vite 在 lib 模式下会剥掉）。这是设计选择，也让样式成为显式的、可控制加载时机的资源。
 
-消费者当前的实际路径：每个组件的 `.mjs` 入口自己 `import` 了对应的 `.css`，所以打包器会自动收集——**无需手动 import 样式**。这也是为什么这个缺陷至今没有暴露。
+---
+
+> **历史教训（2026-09-19 修复）**：此前用 tsdown 构建时，`dist/style.css` 根本不存在，且 `dist/style/index-<hash>.css` **内容为空**（只有注释）—— 因为 tsdown 不解析 CSS 的 `@import`，而 `src/style/index.css` 的内容全是 `@import`。
+>
+> 后果是 `exports` 里 `"./style.css"` 指向不存在的文件，**整个包无法被 import**；同时 Histoire（走 Vite + postcss，能正常解析）里样式看着正常，掩盖了问题。
+>
+> 根因是 **dev 与 build 跑在两套不同的 CSS 管线上**。现在两者共用同一份 `vite.config.mts`，这类不一致不会再出现。
 
 #### 运行时优化
 
@@ -2222,9 +2245,10 @@ setTheme('teams-dark', panelElement);  // 仅某个子树
 
 详见「样式分层架构」与「组件级样式覆盖接口」。
 
-### Q7: 为什么组件 CSS 里 `&:hover` 不做降级？
+### Q7: 组件 CSS 里的 `&:hover` 需要浏览器支持原生嵌套吗？
 
-**A**: 这是有意的取舍，详见「浏览器基线」。产物依赖原生 CSS 嵌套，基线为 Chrome/Edge 120+、Safari 17.2+、Firefox 117+。
+**A**: 不需要。构建时 `postcss-nested` 已把嵌套扁平化为完整选择器，产物中不含 `&`。
+真实基线由 `:has()` 决定：**Chrome/Edge 105+、Safari 15.4+、Firefox 121+**。详见「浏览器基线」。
 
 ---
 
@@ -2269,7 +2293,7 @@ setTheme('teams-dark', panelElement);  // 仅某个子树
 
 ---
 
-**文档版本**: v1.1.1
+**文档版本**: v1.1.2
 **最后更新**: 2026-09-19
 **维护者**: Today-UI Team
 
@@ -2277,6 +2301,7 @@ setTheme('teams-dark', panelElement);  // 仅某个子树
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v1.1.2 | 2026-09-19 | 构建系统由 tsdown 改为 Vite。**浏览器基线修正为 Chrome/Edge 105+ / Safari 15.4+ / Firefox 121+** —— 此前写的「嵌套决定基线（Chrome 120+）」已不成立：`postcss-nested` 在构建期把嵌套扁平化，产物中不含 `&`，真实约束变成 `:has()`（约束从 Chrome 转到 Firefox）。`dist/style.css` 聚合产物已落地（173 KB / 453 个令牌） |
 | v1.1.1 | 2026-09-19 | 为「`@layer` 分层」与「`dist/style.css` 聚合产物」两节补充**实证状态**——经代码核查，两者均**尚未落地**：`grep @layer` 零命中，`dist/style.css` 不存在且 `dist/style/index-*.css` 内容为空。原文描述的是目标而非现状，易被误读为已有实现 |
 | v1.1.0 | 2026-09-19 | 新增「样式分层架构（`@layer`）」「浏览器基线」「组件级样式覆盖接口」；主题选择器去掉 `:root` 限定以支持嵌套主题；补充 `setTheme` / `getTheme` API；明确禁止 `!important`；修正「禁止 CSS 嵌套」与实现相矛盾的表述；「从现有架构迁移」改为历史记录；补充构建产物约定（`dist/style.css`） |
 | v1.0.0 | 2026-02-27 | 初版，记录 Griffel → 纯 CSS Variables 迁移方案 |

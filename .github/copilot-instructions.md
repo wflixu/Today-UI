@@ -6,7 +6,7 @@
 ## Project
 
 Today-UI 是把微软 `@fluentui/react-components` 转录到 Vue 3 的 Fluent Design 组件库。
-技术栈：TypeScript 5.x、Vue 3.x + TSX、Histoire、Vitest、tsdown（纯 ESM 输出）。
+技术栈：TypeScript 5.x、Vue 3.x + TSX、Histoire、Vitest、Vite（library mode，纯 ESM 输出）。
 
 **样式方案是纯 CSS 变量 + BEM + CSS `@layer` —— 不使用 CSS-in-JS。**
 历史上的 `griffel-vue` 方案已于 2026-02 废弃，见 [specs/style.md](../specs/style.md) 的迁移历史。
@@ -15,7 +15,7 @@ Today-UI 是把微软 `@fluentui/react-components` 转录到 Vue 3 的 Fluent De
 
 ```bash
 pnpm dev            # Histoire 开发服务器
-pnpm build          # tsdown 构建
+pnpm build          # Vite 构建 + 类型生成
 pnpm test           # Vitest（jsdom）
 pnpm test:coverage  # 覆盖率
 pnpm typecheck      # vue-tsc
