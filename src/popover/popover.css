@@ -1,0 +1,79 @@
+/**
+ * Popover 基础样式
+ *
+ * 定位完全由内联样式承载（floating-ui 产出的 floatingStyles），
+ * 这里只负责外观与显隐过渡。
+ */
+
+.t-popover__content {
+  box-sizing: border-box;
+  /* 定位方式由 inline style 提供，这里只兜底初始值 */
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: 320px;
+
+  padding: var(--spacingVerticalS) var(--spacingHorizontalM);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  box-shadow: var(--shadow8);
+
+  font-family: var(--fontFamilyBase);
+  font-size: var(--fontSizeBase300);
+  line-height: var(--lineHeightBase300);
+
+  /* 未定位完成前先隐藏，避免浮层在左上角闪现一帧 */
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--durationFaster) var(--curveEasyEase),
+    visibility var(--durationFaster) var(--curveEasyEase);
+}
+
+.t-popover__content.is-visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========== 箭头 ========== */
+/* 位置由 arrowStyles 内联传入，这里只管尺寸与配色 */
+
+.t-popover__arrow {
+  width: 8px;
+  height: 8px;
+  background-color: var(--colorNeutralBackground1);
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke1);
+  transform: rotate(45deg);
+}
+
+/* 让箭头贴合浮层边缘的边框：遮住朝向浮层那一侧的边框与背景 */
+.t-popover__arrow[data-placement^='top'] {
+  border-top: none;
+  border-left: none;
+}
+
+.t-popover__arrow[data-placement^='bottom'] {
+  border-bottom: none;
+  border-right: none;
+}
+
+.t-popover__arrow[data-placement^='left'] {
+  border-bottom: none;
+  border-left: none;
+}
+
+.t-popover__arrow[data-placement^='right'] {
+  border-top: none;
+  border-right: none;
+}
+
+/* ========== 无障碍 ========== */
+/* 项目规范：不实现无障碍。此处仅响应系统的减少动效偏好。 */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-popover__content {
+    transition-duration: 0.01ms;
+  }
+}

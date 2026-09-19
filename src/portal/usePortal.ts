@@ -1,17 +1,18 @@
 import { computed, onUnmounted, watch, type ComputedRef } from 'vue';
-import type { AttachNode } from '../shared/type';
+import type { AttachNode, AttachNodeTarget } from '../shared/type';
 import type { PortalProps, PortalState } from './Portal.types';
 
 /**
  * 把 AttachNode 解析成实际的挂载元素。
  *
- * 覆盖三种入参形式，任一环节求值失败都回退到 `document.body`：
+ * 覆盖各种入参形式，任一环节求值失败都回退到 `document.body`：
  * - 选择器字符串 —— querySelector 未命中则回退
  * - DOM 元素     —— 直接使用
- * - 函数         —— 求值后递归解析（可能返回选择器或元素）
+ * - Document     —— 取其 body
+ * - 函数         —— 求值后递归解析（返回值可以是选择器或元素）
  */
 export function resolveAttach(
-  node: AttachNode | undefined,
+  node: AttachNode | AttachNodeTarget | undefined,
   triggerNode?: HTMLElement,
 ): HTMLElement {
   const fallback = typeof document === 'undefined' ? undefined : document.body;

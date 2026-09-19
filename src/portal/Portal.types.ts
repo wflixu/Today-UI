@@ -61,7 +61,8 @@ export interface PortalState {
   /** Element configuration */
   /** Teleport 的 props，直接展开给 `<Teleport>` */
   teleport: {
-    to: HTMLElement | undefined;
+    /** 解析后的目标；解析不到时回退 'body'，故是联合类型 */
+    to: string | HTMLElement;
     disabled: boolean;
   };
 }

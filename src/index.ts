@@ -36,6 +36,7 @@ export {
   TInput,
   TLabel,
   TMenu,
+  TPopover,
   TPortal,
   TTooltip,
   TTabs,
