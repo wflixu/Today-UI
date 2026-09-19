@@ -37,16 +37,23 @@ const placement = ref('bottom-start');
       <HstSelect v-model="placement" title="placement" :options="placementOptions" />
     </template>
 
+    <!--
+      留出四周空间：placement 控制器里可选 top-*，若触发器贴着预览区边缘，
+      flip() 会发现该方向没有位置并把浮层翻到反方向，
+      看起来像是 placement 没生效。
+    -->
     <Variant title="基础用法">
-      <TDropdown
-        :options="basicOptions"
-        :trigger="state.trigger"
-        :placement="placement"
-        @select="(item: IDropdownOption) => (lastSelected = String(item.label))"
-      >
-        <TButton>点我展开</TButton>
-      </TDropdown>
-      <p style="font-size: 13px; margin-top: 8px">上次选择：{{ lastSelected }}</p>
+      <div style="padding: 120px 40px">
+        <TDropdown
+          :options="basicOptions"
+          :trigger="state.trigger"
+          :placement="placement"
+          @select="(item: IDropdownOption) => (lastSelected = String(item.label))"
+        >
+          <TButton>点我展开</TButton>
+        </TDropdown>
+        <p style="font-size: 13px; margin-top: 8px">上次选择：{{ lastSelected }}</p>
+      </div>
     </Variant>
 
     <Variant title="右键触发">

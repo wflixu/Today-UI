@@ -63,23 +63,32 @@ const controlledVisible = ref(false);
       </TPopover>
     </Variant>
 
+    <!--
+      以下两个变体用 placement="top"：容器必须留出上方空间，
+      否则 flip() 中间件发现上方没位置会把浮层翻到下方，
+      表面上像是「placement 没生效」。
+    -->
     <Variant title="带箭头">
-      <TPopover placement="top" :offset="10" with-arrow>
-        <TButton appearance="outline">上方带箭头</TButton>
-        <template #content="{ arrowStyles }">
-          <div style="padding: 4px 8px">箭头由 arrowStyles 定位</div>
-          <div class="t-popover__arrow" :style="arrowStyles" data-placement="top" />
-        </template>
-      </TPopover>
+      <div style="padding: 100px 0">
+        <TPopover placement="top" :offset="10" with-arrow>
+          <TButton appearance="outline">上方带箭头</TButton>
+          <template #content>
+            <!-- 箭头由 Popover 自身根据 withArrow 渲染并定位，这里不要再手写一个 -->
+            <div style="padding: 4px 8px">箭头位置由 floating-ui 计算</div>
+          </template>
+        </TPopover>
+      </div>
     </Variant>
 
     <Variant title="悬停触发（含延迟）">
-      <TPopover trigger="hover" :open-delay="200" :close-delay="150" placement="top">
-        <TButton appearance="subtle">悬停 200ms 后显示</TButton>
-        <template #content>
-          <div style="padding: 4px 8px">鼠标移入浮层不会关闭，因为设置了 closeDelay</div>
-        </template>
-      </TPopover>
+      <div style="padding: 100px 0">
+        <TPopover trigger="hover" :open-delay="200" :close-delay="150" placement="top">
+          <TButton appearance="subtle">悬停 200ms 后显示</TButton>
+          <template #content>
+            <div style="padding: 4px 8px">鼠标移入浮层不会关闭，因为设置了 closeDelay</div>
+          </template>
+        </TPopover>
+      </div>
     </Variant>
 
     <Variant title="表单场景 —— 宽度对齐触发元素">

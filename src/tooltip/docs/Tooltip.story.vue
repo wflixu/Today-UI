@@ -88,12 +88,18 @@ const controlledVisible = ref(false);
       </div>
     </Variant>
 
+    <!--
+      这一组必须给容器留出充足的内边距。
+      否则触发器会贴着预览区边缘，`flip()` 中间件发现对应方向没有空间就把浮层翻到
+      反方向 —— 那是正确的回退行为，但演示就看不到「placement 生效」了。
+      换言之：这里是在为演示结果留空间，不是在绕过组件问题。
+    -->
     <Variant title="箭头与位置">
-      <div style="display: flex; gap: 16px; flex-wrap: wrap">
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; padding: 120px 120px 120px 60px">
         <TTooltip
           v-for="p in ['top', 'right', 'bottom', 'left']"
           :key="p"
-          :content="p"
+          :content="`placement=${p}`"
           :placement="p as never"
           with-arrow
         >
