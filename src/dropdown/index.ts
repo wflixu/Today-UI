@@ -1,8 +1,12 @@
-import { withInstall, type WithInstallType } from '../shared/withInstall';
-import _Dropdown from './Dropdown';
+export { TDropdown } from './Dropdown';
+export { TDropdown as default } from './Dropdown';
 
-export const TDropdown: WithInstallType<typeof _Dropdown> = withInstall(_Dropdown);
-export default TDropdown;
+export type {
+  DropdownProps,
+  DropdownState,
+  DropdownSlots,
+  DropdownTrigger,
+  IDropdownOption,
+} from './Dropdown.types';
 
-// 导出类名常量
-export { dropdownClassNames, useDropdownClasses } from './useDropdownClasses';
+// 此处不 import './dropdown.css' —— 样式统一由 src/style/index.css 引入，避免重复进产物。

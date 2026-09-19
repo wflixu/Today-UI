@@ -56,6 +56,11 @@ export interface UsePopoverTriggerOptions {
   closeWithDelay?: () => void;
   /** hover 触发时鼠标移入浮层调用，用于取消待执行的关闭 */
   clearTimers?: () => void;
+  /**
+   * 追加到触发元素上的类名。
+   * `cloneVNode` 会把它与触发元素原有的类名合并，不会覆盖。
+   */
+  triggerClass?: string;
 }
 
 /**
@@ -78,6 +83,7 @@ export function usePopoverTrigger(options: UsePopoverTriggerOptions): UsePopover
     openWithDelay = toggle,
     closeWithDelay = toggle,
     clearTimers = () => {},
+    triggerClass,
   } = options;
 
   // 元素可能在更新时被替换（例如 v-if 切换），因此 mounted 与 updated 都要写
@@ -132,10 +138,15 @@ export function usePopoverTrigger(options: UsePopoverTriggerOptions): UsePopover
     if (!firstValidChild) return null;
 
     const handlers = buildHandlers();
-    const cloned = cloneVNode(
-      firstValidChild,
-      mergeHandlers(firstValidChild.props as Record<string, unknown> | undefined, handlers),
+    const extraProps = mergeHandlers(
+      firstValidChild.props as Record<string, unknown> | undefined,
+      handlers,
     );
+
+    // cloneVNode 会合并 class（而非覆盖），因此不会丢掉触发元素原有的类名
+    if (triggerClass) extraProps.class = triggerClass;
+
+    const cloned = cloneVNode(firstValidChild, extraProps);
 
     return withDirectives(cloned, [[captureRef]]);
   };

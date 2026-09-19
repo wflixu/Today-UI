@@ -161,14 +161,29 @@ describe('Popover 组件', () => {
       wrapper.unmount();
     });
 
-    it('受控模式：切换应抛出 update:visible', async () => {
+    // 事件语义：抛出的是「请求」而非「状态已变化」。
+    // 内部发起的开合无论受控与否都要通知外部，否则受控模式下 v-model 永远无法更新；
+    // 而外部主动改 prop 不应回抛，否则会形成循环。
+    it('受控模式下内部点击应抛出 update:visible（这是 v-model 能工作的前提）', async () => {
+      const wrapper = mountPopover({ props: { visible: false } });
+
+      await wrapper.find('.trigger').trigger('click');
+
+      // 受控状态下内部不改状态，但必须把「请求展开」告诉外部
+      expect(findContent(wrapper).exists()).toBe(false);
+      expect(wrapper.emitted('update:visible')?.[0]).toEqual([true]);
+      expect(wrapper.emitted('visibleChange')?.[0]).toEqual([true]);
+
+      wrapper.unmount();
+    });
+
+    it('外部主动改 prop 不应回抛事件', async () => {
       const wrapper = mountPopover({ props: { visible: true } });
 
       await wrapper.setProps({ visible: false });
       await nextTick();
 
-      expect(wrapper.emitted('update:visible')).toBeTruthy();
-      expect(wrapper.emitted('visibleChange')).toBeTruthy();
+      expect(wrapper.emitted('update:visible')).toBeFalsy();
 
       wrapper.unmount();
     });

@@ -1,4 +1,4 @@
-import { computed, defineComponent, SlotsType, watch } from 'vue';
+import { computed, defineComponent, SlotsType } from 'vue';
 import { popoverProps, type PopoverProps, type PopoverSlots } from './Popover.types';
 import { usePopover } from './usePopover';
 import { usePopoverTrigger } from './usePopoverTrigger';
@@ -10,7 +10,11 @@ export const TPopover = defineComponent({
   slots: Object as SlotsType<PopoverSlots>,
   emits: ['update:visible', 'visibleChange'],
   setup(props: PopoverProps, { emit, expose, slots }) {
-    const popover = usePopover(props);
+    const popover = usePopover(props, (visible) => {
+      emit('update:visible', visible);
+      emit('visibleChange', visible);
+    });
+
     const { wrapTrigger, contentHandlers } = usePopoverTrigger({
       trigger: props.trigger,
       triggerRef: popover.triggerRef,
@@ -18,15 +22,7 @@ export const TPopover = defineComponent({
       openWithDelay: popover.openWithDelay,
       closeWithDelay: popover.closeWithDelay,
       clearTimers: popover.clearTimers,
-    });
-
-    // 状态变化时向外通知。
-    // 用 watch 而不是在 setOpen 里 emit：受控模式下状态由 props 驱动，
-    // 内部 setOpen 不会改状态，但使用者仍需要知道「有人请求关闭」。
-    watch(popover.isOpen, (visible, prev) => {
-      if (visible === prev) return;
-      emit('update:visible', visible);
-      emit('visibleChange', visible);
+      triggerClass: props.triggerClass,
     });
 
     expose({
@@ -49,6 +45,7 @@ export const TPopover = defineComponent({
       disabled: props.disabled,
       lockScroll: props.lockScroll,
       contentHandlers,
+      contentClass: props.contentClass,
       floatingRef: popover.floatingRef,
       arrowRef: popover.arrowRef,
     }));

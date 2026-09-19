@@ -16,6 +16,8 @@ export interface RenderPopoverContext {
   disabled: boolean;
   lockScroll: boolean;
   contentHandlers: UsePopoverTriggerReturn['contentHandlers'];
+  /** 追加到浮层容器的类名，供消费组件定制外观 */
+  contentClass?: string;
   /** 组合式 API 下必须直接传 Ref 对象，字符串 ref 只在 this.$refs 下有效 */
   floatingRef: Ref<HTMLElement | null>;
   arrowRef: Ref<HTMLElement | null>;
@@ -36,7 +38,7 @@ export const renderPopover = (
 
   // 定位完成前不加 is-visible —— CSS 里未加该类时元素不可见，
   // 避免首次渲染到左上角再跳到位的那一帧。
-  const classes = usePopoverClasses({ visible: ctx.positioned });
+  const classes = usePopoverClasses({ visible: ctx.positioned, extra: ctx.contentClass });
 
   const floating = ctx.visible
     ? h(

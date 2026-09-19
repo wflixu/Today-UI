@@ -178,6 +178,29 @@ export const popoverProps = {
     type: Boolean,
     default: false,
   },
+
+  // ---------- 样式扩展点 ----------
+
+  /**
+   * 追加到浮层容器上的类名。
+   * 供基于 Popover 的组件（如 Dropdown）定制外观，而不必覆盖 `.t-popover__content`。
+   *
+   * @default undefined
+   */
+  contentClass: {
+    type: String,
+    default: undefined as undefined,
+  },
+
+  /**
+   * 追加到触发元素上的类名。会与使用者在触发元素上已有的类名合并。
+   *
+   * @default undefined
+   */
+  triggerClass: {
+    type: String,
+    default: undefined as undefined,
+  },
 } as const;
 
 // ========== 3. Props 类型 ==========

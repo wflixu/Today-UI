@@ -48,7 +48,18 @@ export interface UsePopoverReturn {
  * 3. **监听清理不可靠** —— 既有 Dropdown 把 unsubscribe 放进 `setTimeout`
  *    导致可能丢失。这里统一用 watch 的 onCleanup，关闭即移除监听。
  */
-export function usePopover(props: PopoverProps): UsePopoverReturn {
+export function usePopover(
+  props: PopoverProps,
+  /**
+   * 请求变更开合状态时调用。
+   *
+   * 注意这里传的是**请求**而非「状态已变化」—— 受控模式下内部不改变状态，
+   * 但使用者仍需要收到通知才能更新自己的 prop。若改用 `watch(isOpen)`，
+   * 受控模式下内部请求不会改变 isOpen，事件就永远不会抛出，
+   * v-model 也就永远无法更新。
+   */
+  onVisibleRequest?: (visible: boolean) => void,
+): UsePopoverReturn {
   const triggerRef = ref<HTMLElement | null>(null);
   const floatingRef = ref<HTMLElement | null>(null);
   const arrowRef = ref<HTMLElement | null>(null);
@@ -62,9 +73,12 @@ export function usePopover(props: PopoverProps): UsePopoverReturn {
   );
 
   const setOpen = (next: boolean) => {
+    if (next === isOpen.value) return;
+
     if (!isControlled.value) {
       internalVisible.value = next;
     }
+    onVisibleRequest?.(next);
   };
 
   const toggle = () => setOpen(!isOpen.value);

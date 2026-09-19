@@ -5,7 +5,7 @@ import { menuProps } from './props';
 import type { MenuProps } from './type';
 import './menu.css';
 import { useMeun } from './hook';
-import type { IDropdownOption } from '../dropdown/type';
+import type { IMenuOption } from './type';
 
 export default defineComponent({
   name: 'TMenu',
@@ -22,7 +22,9 @@ export default defineComponent({
         str += ' has-marker';
       }
     });
-    const onClickItem = (option: IDropdownOption, e: Event) => {
+    // 用 IMenuOption 而非 Dropdown 的派生类型 —— 后者派生自前者，
+    // 从 Menu 反向导入 Dropdown 会形成无谓的依赖方向
+    const onClickItem = (option: IMenuOption, e: Event) => {
       emit('select', option, e);
     };
     return () => {
