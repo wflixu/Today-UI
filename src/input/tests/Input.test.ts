@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { defineComponent, h, computed } from 'vue';
-import Input from '../Input';
+import TInput from '../Input';
 import type { InputProps } from '../Input.types';
 
 describe('Input 组件', () => {
   describe('Props 渲染', () => {
     it('默认渲染为包含 input 元素的 div', () => {
-      const wrapper = mount(Input);
+      const wrapper = mount(TInput);
 
       const root = wrapper.find('.t-input');
       const input = wrapper.find('input');
@@ -16,7 +16,7 @@ describe('Input 组件', () => {
     });
 
     it('默认外观为 outline', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { appearance: 'outline' as InputProps['appearance'] }
       });
 
@@ -36,7 +36,7 @@ describe('Input 组件', () => {
 
       appearances.forEach((appearance) => {
         it(`应该渲染 appearance="${appearance}"`, () => {
-          const wrapper = mount(Input, {
+          const wrapper = mount(TInput, {
             props: { appearance }
           });
 
@@ -51,7 +51,7 @@ describe('Input 组件', () => {
 
       sizes.forEach((size) => {
         it(`应该渲染 size="${size}"`, () => {
-          const wrapper = mount(Input, {
+          const wrapper = mount(TInput, {
             props: { size }
           });
 
@@ -74,7 +74,7 @@ describe('Input 组件', () => {
 
       types.forEach((type) => {
         it(`应该渲染 type="${type}"`, () => {
-          const wrapper = mount(Input, {
+          const wrapper = mount(TInput, {
             props: { type }
           });
 
@@ -86,7 +86,7 @@ describe('Input 组件', () => {
 
     describe('disabled 属性', () => {
       it('应该在禁用状态下禁用输入框', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { disabled: true }
         });
 
@@ -96,7 +96,7 @@ describe('Input 组件', () => {
 
       it('禁用状态下不应该触发输入事件', async () => {
         const onInput = vi.fn();
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: {
             disabled: true,
             onInput
@@ -111,7 +111,7 @@ describe('Input 组件', () => {
 
     describe('readonly 属性', () => {
       it('应该在只读状态下设置 readonly', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { readonly: true }
         });
 
@@ -121,7 +121,7 @@ describe('Input 组件', () => {
 
       it('只读状态下应该允许选择和复制', async () => {
         const onInput = vi.fn();
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: {
             readonly: true,
             onInput
@@ -136,7 +136,7 @@ describe('Input 组件', () => {
 
     describe('required 属性', () => {
       it('应该设置 required 属性', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { required: true }
         });
 
@@ -147,7 +147,7 @@ describe('Input 组件', () => {
 
     describe('error 属性', () => {
       it('应该设置 error 状态', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { error: true }
         });
 
@@ -166,7 +166,7 @@ describe('Input 组件', () => {
 
       validationStates.forEach((validationState) => {
         it(`应该渲染 validationState="${validationState}"`, () => {
-          const wrapper = mount(Input, {
+          const wrapper = mount(TInput, {
             props: { validationState }
           });
 
@@ -178,7 +178,7 @@ describe('Input 组件', () => {
 
     describe('其他 HTML 属性', () => {
       it('应该设置 placeholder', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { placeholder: '请输入内容' }
         });
 
@@ -187,7 +187,7 @@ describe('Input 组件', () => {
       });
 
       it('应该设置 name', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { name: 'username' }
         });
 
@@ -196,7 +196,7 @@ describe('Input 组件', () => {
       });
 
       it('应该设置 maxLength', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { maxLength: 100 }
         });
 
@@ -205,7 +205,7 @@ describe('Input 组件', () => {
       });
 
       it('应该设置 minLength', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { minLength: 5 }
         });
 
@@ -214,7 +214,7 @@ describe('Input 组件', () => {
       });
 
       it('应该设置 autocomplete', () => {
-        const wrapper = mount(Input, {
+        const wrapper = mount(TInput, {
           props: { autocomplete: 'off' }
         });
 
@@ -226,7 +226,7 @@ describe('Input 组件', () => {
 
   describe('v-model 支持', () => {
     it('应该支持 v-model 双向绑定', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: ''
         }
@@ -240,7 +240,7 @@ describe('Input 组件', () => {
     });
 
     it('应该正确显示初始值', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'initial value'
         }
@@ -251,7 +251,7 @@ describe('Input 组件', () => {
     });
 
     it('应该在受控模式下响应 modelValue 变化', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'initial'
         }
@@ -266,7 +266,7 @@ describe('Input 组件', () => {
 
   describe('非受控模式', () => {
     it('应该使用 defaultValue 作为初始值', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           defaultValue: 'default value'
         }
@@ -277,7 +277,7 @@ describe('Input 组件', () => {
     });
 
     it('应该在非受控模式下更新内部值', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           defaultValue: 'initial'
         }
@@ -293,7 +293,7 @@ describe('Input 组件', () => {
   describe('事件处理', () => {
     it('应该触发 onInput 事件', async () => {
       const onInput = vi.fn();
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { onInput }
       });
 
@@ -306,7 +306,7 @@ describe('Input 组件', () => {
 
     it('应该触发 onChange 事件', async () => {
       const onChange = vi.fn();
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { onChange }
       });
 
@@ -318,7 +318,7 @@ describe('Input 组件', () => {
 
     it('应该触发 onFocus 事件', async () => {
       const onFocus = vi.fn();
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { onFocus }
       });
 
@@ -330,7 +330,7 @@ describe('Input 组件', () => {
 
     it('应该触发 onBlur 事件', async () => {
       const onBlur = vi.fn();
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { onBlur }
       });
 
@@ -343,7 +343,7 @@ describe('Input 组件', () => {
 
   describe('插槽', () => {
     it('应该渲染 contentBefore 插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         slots: {
           contentBefore: '<span class="before-icon">🔍</span>'
         }
@@ -355,7 +355,7 @@ describe('Input 组件', () => {
     });
 
     it('应该渲染 contentAfter 插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         slots: {
           contentAfter: '<span class="after-icon">@example.com</span>'
         }
@@ -367,7 +367,7 @@ describe('Input 组件', () => {
     });
 
     it('应该同时渲染 contentBefore 和 contentAfter 插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         slots: {
           contentBefore: '<span class="before">📧</span>',
           contentAfter: '<span class="after">@gmail.com</span>'
@@ -383,7 +383,7 @@ describe('Input 组件', () => {
 
   describe('清除按钮', () => {
     it('当有值且 showClearButton=true 时显示清除按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test value',
           showClearButton: true
@@ -395,7 +395,7 @@ describe('Input 组件', () => {
     });
 
     it('当没有值时不显示清除按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: '',
           showClearButton: true
@@ -407,7 +407,7 @@ describe('Input 组件', () => {
     });
 
     it('当 showClearButton=false 时不显示清除按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test value',
           showClearButton: false
@@ -419,7 +419,7 @@ describe('Input 组件', () => {
     });
 
     it('当 disabled=true 时不显示清除按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test value',
           showClearButton: true,
@@ -432,7 +432,7 @@ describe('Input 组件', () => {
     });
 
     it('当 readonly=true 时不显示清除按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test value',
           showClearButton: true,
@@ -447,7 +447,7 @@ describe('Input 组件', () => {
     it('点击清除按钮应该清空输入', async () => {
       const onInput = vi.fn();
       const onChange = vi.fn();
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test value',
           showClearButton: true,
@@ -466,7 +466,7 @@ describe('Input 组件', () => {
 
   describe('密码显示/隐藏', () => {
     it('当 type="password" 且 showPasswordToggle=true 时显示切换按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           type: 'password',
           showPasswordToggle: true
@@ -478,7 +478,7 @@ describe('Input 组件', () => {
     });
 
     it('当 type="text" 时不显示密码切换按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           type: 'text',
           showPasswordToggle: true
@@ -490,7 +490,7 @@ describe('Input 组件', () => {
     });
 
     it('当 showPasswordToggle=false 时不显示密码切换按钮', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           type: 'password',
           showPasswordToggle: false
@@ -502,7 +502,7 @@ describe('Input 组件', () => {
     });
 
     it('点击密码切换按钮应该切换密码可见性', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           type: 'password',
           showPasswordToggle: true
@@ -521,7 +521,7 @@ describe('Input 组件', () => {
 
   describe('进度指示器', () => {
     it('当设置了 progress 属性时显示进度条', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           progress: 50
         }
@@ -533,7 +533,7 @@ describe('Input 组件', () => {
     });
 
     it('当 progress=0 时显示进度条', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           progress: 0
         }
@@ -545,7 +545,7 @@ describe('Input 组件', () => {
     });
 
     it('当 progress=100 时显示完整进度条', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           progress: 100
         }
@@ -559,7 +559,7 @@ describe('Input 组件', () => {
 
   describe('自定义插槽', () => {
     it('应该使用自定义清除按钮插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           modelValue: 'test',
           showClearButton: true
@@ -574,7 +574,7 @@ describe('Input 组件', () => {
     });
 
     it('应该使用自定义密码切换按钮插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           type: 'password',
           showPasswordToggle: true
@@ -589,7 +589,7 @@ describe('Input 组件', () => {
     });
 
     it('应该使用自定义进度指示器插槽', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: {
           progress: 50
         },
@@ -605,7 +605,7 @@ describe('Input 组件', () => {
 
   describe('动态 props 更新', () => {
     it('应该响应 appearance prop 变化', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { appearance: 'outline' }
       });
 
@@ -614,7 +614,7 @@ describe('Input 组件', () => {
     });
 
     it('应该响应 disabled prop 变化', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { disabled: false }
       });
 
@@ -627,7 +627,7 @@ describe('Input 组件', () => {
     });
 
     it('应该响应 error prop 变化', async () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { error: false }
       });
 
@@ -642,7 +642,7 @@ describe('Input 组件', () => {
 
   describe('无障碍性相关', () => {
     it('应该支持传递自定义属性', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         attrs: {
           'data-testid': 'test-input',
           'aria-label': '测试输入框'
@@ -658,7 +658,7 @@ describe('Input 组件', () => {
 
   describe('边界情况', () => {
     it('应该处理空值', () => {
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { modelValue: '' }
       });
 
@@ -668,7 +668,7 @@ describe('Input 组件', () => {
 
     it('应该处理超长文本', () => {
       const longText = 'a'.repeat(1000);
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { modelValue: longText }
       });
 
@@ -678,7 +678,7 @@ describe('Input 组件', () => {
 
     it('应该处理特殊字符', () => {
       const specialChars = '<>&"\'`';
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { modelValue: specialChars }
       });
 
@@ -688,7 +688,7 @@ describe('Input 组件', () => {
 
     it('应该处理 maxLength 限制', async () => {
       const maxLength = 10;
-      const wrapper = mount(Input, {
+      const wrapper = mount(TInput, {
         props: { maxLength }
       });
 
@@ -701,11 +701,11 @@ describe('Input 组件', () => {
   describe('与 Label 组件的配合', () => {
     it('应该支持通过 id 属性与 Label 关联', () => {
       const TestComponent = defineComponent({
-        components: { Input },
+        components: { TInput },
         template: `
           <div>
             <label for="test-input">测试标签</label>
-            <Input id="test-input" />
+            <TInput id="test-input" />
           </div>
         `
       });

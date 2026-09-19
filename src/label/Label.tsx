@@ -11,8 +11,8 @@ import './label.css';
  *
  * @example
  * ```vue
- * <Label for="email" required>Email address</Label>
- * <Input id="email" v-model="email" />
+ * <TLabel for="email" required>Email address</TLabel>
+ * <TInput id="email" v-model="email" />
  * ```
  */
 export const TLabel = defineComponent({

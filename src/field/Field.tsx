@@ -11,15 +11,15 @@ import { renderField } from './renderField';
  *
  * @example
  * ```vue
- * <Field>
+ * <TField>
  *   <template #label>
- *     <Label for="email" required>Email address</Label>
+ *     <TLabel for="email" required>Email address</TLabel>
  *   </template>
- *   <Input id="email" v-model="email" type="email" />
+ *   <TInput id="email" v-model="email" type="email" />
  *   <template #helperText>
- *     <HelperText>Please enter your work email</HelperText>
+ *     <THelperText>Please enter your work email</THelperText>
  *   </template>
- * </Field>
+ * </TField>
  * ```
  */
 export const TField = defineComponent({

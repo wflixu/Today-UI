@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Label from '../Label'
-import Input from '../../input/Input'
+import TLabel from '../Label'
+import TInput from '../../input/Input'
 import type { LabelProps } from '../Label.types'
 
 // 状态对象
@@ -41,24 +41,24 @@ const usernameValue = ref('')
 
     <Variant title="Basic Usage - 基础用法">
       <div>
-        <Label for="username">用户名</Label>
-        <Input id="username" placeholder="请输入用户名" />
+        <TLabel for="username">用户名</TLabel>
+        <TInput id="username" placeholder="请输入用户名" />
       </div>
     </Variant>
 
     <Variant title="Size Variants - 尺寸变体">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <Label for="small" size="small">小号标签</Label>
-          <Input id="small" size="small" placeholder="小号输入框" />
+          <TLabel for="small" size="small">小号标签</TLabel>
+          <TInput id="small" size="small" placeholder="小号输入框" />
         </div>
         <div>
-          <Label for="medium" size="medium">中号标签</Label>
-          <Input id="medium" size="medium" placeholder="中号输入框" />
+          <TLabel for="medium" size="medium">中号标签</TLabel>
+          <TInput id="medium" size="medium" placeholder="中号输入框" />
         </div>
         <div>
-          <Label for="large" size="large">大号标签</Label>
-          <Input id="large" size="large" placeholder="大号输入框" />
+          <TLabel for="large" size="large">大号标签</TLabel>
+          <TInput id="large" size="large" placeholder="大号输入框" />
         </div>
       </div>
     </Variant>
@@ -66,16 +66,16 @@ const usernameValue = ref('')
     <Variant title="Weight Variants - 字体粗细">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <Label for="normal" weight="normal">普通字体</Label>
-          <Input id="normal" placeholder="普通字体标签" />
+          <TLabel for="normal" weight="normal">普通字体</TLabel>
+          <TInput id="normal" placeholder="普通字体标签" />
         </div>
         <div>
-          <Label for="semibold" weight="semibold">半粗体</Label>
-          <Input id="semibold" placeholder="半粗体标签" />
+          <TLabel for="semibold" weight="semibold">半粗体</TLabel>
+          <TInput id="semibold" placeholder="半粗体标签" />
         </div>
         <div>
-          <Label for="bold" weight="bold">粗体</Label>
-          <Input id="bold" placeholder="粗体标签" />
+          <TLabel for="bold" weight="bold">粗体</TLabel>
+          <TInput id="bold" placeholder="粗体标签" />
         </div>
       </div>
     </Variant>
@@ -83,12 +83,12 @@ const usernameValue = ref('')
     <Variant title="Required Indicator - 必填标识">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <Label for="required-email" required>邮箱地址</Label>
-          <Input id="required-email" type="email" placeholder="请输入邮箱地址" />
+          <TLabel for="required-email" required>邮箱地址</TLabel>
+          <TInput id="required-email" type="email" placeholder="请输入邮箱地址" />
         </div>
         <div>
-          <Label for="required-password" required>密码</Label>
-          <Input id="required-password" type="password" placeholder="请输入密码" />
+          <TLabel for="required-password" required>密码</TLabel>
+          <TInput id="required-password" type="password" placeholder="请输入密码" />
         </div>
       </div>
     </Variant>
@@ -96,33 +96,33 @@ const usernameValue = ref('')
     <Variant title="Disabled State - 禁用状态">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <Label for="disabled-label" disabled>禁用标签</Label>
-          <Input id="disabled-label" disabled placeholder="禁用输入框" />
+          <TLabel for="disabled-label" disabled>禁用标签</TLabel>
+          <TInput id="disabled-label" disabled placeholder="禁用输入框" />
         </div>
       </div>
     </Variant>
 
     <Variant title="Custom Required Indicator - 自定义必填标识">
       <div>
-        <Label for="custom-required" required>
+        <TLabel for="custom-required" required>
           邮箱地址
           <template #requiredIndicator>
             <span style="color: red; font-weight: bold;">(必填)</span>
           </template>
-        </Label>
-        <Input id="custom-required" type="email" placeholder="请输入邮箱地址" />
+        </TLabel>
+        <TInput id="custom-required" type="email" placeholder="请输入邮箱地址" />
       </div>
     </Variant>
 
     <Variant title="Login Form Example - 登录表单示例">
       <form @submit.prevent style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <div>
-          <Label for="form-email" required>邮箱地址</Label>
-          <Input id="form-email" v-model="emailValue" type="email" placeholder="your@email.com" />
+          <TLabel for="form-email" required>邮箱地址</TLabel>
+          <TInput id="form-email" v-model="emailValue" type="email" placeholder="your@email.com" />
         </div>
         <div>
-          <Label for="form-password" required>密码</Label>
-          <Input id="form-password" v-model="passwordValue" type="password" placeholder="请输入密码" />
+          <TLabel for="form-password" required>密码</TLabel>
+          <TInput id="form-password" v-model="passwordValue" type="password" placeholder="请输入密码" />
         </div>
         <button type="submit" style="padding: 8px 16px;">登录</button>
       </form>
@@ -135,20 +135,20 @@ const usernameValue = ref('')
     <Variant title="Registration Form Example - 注册表单示例">
       <form @submit.prevent style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
         <div>
-          <Label for="reg-username" required>用户名</Label>
-          <Input id="reg-username" v-model="usernameValue" placeholder="请输入用户名" />
+          <TLabel for="reg-username" required>用户名</TLabel>
+          <TInput id="reg-username" v-model="usernameValue" placeholder="请输入用户名" />
         </div>
         <div>
-          <Label for="reg-email" required>邮箱地址</Label>
-          <Input id="reg-email" type="email" placeholder="your@email.com" />
+          <TLabel for="reg-email" required>邮箱地址</TLabel>
+          <TInput id="reg-email" type="email" placeholder="your@email.com" />
         </div>
         <div>
-          <Label for="reg-password" required>密码</Label>
-          <Input id="reg-password" type="password" placeholder="至少 8 位字符" />
+          <TLabel for="reg-password" required>密码</TLabel>
+          <TInput id="reg-password" type="password" placeholder="至少 8 位字符" />
         </div>
         <div>
-          <Label for="reg-confirm-password" required>确认密码</Label>
-          <Input id="reg-confirm-password" type="password" placeholder="再次输入密码" />
+          <TLabel for="reg-confirm-password" required>确认密码</TLabel>
+          <TInput id="reg-confirm-password" type="password" placeholder="再次输入密码" />
         </div>
         <button type="submit" style="padding: 8px 16px;">注册</button>
       </form>
@@ -159,15 +159,15 @@ const usernameValue = ref('')
         <template v-for="size in ['small', 'medium', 'large']" :key="size">
           <template v-for="weight in ['normal', 'semibold', 'bold']" :key="`${size}-${weight}`">
             <div>
-              <Label
+              <TLabel
                 :for="`${size}-${weight}`"
                 :size="size"
                 :weight="weight"
                 required
               >
                 {{ size }} {{ weight }}
-              </Label>
-              <Input :id="`${size}-${weight}`" :size="size" />
+              </TLabel>
+              <TInput :id="`${size}-${weight}`" :size="size" />
             </div>
           </template>
         </template>
@@ -217,60 +217,60 @@ Label 组件为表单控件提供描述性标签，支持多种样式变体和�
 ### 基础用法
 
 ```vue
-<Label for="username">用户名</Label>
-<Input id="username" v-model="username" />
+<TLabel for="username">用户名</TLabel>
+<TInput id="username" v-model="username" />
 ```
 
 ### 必填标识
 
 ```vue
-<Label for="email" required>邮箱地址</Label>
-<Input id="email" type="email" />
+<TLabel for="email" required>邮箱地址</TLabel>
+<TInput id="email" type="email" />
 ```
 
 ### 尺寸变体
 
 ```vue
-<Label for="small" size="small">小号标签</Label>
-<Input id="small" size="small" />
+<TLabel for="small" size="small">小号标签</TLabel>
+<TInput id="small" size="small" />
 
-<Label for="medium" size="medium">中号标签</Label>
-<Input id="medium" size="medium" />
+<TLabel for="medium" size="medium">中号标签</TLabel>
+<TInput id="medium" size="medium" />
 
-<Label for="large" size="large">大号标签</Label>
-<Input id="large" size="large" />
+<TLabel for="large" size="large">大号标签</TLabel>
+<TInput id="large" size="large" />
 ```
 
 ### 字体粗细
 
 ```vue
-<Label for="normal" weight="normal">普通字体</Label>
-<Input id="normal" />
+<TLabel for="normal" weight="normal">普通字体</TLabel>
+<TInput id="normal" />
 
-<Label for="semibold" weight="semibold">半粗体</Label>
-<Input id="semibold" />
+<TLabel for="semibold" weight="semibold">半粗体</TLabel>
+<TInput id="semibold" />
 
-<Label for="bold" weight="bold">粗体</Label>
-<Input id="bold" />
+<TLabel for="bold" weight="bold">粗体</TLabel>
+<TInput id="bold" />
 ```
 
 ### 禁用状态
 
 ```vue
-<Label for="disabled" disabled>禁用标签</Label>
-<Input id="disabled" disabled />
+<TLabel for="disabled" disabled>禁用标签</TLabel>
+<TInput id="disabled" disabled />
 ```
 
 ### 自定义必填标识
 
 ```vue
-<Label for="email" required>
+<TLabel for="email" required>
   邮箱地址
   <template #requiredIndicator>
     <span style="color: red;">(必填)</span>
   </template>
-</Label>
-<Input id="email" type="email" />
+</TLabel>
+<TInput id="email" type="email" />
 ```
 
 ### 登录表单
@@ -278,8 +278,7 @@ Label 组件为表单控件提供描述性标签，支持多种样式变体和�
 ```vue
 <script setup>
 import { ref } from 'vue'
-import Label from 'today-ui/label'
-import Input from 'today-ui/input'
+import { TLabel, TInput } from 'today-ui'
 
 const email = ref('')
 const password = ref('')
@@ -288,13 +287,13 @@ const password = ref('')
 <template>
   <form @submit.prevent>
     <div style="margin-bottom: 16px;">
-      <Label for="email" required>邮箱地址</Label>
-      <Input id="email" v-model="email" type="email" placeholder="your@email.com" />
+      <TLabel for="email" required>邮箱地址</TLabel>
+      <TInput id="email" v-model="email" type="email" placeholder="your@email.com" />
     </div>
 
     <div style="margin-bottom: 16px;">
-      <Label for="password" required>密码</Label>
-      <Input id="password" v-model="password" type="password" />
+      <TLabel for="password" required>密码</TLabel>
+      <TInput id="password" v-model="password" type="password" />
     </div>
 
     <button type="submit">登录</button>
@@ -310,12 +309,12 @@ const password = ref('')
 
 ```vue
 <!-- ✅ 正确 -->
-<Label for="username">用户名</Label>
-<Input id="username" />
+<TLabel for="username">用户名</TLabel>
+<TInput id="username" />
 
 <!-- ❌ 错误 -->
-<Label>用户名</Label>
-<Input />
+<TLabel>用户名</TLabel>
+<TInput />
 ```
 
 ### 2. 必填字段使用 `required` 标识
@@ -323,8 +322,8 @@ const password = ref('')
 对于必填字段，始终显示必填标识：
 
 ```vue
-<Label for="email" required>邮箱地址</Label>
-<Input id="email" />
+<TLabel for="email" required>邮箱地址</TLabel>
+<TInput id="email" />
 ```
 
 ### 3. 保持标签简洁
@@ -332,9 +331,9 @@ const password = ref('')
 标签应该简短明了，详细说明放在 HelperText 中：
 
 ```vue
-<Label for="password">密码</Label>
-<Input id="password" />
-<HelperText>密码长度至少 8 位，包含字母和数字</HelperText>
+<TLabel for="password">密码</TLabel>
+<TInput id="password" />
+<THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
 ```
 
 ### 4. 使用适当的尺寸

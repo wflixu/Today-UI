@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Input from '../Input'
+import TInput from '../Input'
 import type { InputProps } from '../Input.types'
 
 // 基础状态
@@ -81,17 +81,17 @@ const validationStateOptions = {
     </template>
 
     <Variant title="基础用法">
-      <Input v-model="value" placeholder="请输入内容" />
+      <TInput v-model="value" placeholder="请输入内容" />
       <p>当前值: {{ value }}</p>
     </Variant>
 
     <Variant title="受控模式">
-      <Input v-model="controlledValue" placeholder="受控输入框" />
+      <TInput v-model="controlledValue" placeholder="受控输入框" />
       <p>当前值: {{ controlledValue }}</p>
     </Variant>
 
     <Variant title="非受控模式">
-      <Input :default-value="uncontrolledValue" placeholder="非受控输入框" />
+      <TInput :default-value="uncontrolledValue" placeholder="非受控输入框" />
       <p>初始值: {{ uncontrolledValue }}</p>
     </Variant>
 
@@ -99,7 +99,7 @@ const validationStateOptions = {
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <div v-for="(_, appearance) in appearanceOptions" :key="appearance">
           <label>{{ appearance }}</label>
-          <Input :appearance="appearance as InputProps['appearance']" placeholder="外观变体" />
+          <TInput :appearance="appearance as InputProps['appearance']" placeholder="外观变体" />
         </div>
       </div>
     </Variant>
@@ -108,7 +108,7 @@ const validationStateOptions = {
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <div v-for="(_, sizeValue) in sizeOptions" :key="sizeValue">
           <label>{{ sizeValue }}</label>
-          <Input :size="sizeValue as InputProps['size']" placeholder="尺寸变体" />
+          <TInput :size="sizeValue as InputProps['size']" placeholder="尺寸变体" />
         </div>
       </div>
     </Variant>
@@ -117,28 +117,28 @@ const validationStateOptions = {
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <div v-for="(_, inputType) in typeOptions" :key="inputType">
           <label>{{ inputType }}</label>
-          <Input :type="inputType as InputProps['type']" :placeholder="`${inputType} 输入框`" />
+          <TInput :type="inputType as InputProps['type']" :placeholder="`${inputType} 输入框`" />
         </div>
       </div>
     </Variant>
 
     <Variant title="状态">
       <div style="display: flex; flex-direction: column; gap: 12px;">
-        <Input placeholder="正常状态" />
-        <Input placeholder="禁用状态" :disabled="true" />
-        <Input placeholder="只读状态" :readonly="true" value="只读内容" />
-        <Input placeholder="必填状态" :required="true" />
-        <Input placeholder="错误状态" :error="true" />
+        <TInput placeholder="正常状态" />
+        <TInput placeholder="禁用状态" :disabled="true" />
+        <TInput placeholder="只读状态" :readonly="true" value="只读内容" />
+        <TInput placeholder="必填状态" :required="true" />
+        <TInput placeholder="错误状态" :error="true" />
       </div>
     </Variant>
 
     <Variant title="清除按钮">
-      <Input v-model="clearableValue" placeholder="输入内容后显示清除按钮" :show-clear-button="true" />
+      <TInput v-model="clearableValue" placeholder="输入内容后显示清除按钮" :show-clear-button="true" />
       <p>当前值: {{ clearableValue }}</p>
     </Variant>
 
     <Variant title="密码输入">
-      <Input v-model="passwordValue" type="password" placeholder="输入密码" :show-password-toggle="true" />
+      <TInput v-model="passwordValue" type="password" placeholder="输入密码" :show-password-toggle="true" />
       <p>当前值: {{ passwordValue }}</p>
     </Variant>
 
@@ -146,25 +146,25 @@ const validationStateOptions = {
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <div>
           <label>无验证状态</label>
-          <Input value="normal@example.com" />
+          <TInput value="normal@example.com" />
         </div>
         <div>
           <label>验证通过</label>
-          <Input v-model="validValue" validation-state="valid" validation-message="邮箱格式正确" />
+          <TInput v-model="validValue" validation-state="valid" validation-message="邮箱格式正确" />
         </div>
         <div>
           <label>警告</label>
-          <Input v-model="warningValue" validation-state="warning" validation-message="邮箱可能是临时邮箱" />
+          <TInput v-model="warningValue" validation-state="warning" validation-message="邮箱可能是临时邮箱" />
         </div>
         <div>
           <label>验证失败</label>
-          <Input v-model="invalidValue" validation-state="invalid" validation-message="邮箱格式不正确" />
+          <TInput v-model="invalidValue" validation-state="invalid" validation-message="邮箱格式不正确" />
         </div>
       </div>
     </Variant>
 
     <Variant title="进度指示器">
-      <Input v-model="progressValue" placeholder="上传中..." :progress="progress" />
+      <TInput v-model="progressValue" placeholder="上传中..." :progress="progress" />
       <p>进度: {{ progress }}%</p>
       <div style="margin-top: 12px;">
         <button @click="progress = Math.max(0, progress - 10)">-10%</button>
@@ -174,24 +174,24 @@ const validationStateOptions = {
 
     <Variant title="前置和后置内容">
       <div style="display: flex; flex-direction: column; gap: 12px;">
-        <Input placeholder="带前置图标">
+        <TInput placeholder="带前置图标">
           <template #contentBefore>
             <span>🔍</span>
           </template>
-        </Input>
-        <Input placeholder="带后置图标">
+        </TInput>
+        <TInput placeholder="带后置图标">
           <template #contentAfter>
             <span>@example.com</span>
           </template>
-        </Input>
-        <Input placeholder="同时带前后图标">
+        </TInput>
+        <TInput placeholder="同时带前后图标">
           <template #contentBefore>
             <span>📧</span>
           </template>
           <template #contentAfter>
             <span>@gmail.com</span>
           </template>
-        </Input>
+        </TInput>
       </div>
     </Variant>
   </Story>
@@ -257,29 +257,29 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 标准的边框样式，适用于大多数场景。
 
 ```vue
-<Input appearance="outline" placeholder="请输入内容" />
+<TInput appearance="outline" placeholder="请输入内容" />
 ```
 
 ### Filled
 填充背景色，适合需要强调输入区域的场景。
 
 ```vue
-<Input appearance="filled" placeholder="请输入内容" />
+<TInput appearance="filled" placeholder="请输入内容" />
 ```
 
 ### Underlined
 仅底部边框，适合简洁的表单设计。
 
 ```vue
-<Input appearance="underlined" placeholder="请输入内容" />
+<TInput appearance="underlined" placeholder="请输入内容" />
 ```
 
 ### Inline-Dark / Inline-Light
 内联样式，适合在深色或浅色背景中使用。
 
 ```vue
-<Input appearance="inline-dark" placeholder="深色背景输入" />
-<Input appearance="inline-light" placeholder="浅色背景输入" />
+<TInput appearance="inline-dark" placeholder="深色背景输入" />
+<TInput appearance="inline-light" placeholder="浅色背景输入" />
 ```
 
 ## 尺寸变体
@@ -291,34 +291,34 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 | `large` | 40px | 主要操作、移动端友好 |
 
 ```vue
-<Input size="small" placeholder="小输入框" />
-<Input size="medium" placeholder="中输入框" />
-<Input size="large" placeholder="大输入框" />
+<TInput size="small" placeholder="小输入框" />
+<TInput size="medium" placeholder="中输入框" />
+<TInput size="large" placeholder="大输入框" />
 ```
 
 ## 输入类型
 
 ```vue
 <!-- 文本输入 -->
-<Input type="text" placeholder="文本输入" />
+<TInput type="text" placeholder="文本输入" />
 
 <!-- 密码输入 -->
-<Input type="password" placeholder="密码输入" :show-password-toggle="true" />
+<TInput type="password" placeholder="密码输入" :show-password-toggle="true" />
 
 <!-- 邮箱输入 -->
-<Input type="email" placeholder="邮箱地址" />
+<TInput type="email" placeholder="邮箱地址" />
 
 <!-- 数字输入 -->
-<Input type="number" placeholder="数字" />
+<TInput type="number" placeholder="数字" />
 
 <!-- 电话输入 -->
-<Input type="tel" placeholder="电话号码" />
+<TInput type="tel" placeholder="电话号码" />
 
 <!-- URL 输入 -->
-<Input type="url" placeholder="网址" />
+<TInput type="url" placeholder="网址" />
 
 <!-- 搜索输入 -->
-<Input type="search" placeholder="搜索" />
+<TInput type="search" placeholder="搜索" />
 ```
 
 ## 状态控制
@@ -327,20 +327,20 @@ Input 组件是用户输入文本信息的主要界面元素，实现了微软 F
 
 ```vue
 <!-- 禁用状态 -->
-<Input disabled placeholder="禁用的输入框" />
+<TInput disabled placeholder="禁用的输入框" />
 
 <!-- 只读状态 -->
-<Input readonly value="只读内容" />
+<TInput readonly value="只读内容" />
 ```
 
 ### 必填和错误
 
 ```vue
 <!-- 必填状态 -->
-<Input required placeholder="必填项" />
+<TInput required placeholder="必填项" />
 
 <!-- 错误状态 -->
-<Input error placeholder="错误状态" />
+<TInput error placeholder="错误状态" />
 ```
 
 ## 清除按钮
@@ -355,7 +355,7 @@ const value = ref('可以清除的文本')
 </script>
 
 <template>
-  <Input v-model="value" placeholder="输入内容" />
+  <TInput v-model="value" placeholder="输入内容" />
 </template>
 ```
 
@@ -377,7 +377,7 @@ const password = ref('')
 </script>
 
 <template>
-  <Input v-model="password" type="password" placeholder="输入密码" :show-password-toggle="true" />
+  <TInput v-model="password" type="password" placeholder="输入密码" :show-password-toggle="true" />
 </template>
 ```
 
@@ -394,7 +394,7 @@ const isValidEmail = computed(() => /@/.test(email.value))
 </script>
 
 <template>
-  <Input
+  <TInput
     v-model="email"
     type="email"
     placeholder="请输入邮箱"
@@ -437,7 +437,7 @@ const startUpload = () => {
 </script>
 
 <template>
-  <Input
+  <TInput
     v-model="value"
     placeholder="上传文件中..."
     :progress="progress"
@@ -455,28 +455,28 @@ const startUpload = () => {
 ```vue
 <template>
   <!-- 前置内容 -->
-  <Input placeholder="搜索">
+  <TInput placeholder="搜索">
     <template #contentBefore>
       <span>🔍</span>
     </template>
-  </Input>
+  </TInput>
 
   <!-- 后置内容 -->
-  <Input placeholder="邮箱地址">
+  <TInput placeholder="邮箱地址">
     <template #contentAfter>
       <span>@gmail.com</span>
     </template>
-  </Input>
+  </TInput>
 
   <!-- 同时添加 -->
-  <Input placeholder="用户名">
+  <TInput placeholder="用户名">
     <template #contentBefore>
       <span>👤</span>
     </template>
     <template #contentAfter>
       <span>@admin</span>
     </template>
-  </Input>
+  </TInput>
 </template>
 ```
 
@@ -494,7 +494,7 @@ const value = ref('')
 </script>
 
 <template>
-  <Input v-model="value" placeholder="受控输入" />
+  <TInput v-model="value" placeholder="受控输入" />
   <p>当前值: {{ value }}</p>
 </template>
 ```
@@ -505,7 +505,7 @@ const value = ref('')
 
 ```vue
 <template>
-  <Input :default-value="'初始值'" placeholder="非受控输入" />
+  <TInput :default-value="'初始值'" placeholder="非受控输入" />
 </template>
 ```
 
@@ -536,14 +536,14 @@ const handleSubmit = () => {
 <template>
   <form @submit.prevent="handleSubmit">
     <div style="display: flex; flex-direction: column; gap: 16px;">
-      <Input
+      <TInput
         v-model="username"
         placeholder="用户名（至少 3 个字符）"
         :validation-state="username.length >= 3 ? 'valid' : 'invalid'"
         :validation-message="username.length >= 3 ? '用户名可用' : '用户名太短'"
       />
 
-      <Input
+      <TInput
         v-model="password"
         type="password"
         placeholder="密码（至少 6 个字符）"
@@ -579,7 +579,7 @@ const handleSearch = async () => {
 
 <template>
   <div style="display: flex; gap: 8px;">
-    <Input
+    <TInput
       v-model="searchQuery"
       type="search"
       placeholder="搜索..."
@@ -622,7 +622,7 @@ const handleFileSelect = async (event) => {
 <template>
   <div>
     <input type="file" @change="handleFileSelect" />
-    <Input
+    <TInput
       v-model="fileName"
       placeholder="选择文件"
       readonly

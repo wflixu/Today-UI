@@ -12,15 +12,15 @@ import { renderHelperText } from './renderHelperText';
  *
  * @example
  * ```vue
- * <Field>
+ * <TField>
  *   <template #label>
- *     <Label for="password">密码</Label>
+ *     <TLabel for="password">密码</TLabel>
  *   </template>
- *   <Input id="password" type="password" />
+ *   <TInput id="password" type="password" />
  *   <template #helperText>
- *     <HelperText>密码长度至少 8 位，包含字母和数字</HelperText>
+ *     <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
  *   </template>
- * </Field>
+ * </TField>
  * ```
  */
 export const THelperText = defineComponent({

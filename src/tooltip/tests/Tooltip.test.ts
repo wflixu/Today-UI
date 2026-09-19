@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick, h, defineComponent } from 'vue';
-import Tooltip from '../Tooltip';
+import TTooltip from '../Tooltip';
 import type { TooltipProps } from '../Tooltip.types';
 
 describe('Tooltip 组件', () => {
   describe('Props 渲染', () => {
     it('应该渲染触发元素包装器', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: 'Tooltip content' },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -16,7 +16,7 @@ describe('Tooltip 组件', () => {
     });
 
     it('应该渲染 content prop 内容', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: 'Test content' },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -42,7 +42,7 @@ describe('Tooltip 组件', () => {
 
       placements.forEach((placement) => {
         it(`应该渲染 placement="${placement}"`, () => {
-          const wrapper = mount(Tooltip, {
+          const wrapper = mount(TTooltip, {
             props: { placement, content: 'Test' },
             slots: { default: () => h('button', 'Trigger') }
           });
@@ -61,7 +61,7 @@ describe('Tooltip 组件', () => {
 
       relationships.forEach((relationship) => {
         it(`应该渲染 relationship="${relationship}"`, () => {
-          const wrapper = mount(Tooltip, {
+          const wrapper = mount(TTooltip, {
             props: { relationship, content: 'Test' },
             slots: { default: () => h('button', 'Trigger') }
           });
@@ -73,7 +73,7 @@ describe('Tooltip 组件', () => {
 
     describe('maxWidth 属性', () => {
       it('应该渲染自定义 maxWidth', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', maxWidth: 300 },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -82,7 +82,7 @@ describe('Tooltip 组件', () => {
       });
 
       it('应该渲染默认 maxWidth (200)', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test' },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -93,7 +93,7 @@ describe('Tooltip 组件', () => {
 
     describe('offset 属性', () => {
       it('应该渲染自定义 offset', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', offset: 10 },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -104,7 +104,7 @@ describe('Tooltip 组件', () => {
 
     describe('withArrow 属性', () => {
       it('withArrow=true 应该渲染箭头', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', withArrow: true },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -113,7 +113,7 @@ describe('Tooltip 组件', () => {
       });
 
       it('withArrow=false 不应该渲染箭头', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', withArrow: false },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -124,7 +124,7 @@ describe('Tooltip 组件', () => {
 
     describe('wrapText 属性', () => {
       it('wrapText=true 应该允许文本换行', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', wrapText: true },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -133,7 +133,7 @@ describe('Tooltip 组件', () => {
       });
 
       it('wrapText=false 应该禁止文本换行', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: { content: 'Test', wrapText: false },
           slots: { default: () => h('button', 'Trigger') }
         });
@@ -153,7 +153,7 @@ describe('Tooltip 组件', () => {
     describe('trigger="hover"', () => {
       it('应该在鼠标悬停时显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Hover me',
             trigger: 'hover' as const,
@@ -176,7 +176,7 @@ describe('Tooltip 组件', () => {
 
       it('应该在鼠标离开时隐藏', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Hover me',
             trigger: 'hover' as const,
@@ -202,7 +202,7 @@ describe('Tooltip 组件', () => {
 
       it('应该尊重 delay 延迟', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Delayed',
             trigger: 'hover' as const,
@@ -229,7 +229,7 @@ describe('Tooltip 组件', () => {
     describe('trigger="focus"', () => {
       it('应该在获得焦点时显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Focus me',
             trigger: 'focus' as const,
@@ -250,7 +250,7 @@ describe('Tooltip 组件', () => {
 
       it('应该在失去焦点时隐藏', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Focus me',
             trigger: 'focus' as const,
@@ -278,7 +278,7 @@ describe('Tooltip 组件', () => {
     describe('trigger="both"', () => {
       it('应该在鼠标悬停时显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Both',
             trigger: 'both' as const,
@@ -299,7 +299,7 @@ describe('Tooltip 组件', () => {
 
       it('应该在获得焦点时显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Both',
             trigger: 'both' as const,
@@ -322,7 +322,7 @@ describe('Tooltip 组件', () => {
     describe('trigger="manual"', () => {
       it('不应该在鼠标悬停时自动显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Manual',
             trigger: 'manual' as const,
@@ -342,7 +342,7 @@ describe('Tooltip 组件', () => {
 
       it('不应该在获得焦点时自动显示', async () => {
         const onVisibleChange = vi.fn();
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Manual',
             trigger: 'manual' as const,
@@ -371,7 +371,7 @@ describe('Tooltip 组件', () => {
 
     describe('非受控模式（defaultVisible）', () => {
       it('defaultVisible=false 应该初始隐藏', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Test',
             defaultVisible: false,
@@ -383,7 +383,7 @@ describe('Tooltip 组件', () => {
       });
 
       it('defaultVisible=true 应该初始显示', () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Test',
             defaultVisible: true,
@@ -397,7 +397,7 @@ describe('Tooltip 组件', () => {
 
     describe('受控模式（visible）', () => {
       it('应该响应 visible prop 变化', async () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Controlled',
             visible: false,
@@ -412,7 +412,7 @@ describe('Tooltip 组件', () => {
       });
 
       it('visible prop 应该优先于内部状态', async () => {
-        const wrapper = mount(Tooltip, {
+        const wrapper = mount(TTooltip, {
           props: {
             content: 'Controlled',
             visible: true,
@@ -438,7 +438,7 @@ describe('Tooltip 组件', () => {
 
     it('应该在显示时调用 onVisibleChange(true)', async () => {
       const onVisibleChange = vi.fn();
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {
           content: 'Test',
           trigger: 'hover' as const,
@@ -459,7 +459,7 @@ describe('Tooltip 组件', () => {
 
     it('应该在隐藏时调用 onVisibleChange(false)', async () => {
       const onVisibleChange = vi.fn();
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {
           content: 'Test',
           trigger: 'hover' as const,
@@ -486,7 +486,7 @@ describe('Tooltip 组件', () => {
 
   describe('插槽', () => {
     it('应该渲染默认插槽（触发元素）', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: 'Test' },
         slots: { default: () => h('button', 'Trigger Button') }
       });
@@ -497,7 +497,7 @@ describe('Tooltip 组件', () => {
     });
 
     it('应该渲染 content 插槽', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {},
         slots: {
           default: () => h('button', 'Trigger'),
@@ -509,7 +509,7 @@ describe('Tooltip 组件', () => {
     });
 
     it('content 插槽应该优先于 content prop', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: 'Prop content' },
         slots: {
           default: () => h('button', 'Trigger'),
@@ -529,7 +529,7 @@ describe('Tooltip 组件', () => {
     });
 
     it('应该在组件卸载时清理所有定时器', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {
           content: 'Test',
           delay: 1000,
@@ -553,7 +553,7 @@ describe('Tooltip 组件', () => {
 
     it('应该在重新触发时清理之前的定时器', async () => {
       const onVisibleChange = vi.fn();
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {
           content: 'Test',
           delay: 500,
@@ -588,7 +588,7 @@ describe('Tooltip 组件', () => {
 
   describe('无障碍性', () => {
     it('不应该包含 ARIA 属性（项目规范）', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: 'Test' },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -601,7 +601,7 @@ describe('Tooltip 组件', () => {
 
   describe('边界情况', () => {
     it('应该处理空内容', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: undefined },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -611,7 +611,7 @@ describe('Tooltip 组件', () => {
 
     it('应该处理超长文本', () => {
       const longText = '这是一个非常非常非常长的提示文本内容';
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: longText },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -620,7 +620,7 @@ describe('Tooltip 组件', () => {
     });
 
     it('应该处理 HTML 字符实体', () => {
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: { content: '<>&"' },
         slots: { default: () => h('button', 'Trigger') }
       });
@@ -630,7 +630,7 @@ describe('Tooltip 组件', () => {
 
     it('应该处理零延迟', async () => {
       const onVisibleChange = vi.fn();
-      const wrapper = mount(Tooltip, {
+      const wrapper = mount(TTooltip, {
         props: {
           content: 'Test',
           delay: 0,
