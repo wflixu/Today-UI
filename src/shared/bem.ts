@@ -76,8 +76,8 @@ export interface BemCn {
   (blockName: string): Block;
 }
 
-const isPrefix = "is-" as "is-";
-const hasPrefix = "has-" as "has-";
+const isPrefix = "is-" as const;
+const hasPrefix = "has-" as const;
 const defaultSettings: BemSettings = {
   ns: "",
   el: "__",
