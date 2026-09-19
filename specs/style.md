@@ -2,15 +2,29 @@
 
 ## 概述
 
-Today-UI 使用 **纯 CSS Variables** 实现 Microsoft Fluent Design System。本文档描述了完整的主题架构、BEM 命名规范、组件样式模式和实施指南。
+Today-UI 使用 **纯 CSS Variables** 实现 Microsoft Fluent Design System。本文档描述了完整的样式分层架构、主题架构、BEM 命名规范、组件样式模式和实施指南。
+
+### 文档导航
+
+| 章节 | 回答的问题 |
+|------|-----------|
+| [样式分层架构](#样式分层架构css-cascade-layers) | 消费者如何覆盖库的样式？ |
+| [浏览器基线](#浏览器基线) | 支持哪些浏览器？为什么不做降级？ |
+| [BEM 命名规范](#bem-命名规范) | 类名怎么起？ |
+| [设计令牌系统](#设计令牌系统) | 440+ 令牌怎么组织和使用？ |
+| [主题切换机制](#主题切换机制) | 怎么换肤？怎么实现局部主题？ |
+| [组件级样式覆盖接口](#组件级样式覆盖接口) | 怎么改某个组件的某个视觉属性？ |
+| [迁移历史](#迁移历史从-griffel-到纯-css) | 为什么不用 CSS-in-JS？ |
 
 ### 核心设计理念
 
 1. **CSS Variables 作为单一数据源** - 所有设计令牌通过 CSS 变量定义
-2. **BEM 命名规范** - 清晰、可维护的类名约定
-3. **类型安全** - TypeScript 类型映射和工具函数
-4. **零运行时开销** - 纯静态 CSS，无需 JS 样式生成
-5. **AI 友好** - CSS 代码易于理解和生成
+2. **CSS `@layer` 分层** - 库样式与用户样式有明确的优先级边界，消费者无需与库比特异性
+3. **嵌套主题** - 主题是会被继承的 CSS 变量，任意子树可独立切换主题
+4. **BEM 命名规范** - 清晰、可维护的类名约定
+5. **类型安全** - TypeScript 类型映射和工具函数
+6. **零运行时开销** - 纯静态 CSS，无需 JS 样式生成
+7. **AI 友好** - CSS 代码易于理解和生成
 
 ### 为什么选择纯 CSS Variables？
 
@@ -25,6 +39,121 @@ Today-UI 使用 **纯 CSS Variables** 实现 Microsoft Fluent Design System。�
 | **主题切换** | ✅ 原生 CSS 变量 | ⚠️ 需要 JS 更新 |
 | **学习曲线** | ✅ 标准 CSS | ❌ 特定 API |
 | **样式复用** | ✅ CSS 类组合 | ⚠️ JS 对象组合 |
+| **用户覆盖样式** | ⚠️ 需要 `@layer` 辅助（见下节） | ✅ `mergeClasses` 内置 |
+
+### 关键前提：Fluent v9 的主题本来就是 CSS 变量
+
+理解本方案的正当性，需要先澄清一个常被误解的事实：**`@fluentui/tokens` 的 `tokens` 对象求值结果是 CSS 变量引用，而不是实际值**。
+
+```ts
+// @fluentui/tokens 的 themeToTokensObject 实现
+for (const key of Object.keys(theme)) {
+  tokens[key] = `var(--${String(key)})`;
+}
+```
+
+`FluentProvider` 做的事情，就是把一个主题对象里的全部令牌写成 CSS 自定义属性，挂在自己的 `div` 上。上游组件 CSS 消费的是同一个变量。
+
+**结论**：Fluent v9 的主题机制与 Today-UI 是**同一套机制**。Griffel 在上游承担的从来不是「主题」，而是「编写体验 + 原子化 + `mergeClasses` 覆盖语义」。其中前两项对组件库无价值，第三项通过 `@layer` 补齐 —— 这正是本文档「样式分层架构」一节的内容。
+
+---
+
+## 样式分层架构（CSS Cascade Layers）
+
+### 为什么需要分层
+
+上游 Fluent UI 依赖 Griffel 的 `mergeClasses` 提供**属性级**的样式覆盖语义：当用户传入的 `className` 与组件内置样式冲突时，由样式插入顺序决定胜出者，用户无需关心选择器特异性。
+
+纯 CSS 方案没有运行时样式插入，改用 **CSS Cascade Layers** 提供对等能力。
+
+### 三层结构
+
+库的全部样式被组织进三个 layer，优先级由低到高：
+
+```css
+/* src/style/index.css —— 全库唯一的权威样式入口 */
+
+/* 1. 一次性声明层的优先级顺序 */
+@layer tui.tokens, tui.base, tui.components;
+
+/* 2. 把各部分样式归入对应的层 */
+@layer tui.tokens     { @import '../theme/tokens/index.css'; }
+@layer tui.base       { @import './base.css'; }
+@layer tui.components {
+  @import '../button/button.css';
+  @import '../dropdown/dropdown.css';
+  /* ... 其余组件 */
+}
+```
+
+首行的 `@layer` 声明语句**一次性定义层的优先级顺序**，该顺序与规则的书写位置、与选择器特异性都无关。
+
+### 覆盖语义
+
+分层架构的核心性质是：**未分层的样式永远优先于任何分层样式**。
+
+```css
+/* 用户代码 —— 未分层 */
+.my-button {
+  background-color: red;   /* ✅ 必定覆盖 .t-button 的 background-color */
+}
+```
+
+因此消费者可以：
+
+1. **直接覆盖** - 无需 `!important`，无需提高特异性，无需关心库的加载顺序
+2. **不感知 `@layer`** - 只要自己的样式不分层，就天然获胜
+
+### 约束
+
+| 约束 | 原因 |
+|------|------|
+| 层包装**只写在 `src/style/index.css`**，组件 CSS 文件不写 `@layer` | 层归属集中一处，避免每个组件重复声明导致层顺序错乱 |
+| 组件 CSS **不得**自行 `@import` 令牌文件 | 令牌应通过入口统一归入 `tui.tokens`；组件自己引入会让令牌散落到 `tui.components`，使消费者覆盖令牌时失效 |
+| 库内部样式**必须**全部进层 | 未分层的 `.t-*` 规则会反向压过用户样式，破坏覆盖语义 |
+| 层名以 `tui.` 为前缀 | 避免与消费者的 `@layer` 命名冲突 |
+
+> **⚠️ 当前实现状态：本节描述的 `@layer` 分层尚未落地任何一行代码。**
+>
+> 实证（2026-09-19）：`grep -rn "@layer" src --include="*.css"` **零命中**。`src/style/index.css` 是 19 行纯 `@import`，没有任何 `@layer` 语句。
+>
+> 同时有 5 个组件 CSS 违反上面的约束（各自 `@import` 了令牌）：
+>
+> | 文件 | 违反项 |
+> |------|--------|
+> | `src/button/button.css:1` | `@import "./../style/base.css"` |
+> | `src/input/input.css:1` | 同上 |
+> | `src/label/label.css:1` | 同上 |
+> | `src/tabs/tablist.css:1` | 同上 |
+> | `src/toast/toast.css:1` | 同上 |
+>
+> 连带效应：`src/theme/tokens/index.css` 被 `style/index.css` 和 `style/base.css` **双重导入**，后者又被上述 5 个组件再导入。
+>
+> 另有 3 个组件的样式**不在** `style/index.css` 的 `@import` 清单里（`input.css`、`label.css`、`field.css`），而是靠组件代码自身 `import`。这两套机制并存，新增组件时容易漏掉一处。
+>
+> 清理动作见 `specs/component-roadmap.md` 的「基础设施欠账」。
+
+---
+
+## 浏览器基线
+
+本项目**不做 CSS 语法降级**，构建产物保留原生 CSS 写法（见「构建产物」一节的取舍说明），因此存在明确的最低浏览器要求。
+
+| 特性 | 用途 | Chrome / Edge | Safari | Firefox |
+|------|------|---------------|--------|---------|
+| **CSS Nesting** | 组件 CSS 中的 `&:hover` 等嵌套写法 | **120+** | **17.2+** | **117+** |
+| CSS Cascade Layers | `@layer` 分层 | 99+ | 15.4+ | 97+ |
+| CSS Custom Properties | 全部设计令牌 | 49+ | 9.1+ | 31+ |
+
+**综合基线：Chrome/Edge 120+、Safari 17.2+、Firefox 117+** —— 由最严格的 CSS 嵌套决定。
+
+### 旧浏览器上的表现
+
+CSS 嵌套不被支持时，浏览器**整条丢弃**包含 `&` 的规则块（而非仅忽略嵌套部分）。因此旧浏览器上组件会退化为「只有基础盒模型、没有 hover / active / focus 状态」—— 不会崩溃，但状态样式明显缺失。
+
+### 若需放宽基线
+
+在构建链路接入 `postcss-nesting`（把 `&` 展开为完整选择器）或 Lightning CSS 做降级即可，产物可支持到 Safari 15+。**当前明确选择不做**，以换取构建链路的简单与产物的可读性。
 
 ---
 
@@ -765,95 +894,137 @@ Fluent v9 使用三层架构组织设计令牌，确保从基础到应用的清�
 
 Today-UI 支持 **4 个预设主题**：
 
-1. **Light（亮色主题）** - 默认主题，适合白天使用
-2. **Dark（暗色主题）** - 深色背景，适合夜间使用
-3. **Teams Light** - Microsoft Teams 亮色主题
-4. **Teams Dark** - Microsoft Teams 暗色主题
+| 主题名 | `data-theme` 值 | 说明 |
+|--------|-----------------|------|
+| Web Light | `light`（默认，可省略） | 标准 Web 亮色主题 |
+| Web Dark | `dark` | 标准 Web 暗色主题 |
+| Teams Light | `teams-light` | Microsoft Teams 亮色主题 |
+| Teams Dark | `teams-dark` | Microsoft Teams 暗色主题 |
 
 ### 主题实现方式
 
-使用 CSS 变量和 `data-theme` 属性实现主题切换：
+主题通过 **CSS 变量 + `data-theme` 属性**实现，全部定义位于 `src/theme/tokens/`：
 
 ```css
-/* ========== 默认亮色主题 ========== */
-:root,
-:root[data-theme="light"] {
-  --colorNeutralForeground1: #242424;
-  --colorNeutralBackground1: #ffffff;
-  --colorBrandBackground: #0f6cbd;
-  /* ... 440+ 令牌 */
-}
+@layer tui.tokens {
+  /* ========== 默认亮色主题 ========== */
+  /* :where() 将特异性降为 0，避免与任何主题选择器发生特异性竞争 */
+  :where(:root),
+  :where([data-theme="light"]) {
+    --colorNeutralForeground1: #242424;
+    --colorNeutralBackground1: #ffffff;
+    --colorBrandBackground: #0f6cbd;
+    /* ... 440+ 令牌 */
+  }
 
-/* ========== 暗色主题 ========== */
-:root[data-theme="dark"] {
-  --colorNeutralForeground1: #ffffff;
-  --colorNeutralBackground1: #1b1b1b;
-  --colorBrandBackground: #479ef5;
-  /* ... 覆盖关键令牌 */
-}
+  /* ========== 暗色主题 ========== */
+  :where([data-theme="dark"]) {
+    --colorNeutralForeground1: #ffffff;
+    --colorNeutralBackground1: #1b1b1b;
+    --colorBrandBackground: #479ef5;
+    /* ... 覆盖关键令牌 */
+  }
 
-/* ========== Teams 亮色主题 ========== */
-:root[data-theme="teams-light"] {
-  --colorBrandBackground: #444791;
-  --colorBrandForeground1: #ffffff;
-  /* ... Teams 特定令牌 */
-}
+  /* ========== Teams 亮色主题 ========== */
+  :where([data-theme="teams-light"]) {
+    --colorBrandBackground: #444791;
+    --colorBrandForeground1: #ffffff;
+  }
 
-/* ========== Teams 暗色主题 ========== */
-:root[data-theme="teams-dark"] {
-  --colorBrandBackground: #6264a7;
-  --colorBrandForeground1: #ffffff;
-  /* ... Teams 暗色令牌 */
+  /* ========== Teams 暗色主题 ========== */
+  :where([data-theme="teams-dark"]) {
+    --colorBrandBackground: #6264a7;
+    --colorBrandForeground1: #ffffff;
+  }
 }
 ```
 
+**两个关键设计点**：
+
+#### 1. 不使用 `:root` 限定主题选择器
+
+主题选择器**不加 `:root` 前缀**，只写 `[data-theme="..."]`。
+
+这不是风格问题，而是**嵌套主题能力的全部来源**：CSS 自定义属性是**继承**的，不是全局的。元素的最终变量值 = 该元素自身匹配到的声明（优先级最高）→ 否则沿用从祖先继承的值。
+
+因此把 `data-theme` 放在任意元素上，都会为该元素及其子树覆写令牌：
+
+```html
+<body>                        <!-- 亮色（来自 :root 默认） -->
+  <div data-theme="dark">     <!-- 暗色子树 -->
+    <div class="t-button"></div>   <!-- 拿到暗色令牌 -->
+  </div>
+  <div class="t-button"></div>     <!-- 仍是亮色令牌 -->
+</body>
+```
+
+若写成 `:root[data-theme="dark"]`，该规则只匹配根元素，子树无法独立切换 —— 这正是 Fluent 的嵌套 `FluentProvider` 所提供、而旧写法所缺失的能力。
+
+#### 2. 用 `:where()` 归零特异性
+
+`:where()` 包裹后选择器特异性恒为 `0,0,0`，主题之间不存在特异性竞争，完全由「就近覆盖 + 层内声明顺序」决定。这消除了「祖先的暗色规则意外压过子元素的亮色规则」这类问题。
+
 ### 切换主题
 
-#### JavaScript 方式
+#### `setTheme` API
 
 ```typescript
-// 切换到暗色主题
-document.documentElement.setAttribute('data-theme', 'dark');
+import { setTheme, getTheme, type ThemeName } from 'today-ui';
 
-// 切换到 Teams 主题
-document.documentElement.setAttribute('data-theme', 'teams-light');
+export type ThemeName = 'light' | 'dark' | 'teams-light' | 'teams-dark';
 
-// 获取当前主题
-const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+/**
+ * 切换主题
+ * @param theme 主题名
+ * @param el    目标元素，默认 document.documentElement
+ *              —— 传入任意元素即可实现局部主题
+ */
+export function setTheme(theme: ThemeName, el: HTMLElement = document.documentElement): void {
+  el.dataset.theme = theme;
+}
+
+/** 读取指定元素当前生效的主题 */
+export function getTheme(el: HTMLElement = document.documentElement): ThemeName {
+  return (el.dataset.theme as ThemeName) ?? 'light';
+}
+```
+
+**用法**：
+
+```typescript
+// 全局切换到暗色
+setTheme('dark');
+
+// 仅让某个面板使用 Teams 主题（局部主题）
+setTheme('teams-dark', panelEl);
+
+// 复位局部主题（移除属性，回落到继承值）
+delete panelEl.dataset.theme;
 ```
 
 #### Vue 3 组合式 API
 
+`setTheme` 是命令式的，组件内通常需要响应式状态。推荐在应用层封装：
+
 ```typescript
-// 主题管理 Composable
-import { ref, watch } from 'vue';
+// composables/useTheme.ts
+import { ref } from 'vue';
+import { setTheme, type ThemeName } from 'today-ui';
 
-export function useTheme() {
-  const theme = ref<'light' | 'dark' | 'teams-light' | 'teams-dark'>('light');
+export function useTheme(el?: HTMLElement) {
+  const target = el ?? document.documentElement;
+  const theme = ref<ThemeName>((target.dataset.theme as ThemeName) ?? 'light');
 
-  // 初始化主题
-  const storedTheme = localStorage.getItem('theme');
-  if (storedTheme) {
-    theme.value = storedTheme as any;
-    document.documentElement.setAttribute('data-theme', storedTheme);
-  }
-
-  // 切换主题
-  const setTheme = (newTheme: typeof theme.value) => {
-    theme.value = newTheme;
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+  const change = (next: ThemeName) => {
+    theme.value = next;
+    setTheme(next, target);
   };
 
-  return {
-    theme,
-    setTheme,
-  };
+  return { theme, setTheme: change };
 }
-
-// 在组件中使用
-const { theme, setTheme } = useTheme();
 ```
+
+> **注意**：主题状态不由库持久化。需要 `localStorage` 或 SSR 兼容（避免首屏闪烁）时，应由应用层处理，库只提供纯粹的 DOM 操作。
 
 ---
 
@@ -932,46 +1103,7 @@ const { theme, setTheme } = useTheme();
 
 ### 主题切换机制
 
-使用 CSS 变量和 `data-theme` 属性实现主题切换：
-
-```css
-/* 默认亮色主题 */
-:root,
-:root[data-theme="light"] {
-  --colorNeutralForeground1: #242424;
-  --colorNeutralBackground1: #ffffff;
-  /* ... 其他令牌 */
-}
-
-/* 暗色主题 */
-:root[data-theme="dark"] {
-  --colorNeutralForeground1: #ffffff;
-  --colorNeutralBackground1: #1b1b1b;
-  /* ... 其他令牌 */
-}
-
-/* Teams 亮色主题 */
-:root[data-theme="teams-light"] {
-  --colorBrandBackground: #444791;
-  /* ... 其他令牌 */
-}
-
-/* Teams 暗色主题 */
-:root[data-theme="teams-dark"] {
-  --colorBrandBackground: #6264a7;
-  /* ... 其他令牌 */
-}
-```
-
-**切换主题**：
-
-```typescript
-// JavaScript 中切换主题
-document.documentElement.setAttribute('data-theme', 'dark');
-
-// 或者在 Vue 组件中
-const theme = ref('light');
-```
+实现方式与嵌套能力详见前文「[主题切换机制](#主题切换机制)」一节，此处不赘述。
 
 ### 使用设计令牌
 
@@ -1003,20 +1135,23 @@ const theme = ref('light');
 
 ```
 src/
+├── style/
+│   ├── index.css               # ⭐ 全库样式入口，唯一声明 @layer 的地方
+│   └── base.css                # reset / body 基础样式
 ├── button/
 │   ├── Button.tsx              # 组件逻辑
-│   ├── button.css              # ✅ 完整的组件样式
+│   ├── button.css              # ✅ 完整的组件样式（不写 @layer、不 import 令牌）
 │   ├── Button.types.ts         # 类型定义和类名映射
 │   ├── useButtonClasses.ts     # 类名 Hook
 │   └── index.ts                # 导出
 ├── theme/
 │   ├── tokens/
-│   │   ├── light.css           # 亮色主题令牌
+│   │   ├── light.css           # 亮色主题令牌（:where 选择器）
 │   │   ├── dark.css            # 暗色主题令牌
 │   │   ├── teams-light.css     # Teams 亮色
 │   │   ├── teams-dark.css      # Teams 暗色
-│   │   └── index.css           # 令牌汇总
-│   └── index.ts
+│   │   └── index.css           # 令牌汇总（导入顺序不可调整）
+│   └── index.ts                # setTheme / getTheme / ThemeName
 └── shared/
     └── styles/
         ├── classUtils.ts       # className 工具函数
@@ -1123,7 +1258,25 @@ src/
 
 ### 样式优先级
 
-遵循 CSS 选择器优先级规则，从低到高：
+分两个层级理解。
+
+**第一层：`@layer` 决定库与消费者之间的胜负**
+
+```
+未分层的用户样式           ← 最高（永远赢）
+  ↑
+tui.components            ← 组件样式
+  ↑
+tui.base                  ← reset / body
+  ↑
+tui.tokens                ← 设计令牌
+```
+
+这一步与选择器特异性完全无关。
+
+**第二层：层内部，才轮到选择器特异性**
+
+组件内部各模式的特异性从低到高：
 
 1. **Block** - `.t-button` （权重：0,0,1,0）
 2. **Element** - `.t-button__icon` （权重：0,0,2,0）
@@ -1133,9 +1286,11 @@ src/
 6. **State (类名)** - `.t-button.is-loading` （权重：0,0,3,0）
 7. **Compound** - `.t-button--primary:hover` （权重：0,0,3,0）
 
-**避免使用 `!important`**，除非：
-- 覆盖第三方库样式
-- 修复高优先级的外部样式
+> 由于组件样式全部同处 `tui.components` 一层，这里的特异性**不会外溢**去影响消费者 —— 消费者只要不分层，就一定赢。
+
+**禁止使用 `!important`。**
+
+`!important` 会突破 `@layer` 边界，破坏本文档建立的整套覆盖语义，且无法被消费者覆盖。若遇到需要 `!important` 才能生效的场景，说明是分层结构出了问题，应修正分层而不是加 `!important`。
 
 ---
 
@@ -1365,30 +1520,127 @@ export const Button = defineComponent({
 
 ---
 
-## 从现有架构迁移
+## 组件级样式覆盖接口
 
-### 当前状态（Griffel-vue）
+### 为什么需要
 
-项目目前使用 **CSS 变量 + griffel-vue** 混合架构：
+`@layer` 解决了「消费者能否覆盖」的问题，但消费者仍需要知道**改哪个 CSS 属性**。为组件暴露语义化的覆盖变量，可以把「覆盖样式」从「读源码找属性名」变成「设置一个文档化的变量」。
+
+### 模式
+
+组件的每个可定制视觉属性，都通过**带 fallback 的组件级变量**消费：
+
+```css
+/* button/button.css —— 组件文件不写 @layer，由 src/style/index.css 统一包装 */
+.t-button {
+  /* 私有变量，fallback 指向设计令牌 */
+  --t-button-background: var(--colorNeutralBackground1);
+  --t-button-foreground: var(--colorNeutralForeground1);
+  --t-button-border-color: var(--colorNeutralStroke1);
+  --t-button-border-radius: var(--borderRadiusMedium);
+
+  background-color: var(--t-button-background);
+  color: var(--t-button-foreground);
+  border: var(--strokeWidthThin) solid var(--t-button-border-color);
+  border-radius: var(--t-button-border-radius);
+
+  &:hover:not([disabled]) {
+    /* 状态通过改写私有变量实现，而非重复声明属性 */
+    --t-button-background: var(--colorNeutralBackground1Hover);
+    --t-button-border-color: var(--colorNeutralStroke1Hover);
+    --t-button-foreground: var(--colorNeutralForeground1Hover);
+  }
+}
+```
+
+关键点：**状态样式通过改写变量实现**，而不是重复声明属性。这样变体与状态的组合不会互相覆盖，消费者只需覆盖一个变量就能连带覆盖全部状态。
+
+### 消费者用法
+
+```css
+/* 无需分层、无需特异性、无需 !important */
+.brand-cta {
+  --t-button-background: #7b2ff7;
+  --t-button-foreground: #ffffff;
+  --t-button-border-radius: var(--borderRadiusCircular);
+}
+```
+
+```html
+<Button class="brand-cta">购买</Button>
+```
+
+### 命名约定
+
+```
+--t-{block}-{property}
+```
+
+- 前缀 `--t-`（Today-UI）避免与消费者变量冲突
+- 只暴露**语义化视觉属性**（background / foreground / border-color / radius / padding 等），不暴露内部实现细节
+- 组件私有变量与公开覆盖变量**同名**，不做区分 —— 消费者覆盖同名变量即可，无需了解内部结构
+
+### 与 `@layer` 的分工
+
+| 场景 | 手段 |
+|------|------|
+| 覆盖某个具体视觉属性 | 组件级 CSS 变量（本节） |
+| 追加/修改结构性样式（布局、伪元素等） | 未分层的自定义类（「样式分层架构」） |
+| 全局换肤 | `data-theme` + 设计令牌（「主题切换机制」） |
+
+---
+
+## 迁移历史：从 Griffel 到纯 CSS
+
+> **本节为历史记录，迁移已于 2026-02 完成。**
+
+项目最初采用 `griffel-vue`（`@griffel/react` 的 Vue 移植，本项目作者自研）。迁移到纯 CSS 变量后，实现了本文档描述的全部架构。
+
+### 迁移原因（决策记录）
+
+项目的原始判断，引自当时的背景文档：
+
+> 现在组件库 CSS 样式的方案，感觉 CSS-in-JS 的方案不太好。在 AI 辅助编码的场景下，使用 CSS 变量来实现 Fluent Design System 的主题和样式会更好一些——CSS 变量可以更方便地实现主题切换和样式的复用，同时也能保持组件库的性能和可维护性。
+
+当时依据的是**直觉与工程偏好**。文档前文「为什么选择纯 CSS Variables」与「关键前提：Fluent v9 的主题本来就是 CSS 变量」两节，是事后补上的技术论证——结论相同，但论证更硬：上游的主题机制本来就是 CSS 变量，迁移并没有丢失能力。
+
+### 迁移前的状态
 
 - ✅ 440+ CSS 变量已定义
-- ✅ 12 个组件已迁移到 Griffel
-- ⚠️ 样式分散在 `.styles.ts` 和 `.css` 中
-- ⚠️ 运行时需要 Griffel 生成样式
+- ✅ 12 个组件已接入 Griffel
+- ⚠️ 样式分散在 `*.styles.ts` 与 `.css` 中
+- ⚠️ 运行时需要 Griffel 生成原子类
 
-### 迁移目标（纯 CSS）
+### 迁移后的状态
 
-**从 Griffel 迁移到纯 CSS**，实现：
+| 项 | 迁移前 | 迁移后 |
+|----|--------|--------|
+| 样式定义 | `useXxxStyles.styles.ts`（JS 对象） | `xxx.css`（原生 CSS） |
+| 类名 | Griffel 运行时生成的原子类 | 静态 BEM 类名 |
+| 运行时开销 | 需注入 `<style>` | 零 |
+| 类型安全 | 样式对象本身类型安全 | 类名映射 + `satisfies` 约束 |
+| 用户覆盖样式 | `mergeClasses` | `@layer`（见「样式分层架构」） |
+| 主题切换 | `FluentProvider` + CSS 变量 | `data-theme` + CSS 变量 |
 
-- ✅ 保留所有 CSS 变量
-- ✅ 合并样式到单文件 `.css`
-- ✅ 使用 BEM 命名规范
-- ✅ 移除 griffel-vue 依赖
-- ✅ 类型安全的类名管理
+### 迁移遗留物
 
-### 迁移步骤
+以下文件已无用途，如在新分支上遇到可直接删除：
 
-#### Phase 1: 基础设施准备（0.5 天）
+- `src/shared/theme/` —— 无任何模块引用，且依赖 `@fluentui/tokens`（不在 `dependencies` 中）
+- `src/***/use*Styles.styles.ts` —— Griffel 样式文件残留
+- `tsdown.config.ts` 的 `external` 数组中的 `'griffel-vue'`
+
+### 保留的对照物
+
+`react-components/` 目录存放上游 `@fluentui/react-button`、`react-input`、`react-tooltip` 等源码，仅作为转录时的对照参考，不参与构建（`vitest.config.js` 已将其排除）。
+
+---
+
+## 迁移实施步骤（已完成，存档）
+
+> 以下为迁移当时的执行计划，存档备查。
+
+### Phase 1: 基础设施准备（0.5 天）
 
 **创建共享工具**：
 
@@ -1653,10 +1905,11 @@ griffel-vue → (移除)
   background-color: #ffffff;
 }
 
-/* 不要使用嵌套（保持扁平） */
+/* 不要用 Sass 式元素拼接语法 —— 原生 CSS 嵌套不支持 &__icon */
 .t-button {
   &__icon {
-    /* ❌ 避免嵌套 */
+    /* ❌ 原生 CSS 中 & 代表整个复合选择器，
+       这会被展开成 .t-button__icon 之外的语义错误结果 */
   }
 }
 
@@ -1668,6 +1921,43 @@ griffel-vue → (移除)
 /* 不要使用过长的类名 */
 .t-button-primary-small-disabled-hover-active { }
 ```
+
+#### CSS 嵌套规范
+
+产物保留原生 CSS 嵌套（见「浏览器基线」），因此组件 CSS **允许且鼓励**用 `&` 组织同块的状态与组合变体：
+
+```css
+/* ✅ 推荐：用嵌套归拢同一 Block 的状态与组合变体 */
+.t-button {
+  background-color: var(--colorNeutralBackground1);
+
+  &:hover:not([disabled]) {
+    background-color: var(--colorNeutralBackground1Hover);
+  }
+
+  &[disabled] {
+    background-color: var(--colorNeutralBackgroundDisabled);
+  }
+}
+
+/* ✅ 推荐：组合变体 */
+.t-button--primary {
+  background-color: var(--colorBrandBackground);
+
+  &:hover { background-color: var(--colorBrandBackgroundHover); }
+}
+```
+
+**约束**：
+
+| 约束 | 原因 |
+|------|------|
+| `&` 必须显式书写 | 原生嵌套中 `&__icon` 不是 BEM 拼接语法，`&` 代表整个复合选择器 |
+| 嵌套不超过 3 层 | 保持产物可读、避免特异性失控 |
+| 子元素仍用完整类名平铺 | `.t-button__icon { }` 而非 `.t-button { .t-button__icon { } }`，BEM 已提供唯一性，无需靠嵌套限定作用域 |
+| `@media` / `@supports` 可嵌套 | 原生支持，用于就地组织响应式规则 |
+
+> BEM 类名的唯一性已经消除了对嵌套限定作用域的需求。嵌套的用途仅剩「归拢状态与组合变体」，不要用它做结构表达。
 
 ### 2. TypeScript 类型规范
 
@@ -1740,18 +2030,43 @@ export const buttonVariants = {
 .t-button * { } /* ❌ */
 ```
 
-#### 打包优化
+#### 打包产物约定
 
-```typescript
-// tsdown.config.ts
-export default defineConfig({
-  // CSS 处理
-  css: {
-    // 提取 CSS 到单独文件
-    extract: true,
-  },
-});
+构建使用 `tsdown`，`unbundle: true`（保留模块结构以支持按需导入）。这决定了 CSS 产物的形态：
+
+| 产物 | 说明 | 当前状态 |
+|------|------|:--------:|
+| `dist/**/xxx-<hash>.css` | 每个组件的 CSS chunk，文件名含内容哈希 | ✅ 已产出 |
+| `dist/style.css` | **聚合入口**，按 `@layer` 顺序合并全部 CSS，文件名固定 | ❌ **未产出** |
+
+**`dist/style.css` 是必须存在的产物**。原因是 `package.json` 将其作为公开导出：
+
+```json
+{
+  "exports": {
+    "./style.css": "./dist/style.css"
+  }
+}
 ```
+
+哈希命名的 chunk 无法作为稳定的公开入口，因此需要一个**文件名固定**的聚合产物，由构建流程在 `tsdown` 之后生成，拼接顺序即 `@layer` 声明顺序：
+
+```
+@layer tui.tokens, tui.base, tui.components;
+  ├─ tokens：light → dark → teams-light → teams-dark（顺序影响主题覆盖，不可打乱）
+  ├─ base：  reset / body
+  └─ components：button → dropdown → dialog → icon → menu → tabs → toast → tooltip → file-tree
+```
+
+> **注意**：聚合脚本必须显式定义这个顺序，不能依赖文件系统遍历顺序。
+
+**当前状态的实证（2026-09-19）**：
+
+- `dist/style.css` **不存在**
+- `dist/style/index-<hash>.css` 存在但**内容为空**——只有 `src/style/index.css` 里的注释（`/* 设计令牌 */`、`/* 基础样式 */`、`/* 组件样式 */`），所有 `@import` 都被拆进了独立的 chunk 文件
+- 因此 `package.json` 里 `"./style.css": "./dist/style.css"` 这条导出指向一个**不存在的文件**，按 README 写的 `import 'today-ui/style.css'` 会构建失败
+
+消费者当前的实际路径：每个组件的 `.mjs` 入口自己 `import` 了对应的 `.css`，所以打包器会自动收集——**无需手动 import 样式**。这也是为什么这个缺陷至今没有暴露。
 
 #### 运行时优化
 
@@ -1882,20 +2197,40 @@ const buttonStyle = computed(() => ({
 
 ### Q5: 如何处理主题切换？
 
-**A**: 使用 CSS 变量 + data-theme 属性：
+**A**: 使用 `setTheme` + `data-theme` 属性，传入元素参数即为局部主题：
 
 ```typescript
-// 切换主题
-const setTheme = (theme: 'light' | 'dark') => {
-  document.documentElement.setAttribute('data-theme', theme);
-};
+import { setTheme } from 'today-ui';
+
+setTheme('dark');                      // 全局
+setTheme('teams-dark', panelElement);  // 仅某个子树
 ```
+
+详见「主题切换机制」。
+
+### Q6: 消费者如何覆盖组件样式？
+
+**A**: 两条路，都不需要 `!important`：
+
+```css
+/* 1. 改单个视觉属性 —— 覆盖组件级变量 */
+.brand-cta { --t-button-background: #7b2ff7; }
+
+/* 2. 改结构/追加样式 —— 写不分层的自定义类 */
+.brand-cta { box-shadow: 0 4px 12px rgb(123 47 247 / 30%); }
+```
+
+详见「样式分层架构」与「组件级样式覆盖接口」。
+
+### Q7: 为什么组件 CSS 里 `&:hover` 不做降级？
+
+**A**: 这是有意的取舍，详见「浏览器基线」。产物依赖原生 CSS 嵌套，基线为 Chrome/Edge 120+、Safari 17.2+、Firefox 117+。
 
 ---
 
-## 预期成果
+## 设计成果
 
-### 包体积优化
+### 包体积
 
 | 项目 | Griffel-vue | 纯 CSS | 减少 |
 |------|-------------|--------|------|
@@ -1904,18 +2239,22 @@ const setTheme = (theme: 'light' | 'dark') => {
 | 运行时代码 | ~2KB | 0 | -2KB |
 | **总计** | **~25KB** | **~13KB** | **-48%** |
 
-### 开发体验提升
+### 架构能力
+
+| 能力 | 实现手段 |
+|------|----------|
+| 全局换肤 | `data-theme` + 440 令牌 |
+| 局部（嵌套）主题 | `data-theme` 置于任意元素 |
+| 用户覆盖组件样式 | `@layer`（无需 `!important`） |
+| 覆盖单个视觉属性 | 组件级 CSS 变量 |
+| 主题状态持久化 / SSR | 留给应用层，库只做 DOM 操作 |
+
+### 开发体验
 
 - ✅ **AI 友好** - CSS 代码更容易被 AI 理解和生成
 - ✅ **调试直观** - 语义化 BEM 类名 vs 原子类
 - ✅ **开发简单** - 只需写 CSS，无需学习 Griffel API
-- ✅ **主题灵活** - 原生 CSS 变量支持
-
-### 性能提升
-
-- ✅ **更快的首次渲染** - 无运行时样式生成
-- ✅ **更小的 bundle** - 减少近 50% 样式相关代码
-- ✅ **更快的构建** - 无需 Griffel 转译
+- ✅ **零运行时** - 无样式注入，无首屏 FOUC 与 SSR 水合问题
 
 ---
 
@@ -1924,10 +2263,20 @@ const setTheme = (theme: 'light' | 'dark') => {
 - [Fluent UI Design System](https://www.microsoft.com/design/fluent/)
 - [BEM 官方文档](http://getbem.com/)
 - [CSS Custom Properties (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- [CSS Cascade Layers (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)
+- [CSS Nesting (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting)
 - [@fluentui/react-components](https://react.fluentui.dev/)
 
 ---
 
-**文档版本**: v1.0.0
-**最后更新**: 2026-02-27
+**文档版本**: v1.1.1
+**最后更新**: 2026-09-19
 **维护者**: Today-UI Team
+
+### 变更记录
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| v1.1.1 | 2026-09-19 | 为「`@layer` 分层」与「`dist/style.css` 聚合产物」两节补充**实证状态**——经代码核查，两者均**尚未落地**：`grep @layer` 零命中，`dist/style.css` 不存在且 `dist/style/index-*.css` 内容为空。原文描述的是目标而非现状，易被误读为已有实现 |
+| v1.1.0 | 2026-09-19 | 新增「样式分层架构（`@layer`）」「浏览器基线」「组件级样式覆盖接口」；主题选择器去掉 `:root` 限定以支持嵌套主题；补充 `setTheme` / `getTheme` API；明确禁止 `!important`；修正「禁止 CSS 嵌套」与实现相矛盾的表述；「从现有架构迁移」改为历史记录；补充构建产物约定（`dist/style.css`） |
+| v1.0.0 | 2026-02-27 | 初版，记录 Griffel → 纯 CSS Variables 迁移方案 |

@@ -1,6 +1,6 @@
 import type { ButtonState, ButtonSlots } from './Button.types';
 import { h } from 'vue';
-import { Spinner } from './Spinner';
+import { TSpinner } from './Spinner';
 
 /**
  * 渲染 Button 组件
@@ -17,7 +17,7 @@ export const renderButton = (state: ButtonState, slots: ButtonSlots) => {
     if (showSpinner) {
         children.push(
             h('span', { class: 't-button__spinner-wrapper' }, [
-                h(Spinner, { size: state.size === 'large' ? 'medium' : state.size === 'small' ? 'tiny' : 'small' }),
+                h(TSpinner, { size: state.size === 'large' ? 'medium' : state.size === 'small' ? 'tiny' : 'small' }),
                 loadingText && ` ${loadingText}`
             ].filter(Boolean))
         );

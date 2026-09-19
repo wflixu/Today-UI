@@ -1,8 +1,8 @@
-import { Input } from './Input';
+import { TInput } from './Input';
 
 // Input component exports
-export { Input } from './Input';
-export { Input as default } from './Input';
+export { TInput } from './Input';
+export { TInput as default } from './Input';
 export type { InputProps, InputSlots, InputState } from './Input.types';
 export { renderInput } from './renderInput';
 export { useInput } from './useInput';

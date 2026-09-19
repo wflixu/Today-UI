@@ -13,8 +13,8 @@ import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.ty
 import { useTooltip } from './useTooltip';
 import './tooltip.css';
 
-export const Tooltip = defineComponent({
-  name: 'Tooltip',
+export const TTooltip = defineComponent({
+  name: 'TTooltip',
   props: tooltipProps,
   slots: Object as SlotsType<TooltipSlots>,
 
@@ -104,4 +104,4 @@ export const Tooltip = defineComponent({
   }
 });
 
-export default Tooltip;
+export default TTooltip;

@@ -6,8 +6,8 @@
 import { defineComponent, PropType } from 'vue';
 import { useSpinnerClasses } from './useSpinnerClasses';
 
-export const Spinner = defineComponent({
-  name: 'Spinner',
+export const TSpinner = defineComponent({
+  name: 'TSpinner',
   props: {
     size: {
       type: String as PropType<'tiny' | 'small' | 'medium' | 'large'>,
@@ -32,4 +32,4 @@ export const Spinner = defineComponent({
   },
 });
 
-export default Spinner;
+export default TSpinner;

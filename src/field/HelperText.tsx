@@ -23,8 +23,8 @@ import { renderHelperText } from './renderHelperText';
  * </Field>
  * ```
  */
-export const HelperText = defineComponent({
-    name: 'HelperText',
+export const THelperText = defineComponent({
+    name: 'THelperText',
 
     props: helperTextProps,
 
@@ -59,4 +59,4 @@ export const HelperText = defineComponent({
     },
 });
 
-export default HelperText;
+export default THelperText;

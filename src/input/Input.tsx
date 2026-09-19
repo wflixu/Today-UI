@@ -6,8 +6,8 @@ import { inputProps, type InputProps, type InputSlots } from './Input.types';
 import { useInput } from './useInput';
 import './input.css';
 
-export const Input = defineComponent({
-    name: 'Input',
+export const TInput = defineComponent({
+    name: 'TInput',
     props: inputProps,
     slots: Object as SlotsType<InputSlots>,
     emits: ['update:modelValue'],
@@ -100,4 +100,4 @@ export const Input = defineComponent({
     }
 });
 
-export default Input;
+export default TInput;

@@ -6,7 +6,7 @@ import type { ITabOption } from './type';
 import { TABS_OPTIONS_KEY, TAB_ACTIVE_KEY } from './props';
 
 export default defineComponent({
-    name: "Tablist",
+    name: "TTablist",
     props: {
         modelValue: {
             type: String,

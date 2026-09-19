@@ -9,7 +9,7 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 ### 核心目标
 - 将微软官方的 React Fluent Design 组件库转录到 Vue 3 生态
 - 接口兼容 @fluentui/react-components
-- 使用 griffel-vue（从 @griffel/react 转录的 CSS-in-JS 解决方案）
+- 使用纯 CSS Variables + CSS `@layer` 分层（不使用 CSS-in-JS，详见 [specs/style.md](specs/style.md)）
 - 专注实现基础功能，适合个人开发节奏
 
 ## 开发命令
@@ -34,7 +34,7 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 ### 核心依赖
 - **Vue 3.5+** + Composition API - 组件基础框架
 - **@floating-ui/vue** - 弹出层组件的核心定位引擎
-- **griffel-vue** - CSS-in-JS 样式解决方案（Fluent Design 实现）
+- **纯 CSS Variables** - 样式方案，440+ Fluent Design 令牌，无运行时开销
 - **TypeScript 5.x** - 完整的类型安全支持
 - **tsdown** - 库构建工具（ESM 格式输出）
 - **pnpm** - 使用pnpm 作为包管理器
@@ -42,14 +42,34 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - **Vitest** - 单元测试框架
 
 ### 组件开发模式
-每个组件遵循一致的结构模式：
-- `.tsx` 文件 - 主要组件逻辑，使用 TSX 语法
-- `props.ts` - 组件 props 定义
-- `type.ts` - TypeScript 类型和接口定义
-- `docs/` 文件夹 - 组件文档和规格
-  - `<ComponentName>.story.vue` - Histoire 示例和文档
-  - `spec.md` - 组件设计规格和实现细节（可选）
-- `style/` 文件夹 - 组件特定样式（需要时）
+
+> ⚠️ **仓库里并存两代组件**。新组件请follow**新式**（button / input / label / field / tooltip）。
+> 旧式（dropdown / dialog / menu / file-tree / tabs / toast）是遗留，仅在改动它们时参考。
+
+| | 新式（**新组件照这套**） | 旧式（遗留） |
+|---|---|---|
+| 组件 | button、input、label、field、tooltip | dropdown、dialog、menu、file-tree、tabs、toast |
+| props 文件 | 单一 `Xxx.types.ts`（四段式） | 拆分 `props.ts` + `type.ts` |
+| 注册导出 | `export { TXxx } from './Xxx'` + `as default` | `withInstall(_Xxx)` |
+
+**新式组件的文件构成**：
+
+- `Xxx.tsx` - `defineComponent` + `computed` 生成 state + 类名回写到 `state.root.className` + 返回渲染函数
+- `Xxx.types.ts` - 四段式：字面量 union 类型 / `xxxProps` 对象（带 JSDoc + `@default`）/ `XxxProps = ExtractPropTypes<...>` / `XxxState` interface + `XxxSlots`
+- `useXxx.ts` - 返回 state 对象，三段式：透传 props / 派生状态 / **每个 DOM 元素一个 `Record<string, any>`**。`root` 初建时**不含 className**，由组件后填
+- `renderXxx.ts` - 渲染函数，用 `h()` 而非 JSX（全库无 `renderXxx.tsx` 用 JSX 的先例）
+- `useXxxClasses.ts` - `xxxClassNames` 常量 + `xxxVariants` 映射 + hook；**默认值不产类名**
+- `xxx.css` - 组件样式
+- `index.ts` - barrel 导出
+- `docs/<ComponentName>.story.vue` - Histoire 示例
+- `docs/SPEC.md` - 组件设计规格（可选）
+- `tests/<ComponentName>.test.ts` - 单元测试（必需）
+
+**注册点有三处**（缺一不可）：
+
+1. `src/components.ts` - 否则不会被打包导出
+2. `src/style/index.css` - 否则样式不会进入产物（若样式由组件自身 `import` 则可省）
+3. `src/interface.ts` - 对外暴露的 props 类型白名单
 
 ### 主要组件类型
 - **Tooltip** - 工具提示功能
@@ -62,14 +82,52 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 - **Icon** - SVG 图标系统
 
 ### 共享工具
-- `src/shared/` - 通用工具、DOM 辅助函数、BEM 样式、渲染函数
-- `src/style/` - 基础 CSS 和设计令牌
-- `components.ts` - 组件注册和导出
+
+`src/shared/` 下多数文件**没有实际被引用**，写新组件时只需这三个：
+
+| 可复用 | 路径 | 用途 |
+|---|---|---|
+| `cn()` | `@/shared/styles/classUtils` | 类名拼接，所有 `useXxxClasses` 都用它 |
+| `AttachNode` | `shared/type` | 弹层挂载点类型（Tooltip 已这样用） |
+| `withInstall` | `shared/withInstall` | 旧式组件给组件挂 `install` |
+
+**不要引用**（零引用或已损坏的死代码）：
+
+- `shared/dom.ts` - 零引用。注意 `tooltip/renderTooltip.tsx` 里另有一份私有 `getAttach`，两者不共用
+- `shared/bem.ts` - 零引用（其 mod 分隔符是 `_`，与 `.t-x--y` 不匹配）
+- `shared/render-tnode.ts` - 零引用
+- `shared/theme/` - 有断链 import，指向不存在的路径
+- `shared/types.ts` 的 `UnknownSlotProps` - 引用不存在的全局类型，实际是坏的
+- `classUtils.ts` 的 `buildVariantClasses` / `bem` - 零引用
+
+其他关键位置：
+
+- `src/style/index.css` - 全库样式入口
+- `src/theme/tokens/` - 440+ 设计令牌（light / dark / teams-light / teams-dark）
+- `src/components.ts` - 组件导出清单（决定全局注册与打包）
+
+### 样式架构规范
+
+样式方案是**纯 CSS Variables**（不使用 CSS-in-JS），完整规范见 [specs/style.md](specs/style.md)。
+
+> ⏳ **`@layer` 分层尚未落地。** 当前代码中没有任何 `@layer` 语句（`grep -rn "@layer" src --include="*.css"` 零命中），下面描述的是**目标约定**——写新组件时请遵守，但要知道现状不符，另有 5 个组件 CSS 违反「不 `@import` 令牌」这条。
+
+目标的三层结构（优先级由低到高）：`tui.tokens` → `tui.base` → `tui.components`。
+
+**关键约束**：
+
+- 组件 CSS 文件**不写 `@layer`**，层包装只写在 `src/style/index.css`
+- 组件 CSS **不得 `@import` 令牌文件**，令牌由入口统一引入
+- **禁止 `!important`**——它会突破 `@layer` 边界，破坏用户覆盖能力
+- 组件 CSS **允许**原生 CSS 嵌套（`&:hover`），但 `&` 必须显式书写，嵌套不超过 3 层
+- 消费者未分层的样式天然优先，这是「用户覆盖组件样式」的机制
+
+**浏览器基线**：Chrome/Edge 120+、Safari 17.2+、Firefox 117+（由原生 CSS 嵌套决定，构建链路不做降级）
 
 ### 构建配置
 - **构建工具**: tsdown（纯 ESM 输出）
 - **输出格式**: 仅 ESM（.mjs 文件）
-- **外部依赖**: Vue、@floating-ui/vue、griffel-vue、radash
+- **外部依赖**: Vue、@floating-ui/vue、radash
 - **CSS 处理**: tsdown 自动处理 CSS 导入和提取
 - **类型生成**: tsdown 自动生成 .d.mts 类型定义文件
 - **按需导入**: 保留模块结构，支持按需导入组件
@@ -85,21 +143,31 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 2. 在对应的 `src/` 文件夹中创建/更新组件
 3. 使用 `*.story.vue` 文件添加文档示例
 4. 运行 `pnpm build` 验证所有构建工作正常
-5. 使用 `pnpm test:unit` 进行组件测试
+5. 使用 `pnpm test` 进行组件测试
 
 ## 关键模式
 
 - 所有组件使用 TypeScript 并定义合适的 props
-- 组件同时导出默认版本和使用 `withInstall` 的 Vue 插件版本
+- **组件名一律加 `T` 前缀**（`TButton`、`TInput`、`TDropdown`…）。`defineComponent` 的 `name` 与导出符号必须同名同前缀
 - 一致的命名约定：组件使用 PascalCase，props 使用 kebab-case
 - Fluent Design 令牌和样式模式
 - 在示例中使用 Composition API 和 `<script setup>` 语法
+
+### 为什么组件名必须加 `T`
+
+`app.use(TodayUI)` 会把组件注册到**全局命名空间**，与第三方库和用户自建组件共享。Fluent React 不加前缀是因为 **React 没有全局组件注册**（每个组件都是显式 import），该约定不适用于 Vue。
+
+不加前缀会造成静默遮蔽——本项目已有实例：typster 里 Today-UI 的 `Button` 被 PrimeVue 的 `Button` 覆盖，不报错、不警告，只是渲染了另一个组件。
+
+Vue 生态中走全局注册的库都加前缀：Vuetify `V`、Element Plus `El`、Arco `A`、Naive UI `N`。
+
+> 类型名**不加**前缀（组件是 `TButton`，props 类型仍是 `ButtonProps`）。类型只在模块作用域，不进全局命名空间，无碰撞风险；且保持与上游 `@fluentui/react-components` 的对齐。Element Plus 同样是 `ElButton` + `ButtonProps`。
 
 ## 转录指导原则
 
 当从 @fluentui/react-components 转录组件时：
 1. 保持相同的 API 接口和 props 定义
-2. 使用 griffel-vue 替代 @griffel/react 的 CSS-in-JS 实现
+2. 使用纯 CSS Variables + BEM 类名替代 @griffel/react 的 CSS-in-JS 实现
 3. 将 React hooks 转换为 Vue 3 Composition API
 4. 将 JSX 转换为 TSX 语法
 5. 保持组件行为和视觉效果的一致性

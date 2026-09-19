@@ -7,8 +7,8 @@ import './button.css';
 import { defineComponent, ref, SlotsType, computed } from 'vue';
 import { useButton } from './useButton';
 
-export const Button = defineComponent({
-  name: 'Button',
+export const TButton = defineComponent({
+  name: 'TButton',
   props: buttonProps,
   slots: Object as SlotsType<ButtonSlots>,
   setup(props: ButtonProps, { expose, slots }) {
@@ -46,4 +46,4 @@ export const Button = defineComponent({
   }
 });
 
-export default Button;
+export default TButton;

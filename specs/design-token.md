@@ -1,5 +1,17 @@
 
 
+# Design Token 体系与 Fluent UI 的落地方式
+
+> **本文档是参考资料，不是本项目的实现文档。**
+>
+> 它讲两件事：
+> 1. Design Token 这个概念本身，以及微软 Fluent Design System 如何组织令牌（第一、二部分）
+> 2. **上游** `@fluentui/react-components` 如何把令牌落地到组件——含 Griffel、`FluentProvider` 的机制（第三部分起）
+>
+> 第 2 部分是理解**上游行为**的资料。Today-UI 自身的实现方案（纯 CSS 变量 + `@layer`，**不使用 Griffel**）见 [style.md](style.md)，两者的差异及取舍理由在那里说明。
+
+---
+
 ### 第一部分：什么是 Design Token？
 
 **Design Token（设计令牌/设计变量）** 可以被理解为设计系统的“原子单位”或“单一事实来源”。它是一种将设计决策（如颜色、字体、间距、圆角半径等）存储为**平台中立、可重复使用的小数据单元**的方法。

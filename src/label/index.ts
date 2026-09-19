@@ -1,5 +1,5 @@
 // Label component
-export { Label } from './Label';
+export { TLabel } from './Label';
 export type { LabelProps, LabelState, LabelSlots } from './Label.types';
 
 // Re-export for convenience

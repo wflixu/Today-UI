@@ -4,7 +4,7 @@ import { TAB_ACTIVE_KEY, TABS_OPTIONS_KEY } from './props';
 import type { ITabOption } from './type';
 
 export default defineComponent({
-    name: "TabPanel",
+    name: "TTabPanel",
     props: {
         title: {
             type: String,

@@ -15,8 +15,8 @@ import './label.css';
  * <Input id="email" v-model="email" />
  * ```
  */
-export const Label = defineComponent({
-    name: 'Label',
+export const TLabel = defineComponent({
+    name: 'TLabel',
 
     props: labelProps,
 
@@ -60,4 +60,4 @@ export const Label = defineComponent({
     },
 });
 
-export default Label;
+export default TLabel;

@@ -1,5 +1,5 @@
-export { Button } from './Button';
-export { Button as default } from './Button';
+export { TButton } from './Button';
+export { TButton as default } from './Button';
 
 // Explicit exports to omit ButtonCommons
 export type { ButtonProps, ButtonSlots, ButtonState } from './Button.types';

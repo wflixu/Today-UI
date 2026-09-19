@@ -22,8 +22,8 @@ import { renderField } from './renderField';
  * </Field>
  * ```
  */
-export const Field = defineComponent({
-    name: 'Field',
+export const TField = defineComponent({
+    name: 'TField',
 
     props: fieldProps,
 
@@ -72,4 +72,4 @@ export const Field = defineComponent({
     },
 });
 
-export default Field;
+export default TField;
