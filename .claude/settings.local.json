@@ -34,7 +34,11 @@
       "Bash(git restore:*)",
       "Bash(pnpm list:*)",
       "Bash(pnpm doc:*)",
-      "Bash(npm info:*)"
+      "Bash(npm info:*)",
+      "Bash(pnpm -v)",
+      "Bash(git symbolic-ref *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []
