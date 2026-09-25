@@ -18,6 +18,16 @@ concurrency:
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+
+    # 闸门：只有标题带 chore(release) 的提交才会真正发布，
+    # 往 release 推普通提交不会误发。
+    #
+    # 判断的是本次推送的**最后一个**提交（head_commit），所以从 main 合并过来时，
+    # 要让那个合并提交自己带标题：
+    #     git merge main --no-ff -m "chore(release): 0.3.0"
+    # 先 merge 再补一个 bump 提交也可以，只要最后那个提交带标题。
+    if: contains(github.event.head_commit.message, 'chore(release)')
+
     permissions:
       contents: write # 推送 tag、创建 Release
     steps:
