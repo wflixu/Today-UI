@@ -170,7 +170,7 @@ CSS nesting (`&:hover`) and `@import` are resolved at build time, so they are no
 
 ## 📚 Component List
 
-12 components ship in the source tree. Component names carry the `T` prefix — the **Name** column below is exactly what you import and write in templates.
+14 components ship in the source tree; 13 are exported from the package. Component names carry the `T` prefix — the **Name** column below is exactly what you import and write in templates.
 
 ### Basic
 
@@ -186,17 +186,24 @@ CSS nesting (`&:hover`) and `@import` are resolved at build time, so they are no
 | **`TInput`** | Text input with appearance and size variants | ✅ | ✅ |
 | **`TField`** | Form field wrapper | ✅ | ✅ |
 | **`TLabel`** | Form label | ✅ | ✅ |
-| **`TDropdown`** | Dropdown menu and trigger | ✅ | — |
+| **`TDropdown`** | Dropdown menu and trigger | ✅ | ✅ |
+
+### Overlay
+
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TPortal`** | Teleport wrapper with attach-target resolution and optional scroll lock | ✅ | ✅ |
+| **`TPopover`** | Positioning, triggering and open/close behaviour — the primitive behind `TDropdown`, `TTooltip` and `TDialog` | ✅ | ✅ |
 
 ### Feedback
 
 | Name | Description | Exported | Tests |
 |------|-------------|:--------:|:-----:|
 | **`TTooltip`** | Tooltip for additional information | ✅ | ✅ |
-| **`TDialog`** | Modal dialog and confirmation dialog | ❌ | — |
+| **`TDialog`** | Modal dialog and confirmation dialog | ✅ | ✅ |
 | **`TToast`** | Notification messages | ❌ | — |
 
-> ⚠️ **`TDialog`** and **`TToast`** have source files but are **not registered in `src/components.ts`**, so they are not part of the published package. `TToast` is currently a non-functional placeholder (no props, hardcoded content).
+> ⚠️ **`TToast`** has source files but is **not registered in `src/components.ts`**, so it is not part of the published package. It is currently a non-functional placeholder (no props, hardcoded content).
 
 ### Navigation & Data Display
 
@@ -240,8 +247,8 @@ Available icon categories: Basic actions, Navigation arrows, Search & Zoom, Stat
 
 ### Requirements
 
-- **Node.js** >= 20
-- **pnpm** >= 9
+- **Node.js** >= 22.12 (Vitest 5 requires `^22.12.0 || ^24.0.0`; CI uses 24)
+- **pnpm** >= 10
 
 ### Install Dependencies
 
@@ -270,8 +277,17 @@ pnpm test
 # Type checking
 pnpm typecheck
 
-# Lint and fix code
+# Lint and fix code (oxlint)
 pnpm lint
+
+# Check lint without writing (CI)
+pnpm lint:check
+
+# Format code (oxfmt)
+pnpm format
+
+# Check formatting without writing (CI)
+pnpm format:check
 ```
 
 ### Project Structure
@@ -312,7 +328,8 @@ today-ui/
 - **[specs/style.md](specs/style.md)** - Style & theming architecture (layering, tokens, theming, override API)
 - **[specs/component-roadmap.md](specs/component-roadmap.md)** - Component implementation roadmap
 - **[specs/testing-guidelines.md](specs/testing-guidelines.md)** - Unit testing standards
-- **[Histoire Documentation](http://localhost:6006)** - Run `pnpm dev` to access interactive documentation
+- **[Documentation site](https://wflixu.github.io/Today-UI/)** - Published Histoire build (GitHub Pages, redeployed on every push to `main`)
+- **[Histoire Documentation](http://localhost:6006)** - Run `pnpm dev` to access interactive documentation locally
 - **[CLAUDE.md](CLAUDE.md)** - Development guidelines and project conventions
 
 ## 🎯 Tech Stack
@@ -324,6 +341,7 @@ today-ui/
 - **@floating-ui/vue** - Floating UI positioning engine
 - **Histoire** - Component documentation tool
 - **Vitest** - Unit testing framework
+- **oxlint + oxfmt** - Linting and formatting (Rust-based, replaced ESLint/Prettier)
 
 ## 🔗 Related Resources
 
@@ -342,8 +360,8 @@ This project follows these conventions:
 - **TSX Syntax** - Components written in TSX for better type inference
 - **Pure CSS + CSS Variables** - Semantic BEM class names with CSS variables for theming
 - **Native CSS Nesting** - `&` is allowed for grouping states and compound variants (max 3 levels deep)
-- **Type-Safe Classes** - TypeScript utilities for class name management (cn, bem, buildVariantClasses)
-- **Dual Documentation** - Each component provides inline docs in Histoire stories and `spec.md` for design specifications
+- **Type-Safe Classes** - Class names are composed with `cn()` from `@/shared/styles/classUtils`, which is the only helper there in real use. `bem` and `buildVariantClasses` in the same file are unused dead code — don't reach for them.
+- **Dual Documentation** - Histoire stories carry the inline docs; some components additionally ship a `docs/SPEC.md` with the design rationale
 
 > ⏳ **目标约定，尚未落地**：`@layer` 分层（组件 CSS 不写 `@layer`、不 `@import` 令牌文件、禁用 `!important`）。
 > 当前代码中没有任何 `@layer`，另有 5 个组件 CSS 违反约束。详见 [specs/style.md](specs/style.md)。

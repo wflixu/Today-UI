@@ -26,8 +26,15 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 ### 测试与代码质量
 - `pnpm test` - 在 jsdom 环境中运行 Vitest 单元测试
 - `pnpm test:watch` - 监听模式运行测试
-- `pnpm typecheck` - 对测试进行类型检查
-- `pnpm lint` - 运行 ESLint 并自动修复
+- `pnpm test:coverage` - 生成覆盖率报告
+- `pnpm typecheck` - 类型检查
+- `pnpm lint` - 运行 oxlint 并自动修复
+- `pnpm lint:check` - 运行 oxlint，不修改文件（CI 用）
+- `pnpm format` - 运行 oxfmt 格式化
+- `pnpm format:check` - 检查格式，不修改文件
+
+> 代码检查用 **oxlint + oxfmt**（Rust 实现，取代了早期的 ESLint）。配置在
+> `.oxlintrc.json` / `.oxfmtrc.json`。oxfmt 仍是 Beta，因此版本**锁死不加 `^`**。
 
 ## 技术架构
 
@@ -145,6 +152,42 @@ Today-UI 是一个基于 Vue 3 的组件库，目标是实现微软的 Fluent De
 3. 使用 `*.story.vue` 文件添加文档示例
 4. 运行 `pnpm build` 验证所有构建工作正常
 5. 使用 `pnpm test` 进行组件测试
+
+## 发布流程
+
+两条独立的流水线，都由 push 触发：
+
+| 工作流 | 触发 | 产物 |
+|--------|------|------|
+| `page-publish.yml` | push 到 `main` | GitHub Pages 文档站 |
+| `npm-publish.yml` | push 到 `release`，且**提交标题含 `chore(release)`** | npm 包 + git tag + GitHub Release |
+
+日常开发在 `dev` 上，两条流水线都要靠合并才触发。
+
+### 发版（npm）
+
+`release` 分支**只用来发版**。闸门判断的是本次推送的**最后一个提交**的标题，
+所以合并过来之后要补一个带标题的提交 —— 正好就是升版本号那个：
+
+```bash
+git checkout release
+git merge main
+pnpm version patch --no-git-tag-version    # 只改 package.json，不打 tag
+git commit -am "chore(release): $(node -p "require('./package.json').version")"
+git push origin release
+```
+
+`--no-git-tag-version` 是必须的：tag 由 CI 在**发布成功之后**创建，
+本地先建 tag 会和 CI 打架。
+
+跳过闸门的后果是静默的 —— 推上去什么都不会发生，工作流显示 skipped。
+
+### 文档站（GitHub Pages）
+
+推 `main` 即部署到 https://wflixu.github.io/Today-UI/ 。两个易踩的点：
+
+- **资源路径**：站点在 `/Today-UI/` 子路径下，`histoire.config.ts` 里的 `vite.base` 必须与仓库名一致；换自定义域名要改成 `/`
+- **路由**：用 `routerMode: 'hash'`。GitHub Pages 没有 SPA 回退，history 模式下刷新 story 页会 404
 
 ## 关键模式
 
