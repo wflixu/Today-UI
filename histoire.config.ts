@@ -13,6 +13,20 @@ export default defineConfig({
   plugins: [HstVue()],
   setupFile: 'src/histoire.setup.ts',
   storyMatch: ['**/*.story.vue'],
+
+  // 文档站部署在 https://wflixu.github.io/Today-UI/ 这个**子路径**下。
+  // Histoire 自己的 HistoireConfig 没有 base 选项，只能经 vite 透传。
+  // 不设的话产物里的资源是 /assets/...，会被解析到域名根目录而 404 —— 整个页面白屏。
+  // 换自定义域名时这里要改成 '/'。
+  vite: {
+    base: '/Today-UI/',
+  },
+
+  // 默认的 'history' 需要服务端把未知路径回退到 index.html，GitHub Pages 没有这个能力：
+  // 在某个 story 页刷新、或把链接发给别人，都会拿到 GitHub 的 404 页。
+  // 'hash' 是 Histoire 为「托管服务不支持 history 回退」准备的方案。
+  routerMode: 'hash',
+
   theme: {
     title: 'TodayUI',
     logo: {
