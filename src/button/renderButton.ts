@@ -7,7 +7,6 @@ import { TSpinner } from './Spinner';
  * 基于 Vue 3 的 h 函数
  */
 export const renderButton = (state: ButtonState, slots: ButtonSlots) => {
-  console.log('Rendering Button with state:', state);
   const { iconOnly, iconPosition, loading, loadingText, showSpinner } = state;
   const rootElement = state.as || 'button';
 

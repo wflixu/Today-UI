@@ -44,9 +44,12 @@ export function useFieldClasses(props: {
   return {
     root: cn(fieldClassNames.root, fieldVariants.orientation[orientation]),
     content: fieldClassNames.content,
-    validationMessage:
-      validationState !== 'none'
-        ? cn(fieldClassNames.validationMessage, fieldVariants.validationState[validationState])
-        : undefined,
+    // 基类始终保留（CSS 里 .t-field__validation-message 承载 display/font-size/间距），
+    // 变体类交给映射表 —— validationState.none 本身就是空串，天然「默认不产类名」。
+    // 之前这里用三元把基类一起丢掉了，导致默认状态下的提示文字没有任何样式。
+    validationMessage: cn(
+      fieldClassNames.validationMessage,
+      fieldVariants.validationState[validationState],
+    ),
   };
 }

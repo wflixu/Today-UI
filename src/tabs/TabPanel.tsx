@@ -18,7 +18,6 @@ export default defineComponent({
 
     const inst = getCurrentInstance();
     const key = inst?.vnode.key as string;
-    console.log('setup:', props.title, activeKey);
     const show = computed(() => {
       return unref(activeKey) === key;
     });
