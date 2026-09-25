@@ -182,6 +182,23 @@ git push origin release
 
 跳过闸门的后果是静默的 —— 推上去什么都不会发生，工作流显示 skipped。
 
+#### 发版认证走 OIDC，没有 token
+
+仓库里**不存在也不需要** `NPM_TOKEN`，认证由 npm Trusted Publishing（OIDC）完成。
+npmjs.com 的包设置里必须有一条 Trusted Publisher 记录，三项要与工作流完全一致：
+
+| npm 表单字段 | 值 |
+|---|---|
+| Repository | `wflixu/Today-UI` |
+| Workflow filename | `npm-publish.yml` |
+| Environment name | **留空**（本 job 没有声明 `environment:`） |
+
+> ⚠️ **重命名 `npm-publish.yml` 必须同步改 npm 那边的记录**，否则发布会被拒。
+> 同理，一旦给 job 加上 `environment:`，npm 表单里也必须填上同一个名字。
+
+不用长期 token 是因为 npm 已在 2026-08 收紧 bypass-2FA token 的账号管理能力，
+并计划 2027-01 取消其直接发布能力 —— 那条路正在被关闭。
+
 ### 文档站（GitHub Pages）
 
 推 `main` 即部署到 https://wflixu.github.io/Today-UI/ 。两个易踩的点：

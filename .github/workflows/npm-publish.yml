@@ -2,6 +2,14 @@
 #
 # 发布成功之后才打 tag。构建或发布失败时不会在仓库里留下指向「未发布提交」的标签，
 # 重跑也不会因为 tag 已存在而卡死。
+#
+# 认证走 **npm Trusted Publishing（OIDC）**，不存任何长期 token。
+# 在 npmjs.com 的包设置里要有一条对应的 Trusted Publisher 记录，三项必须与这里一致：
+#     Repository       = wflixu/Today-UI
+#     Workflow filename= npm-publish.yml
+#     Environment name = 留空（本 job 没有声明 environment:）
+# 之所以不用 token：npm 已在 2026-08 收紧 bypass-2FA token 的账号管理能力，
+# 并计划在 2027-01 取消其直接发布能力，长期 token 这条路正在被关闭。
 
 name: npm package publish
 
@@ -30,6 +38,7 @@ jobs:
 
     permissions:
       contents: write # 推送 tag、创建 Release
+      id-token: write # Trusted Publishing：让 npm 校验这次发布确实来自本仓库
     steps:
       - name: CheckOut Code
         uses: actions/checkout@v4
@@ -45,8 +54,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
+          # 刻意不设 registry-url：它会写一个引用 NODE_AUTH_TOKEN 的 .npmrc，
+          # 而 OIDC 下这个变量不存在，一个空 token 会被当成凭据发出去而报 404。
+          # today-ui 是无作用域包，默认 registry 就是 npmjs.org，不需要显式指定。
 
       - name: Read version
         id: version
@@ -74,10 +85,13 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Trusted Publishing 要求 npm ≥ 11.5.2，Node 自带的版本未必够，显式升一次
+      - name: Ensure npm supports trusted publishing
+        run: npm install -g npm@^11.5.2
+
+      # 不再需要 NPM_TOKEN：npm 用 GitHub 签发的 OIDC 令牌校验这次发布来自本仓库
       - name: Publish to npm
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag and create GitHub Release
         env:
