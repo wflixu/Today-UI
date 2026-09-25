@@ -1,7 +1,7 @@
 import { computed, defineComponent, SlotsType } from 'vue';
 import { helperTextProps, type HelperTextSlots } from './HelperText.types';
 import { useHelperText } from './useHelperText';
-import { useHelperTextStyles } from './useHelperTextStyles.styles';
+import { useHelperTextClasses } from './useHelperTextClasses';
 import { renderHelperText } from './renderHelperText';
 
 /**
@@ -12,40 +12,51 @@ import { renderHelperText } from './renderHelperText';
  *
  * @example
  * ```vue
- * <Field>
+ * <TField>
  *   <template #label>
- *     <Label for="password">密码</Label>
+ *     <TLabel for="password">密码</TLabel>
  *   </template>
- *   <Input id="password" type="password" />
+ *   <TInput id="password" type="password" />
  *   <template #helperText>
- *     <HelperText>密码长度至少 8 位，包含字母和数字</HelperText>
+ *     <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
  *   </template>
- * </Field>
+ * </TField>
  * ```
  */
-export const HelperText = defineComponent({
-    name: 'HelperText',
+export const THelperText = defineComponent({
+  name: 'THelperText',
 
-    props: helperTextProps,
+  props: helperTextProps,
 
-    slots: Object as SlotsType<HelperTextSlots>,
+  slots: Object as SlotsType<HelperTextSlots>,
 
-    setup(props, { expose, slots }) {
-        // Compute the complete state by applying hooks
-        const state = computed(() => {
-            const helperTextState = useHelperText(props);
-            useHelperTextStyles(helperTextState);
-            return helperTextState;
-        });
+  setup(props, { expose, slots }) {
+    // Compute the complete state by applying hooks
+    const state = computed(() => {
+      const helperTextState = useHelperText(props);
 
-        // Expose the component's public API
-        expose({
-            state,
-        });
+      // 使用纯 CSS 类名 Hook
+      const classes = useHelperTextClasses({
+        disabled: helperTextState.disabled,
+        validationState: helperTextState.validationState,
+      });
 
-        // Render function
-        return () => renderHelperText(state.value, slots);
-    },
+      // 应用类名到状态
+      if (helperTextState.root) {
+        helperTextState.root.className = classes;
+      }
+
+      return helperTextState;
+    });
+
+    // Expose the component's public API
+    expose({
+      state,
+    });
+
+    // Render function
+    return () => renderHelperText(state.value, slots);
+  },
 });
 
-export default HelperText;
+export default THelperText;

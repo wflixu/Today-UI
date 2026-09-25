@@ -5,9 +5,13 @@ import { useCore } from './use-core';
 import { useLazyLoad } from './use-lazy-load';
 import { generateInnerTree } from './util';
 
-export const DEFAULT_TREE_PLUGINS:PluginFn[] = [useToggle()];
+export const DEFAULT_TREE_PLUGINS: PluginFn[] = [useToggle()];
 
-export function useTree(tree: ITreeNode[], plugins: PluginFn[] = [], context: SetupContext): Partial<IUseTree> {
+export function useTree(
+  tree: ITreeNode[],
+  plugins: PluginFn[] = [],
+  context: SetupContext,
+): Partial<IUseTree> {
   const treeData = ref<IInnerTreeNode[]>(generateInnerTree(tree));
   const core: IUseCore = useCore()(treeData);
 

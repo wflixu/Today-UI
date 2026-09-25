@@ -1,90 +1,81 @@
-.t-dialog {
-  border: 1px solid #999;
-  display: grid;
-  grid-template-rows: 32px 1fr 32px;
-  inset: 0px;
-  padding: 24px;
-  margin: auto;
-  border-style: solid;
-  overflow: unset;
-  border-width: 1px;
-  border-top-color: var(--colorTransparentStroke);
-  border-right-color: var(--colorTransparentStroke);
-  border-bottom-color: var(--colorTransparentStroke);
-  border-left-color: var(--colorTransparentStroke);
-  border-bottom-right-radius: var(--borderRadiusXLarge);
-  border-bottom-left-radius: var(--borderRadiusXLarge);
-  border-top-right-radius: var(--borderRadiusXLarge);
-  border-top-left-radius: var(--borderRadiusXLarge);
-  display: block;
-  user-select: unset;
-  visibility: unset;
-  position: fixed;
-  height: fit-content;
-  max-width: 600px;
-  max-height: 100vh;
-  box-sizing: border-box;
-  background-color: var(--colorNeutralBackground1);
-  color: var(--colorNeutralForeground1);
-
-  &-body {
-    overflow: unset;
-    gap: 8px;
-    display: grid;
-    max-height: calc(100vh - 48px);
-    box-sizing: border-box;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr 1fr auto;
-  }
-
-  .header {
-    font-family: var(--fontFamilyBase);
-    font-size: var(--fontSizeBase500);
-    font-weight: var(--fontWeightSemibold);
-    line-height: var(--lineHeightBase500);
-    margin: 0px;
-    grid-area: 1 / 1 / 1 / 3;
-  }
-
-  .content {
-    padding-top: var(--strokeWidthThick);
-    padding-right: var(--strokeWidthThick);
-    padding-bottom: var(--strokeWidthThick);
-    padding-left: var(--strokeWidthThick);
-    margin-top: calc(var(--strokeWidthThick) * -1);
-    margin-right: calc(var(--strokeWidthThick) * -1);
-    margin-bottom: calc(var(--strokeWidthThick) * -1);
-    margin-left: calc(var(--strokeWidthThick) * -1);
-    font-family: var(--fontFamilyBase);
-    font-size: var(--fontSizeBase300);
-    font-weight: var(--fontWeightRegular);
-    line-height: var(--lineHeightBase300);
-    overflow-y: auto;
-    min-height: 32px;
-    box-sizing: border-box;
-    grid-area: 2 / 1 / 2 / 4;
-  }
-
-
-  .actions {
-    grid-column-start: 2;
-    grid-column-end: 4;
-    justify-self: end;
-    gap: 8px;
-    height: fit-content;
-    box-sizing: border-box;
-    display: flex;
-    grid-row: 3 / 3;
-  }
-}
+/**
+ * Dialog 样式
+ *
+ * 宽度不在这里硬编码 —— 由组件的 `width` / `size` prop 决定，经内联样式下发。
+ * 迁移前这里写死 max-width: 600px，与 width prop 的默认值 800px 互相矛盾，
+ * 导致该 prop 完全失效。
+ */
 
 .t-overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
+  z-index: var(--t-z-index-dialog);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacingVerticalXXL) var(--spacingHorizontalXXL);
   overflow: auto;
-  background-color: #00000080;
-  z-index: 1000;
+
+  background-color: var(--colorBackgroundOverlay);
+}
+
+.t-dialog {
+  box-sizing: border-box;
+  max-height: 100%;
+  overflow: hidden;
+
+  border: var(--strokeWidthThin) solid var(--colorNeutralStroke2);
+  border-radius: var(--borderRadiusXLarge);
+  background-color: var(--colorNeutralBackground1);
+  color: var(--colorNeutralForeground1);
+  box-shadow: var(--shadow64);
+
+  font-family: var(--fontFamilyBase);
+}
+
+.t-dialog-body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  gap: var(--spacingVerticalM);
+  box-sizing: border-box;
+  padding: var(--spacingVerticalXXL) var(--spacingHorizontalXXL);
+  max-height: calc(100vh - 48px);
+}
+
+.t-dialog__header {
+  font-size: var(--fontSizeBase500);
+  font-weight: var(--fontWeightSemibold);
+  line-height: var(--lineHeightBase500);
+  margin: 0;
+}
+
+.t-dialog__content {
+  box-sizing: border-box;
+  min-height: 32px;
+  overflow-y: auto;
+
+  font-size: var(--fontSizeBase300);
+  font-weight: var(--fontWeightRegular);
+  line-height: var(--lineHeightBase300);
+}
+
+.t-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacingHorizontalS);
+}
+
+/*
+ * 尺寸类名（.t-dialog--small / --large）由组件下发，但这里不定义规则 ——
+ * 宽度由内联样式控制，类名仅作为使用者覆盖的钩子。
+ */
+
+/* ========== 减少动效偏好 ========== */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-overlay {
+    scroll-behavior: auto;
+  }
 }

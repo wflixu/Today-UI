@@ -1,50 +1,74 @@
 /**
- * Tooltip Component Styles
+ * Tooltip 样式
  *
- * Griffel handles all static styles:
- * - Base styles (root)
- * - Visibility state (visible)
- * - Relationship variants (label, inaccessible)
- * - Arrow styling
- * - Animation (opacity, transform)
- * - Typography (font, size, weight, line-height)
- * - Colors (background, foreground, border)
- * - Spacing (padding)
- * - Sizing (maxWidth)
+ * 迁移前这个文件里 `.t-tooltip` 与 `.t-tooltip__content` 都是**空规则**，
+ * 注释还写着「All styles applied by Griffel」—— 但 Griffel 早已移除。
+ * 结果是 Tooltip 完全没有背景、阴影与圆角，视觉上是坏的。这里补齐。
  *
- * CSS is ONLY used for dynamic positioning based on data-placement:
- * - Arrow positioning adjustments
- * - Trigger element wrapper
+ * 浮层容器同时带 `.t-popover__content`（提供定位与基础浮层外观）
+ * 与 `.t-tooltip`（提供 tooltip 特有配色）。用复合选择器提高特异性，
+ * 保证不受引入顺序影响。
  */
 
-/* Semantic base class */
-.t-tooltip {
-  /* All styles applied by Griffel */
+.t-popover__content.t-tooltip {
+  padding: var(--spacingVerticalSNudge) var(--spacingHorizontalMNudge);
+  border: none;
+  border-radius: var(--borderRadiusMedium);
+
+  background-color: var(--colorNeutralBackgroundInverted);
+  color: var(--colorNeutralForegroundInverted);
+  box-shadow: var(--shadow8);
+
+  font-size: var(--fontSizeBase200);
+  line-height: var(--lineHeightBase200);
 }
 
-/* Content wrapper */
+/* ========== relationship 变体 ========== */
+/* 与基础规则特异性相同，靠源码顺序覆盖（popover.css 在前，本文件在后） */
+
+.t-popover__content.t-tooltip--label {
+  background-color: var(--colorBrandBackground);
+  color: var(--colorNeutralForegroundOnBrand);
+}
+
+.t-popover__content.t-tooltip--inaccessible {
+  background-color: var(--colorNeutralBackground3);
+  color: var(--colorNeutralForeground1);
+}
+
+/* ========== 内容与箭头 ========== */
+
 .t-tooltip__content {
-  /* Content container */
+  /* 换行与最大宽度由内联样式下发（对应 maxWidth / wrapText 两个 prop） */
+  word-break: break-word;
 }
 
-/* Arrow positioning based on data-placement attribute */
-.t-tooltip__arrow[data-placement^="top"] {
-  bottom: -4px;
+/* 箭头位置由 Popover 的内联样式计算，这里只管尺寸与配色 */
+.t-tooltip__arrow {
+  width: 8px;
+  height: 8px;
+  background-color: var(--colorNeutralBackgroundInverted);
+  transform: rotate(45deg);
 }
 
-.t-tooltip__arrow[data-placement^="bottom"] {
-  top: -4px;
+.t-tooltip--label .t-tooltip__arrow {
+  background-color: var(--colorBrandBackground);
 }
 
-.t-tooltip__arrow[data-placement^="left"] {
-  right: -4px;
+.t-tooltip--inaccessible .t-tooltip__arrow {
+  background-color: var(--colorNeutralBackground3);
 }
 
-.t-tooltip__arrow[data-placement^="right"] {
-  left: -4px;
-}
+/* ========== 触发元素包装器 ========== */
 
-/* Trigger element wrapper */
 .t-tooltip-trigger {
   display: inline-block;
+}
+
+/* ========== 减少动效偏好 ========== */
+
+@media (prefers-reduced-motion: reduce) {
+  .t-popover__content.t-tooltip {
+    transition-duration: 0.01ms;
+  }
 }

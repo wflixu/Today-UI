@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const CubeTreeFilledIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -14,7 +14,7 @@ const CubeTreeFilledIcon = createSvgIcon({
       ></path>
     </svg>
   ),
-  displayName: "CubeTreeFilledIcon",
+  displayName: 'CubeTreeFilledIcon',
 });
 
 export default CubeTreeFilledIcon;

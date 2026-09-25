@@ -1,12 +1,12 @@
-import { defineComponent, type PropType, toRefs, inject } from "vue";
+import { defineComponent, type PropType, toRefs, inject } from 'vue';
 
-import { IconToggle } from "./icon";
+import { IconToggle } from './icon';
 
-import type { IInnerTreeNode, ITreeNode, IUseTree } from "./type";
-import { USE_TREE_TOKEN, useNamespace } from "./util";
+import type { IInnerTreeNode, ITreeNode, IUseTree } from './type';
+import { USE_TREE_TOKEN, useNamespace } from './util';
 
 export default defineComponent({
-  name: "TTreeNodeToggle",
+  name: 'TTreeNodeToggle',
   props: {
     data: {
       type: Object as PropType<IInnerTreeNode>,
@@ -16,15 +16,15 @@ export default defineComponent({
   setup(props) {
     const { data } = toRefs(props);
     const { toggleNode } = inject(USE_TREE_TOKEN) as Partial<IUseTree>;
-    const ns = useNamespace("file-tree");
+    const ns = useNamespace('file-tree');
 
     return () => {
       return (
         <span
           class={[
-            ns.e("node-toggle"),
-            data.value?.disableToggle && "toggle-disabled",
-            data.value?.loading && "loading",
+            ns.e('node-toggle'),
+            data.value?.disableToggle && 'toggle-disabled',
+            data.value?.loading && 'loading',
           ]}
           onClick={(event: MouseEvent) => {
             event.stopPropagation();
@@ -35,12 +35,9 @@ export default defineComponent({
           }}
         >
           {data.value.isLeaf ? (
-            <span class={ns.e("node-indent")} />
+            <span class={ns.e('node-indent')} />
           ) : (
-            <IconToggle
-              expanded={data.value.expanded}
-              loading={data.value.loading}
-            />
+            <IconToggle expanded={data.value.expanded} loading={data.value.loading} />
           )}
         </span>
       );

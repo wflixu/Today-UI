@@ -1,7 +1,7 @@
 import { computed, defineComponent, SlotsType } from 'vue';
 import { fieldProps, type FieldSlots } from './Field.types';
 import { useField } from './useField';
-import { useFieldStyles } from './useFieldStyles.styles';
+import { useFieldClasses } from './useFieldClasses';
 import { renderField } from './renderField';
 
 /**
@@ -11,40 +11,65 @@ import { renderField } from './renderField';
  *
  * @example
  * ```vue
- * <Field>
+ * <TField>
  *   <template #label>
- *     <Label for="email" required>Email address</Label>
+ *     <TLabel for="email" required>Email address</TLabel>
  *   </template>
- *   <Input id="email" v-model="email" type="email" />
+ *   <TInput id="email" v-model="email" type="email" />
  *   <template #helperText>
- *     <HelperText>Please enter your work email</HelperText>
+ *     <THelperText>Please enter your work email</THelperText>
  *   </template>
- * </Field>
+ * </TField>
  * ```
  */
-export const Field = defineComponent({
-    name: 'Field',
+export const TField = defineComponent({
+  name: 'TField',
 
-    props: fieldProps,
+  props: fieldProps,
 
-    slots: Object as SlotsType<FieldSlots>,
+  slots: Object as SlotsType<FieldSlots>,
 
-    setup(props, { expose, slots }) {
-        // Compute the complete state by applying hooks
-        const state = computed(() => {
-            const fieldState = useField(props);
-            useFieldStyles(fieldState);
-            return fieldState;
-        });
+  setup(props, { expose, slots }) {
+    // Compute the complete state by applying hooks
+    const state = computed(() => {
+      const fieldState = useField(props, slots);
 
-        // Expose the component's public API
-        expose({
-            state,
-        });
+      // 使用纯 CSS 类名 Hook
+      const classes = useFieldClasses({
+        orientation: fieldState.orientation,
+        validationState: fieldState.validationState as any,
+      });
 
-        // Render function
-        return () => renderField(state.value, slots);
-    },
+      // 应用类名到状态
+      if (fieldState.root) {
+        fieldState.root.className = classes.root;
+      }
+
+      if (fieldState.content) {
+        fieldState.content = {
+          ...fieldState.content,
+          className: classes.content,
+        };
+      }
+
+      if (fieldState.validationMessageProps && classes.validationMessage) {
+        fieldState.validationMessageProps = {
+          ...fieldState.validationMessageProps,
+          className: classes.validationMessage,
+        };
+      }
+
+      return fieldState;
+    });
+
+    // Expose the component's public API
+    expose({
+      state,
+    });
+
+    // Render function
+    return () => renderField(state.value, slots);
+  },
 });
 
-export default Field;
+export default TField;

@@ -12,55 +12,159 @@ const DEST_DIR = path.join(__dirname, '../src/icon/components');
 // 要转录的图标列表（约100个常用图标）
 const ICONS_TO_MIGRATE = [
   // 基础操作
-  'AddIcon', 'DeleteIcon', 'EditIcon', 'SaveIcon', 'CancelIcon', 'AcceptIcon',
-  'CheckMarkIcon', 'CopyIcon', 'PasteIcon', 'CutIcon', 'RedoIcon', 'UndoIcon',
-  'ClearIcon', 'CloseIcon', 'DismissIcon', 'FilterIcon', 'SortIcon',
+  'AddIcon',
+  'DeleteIcon',
+  'EditIcon',
+  'SaveIcon',
+  'CancelIcon',
+  'AcceptIcon',
+  'CheckMarkIcon',
+  'CopyIcon',
+  'PasteIcon',
+  'CutIcon',
+  'RedoIcon',
+  'UndoIcon',
+  'ClearIcon',
+  'CloseIcon',
+  'DismissIcon',
+  'FilterIcon',
+  'SortIcon',
 
   // 搜索和缩放
-  'SearchIcon', 'ZoomInIcon', 'ZoomOutIcon', 'FullScreenIcon', 'ZoomToFitIcon',
+  'SearchIcon',
+  'ZoomInIcon',
+  'ZoomOutIcon',
+  'FullScreenIcon',
+  'ZoomToFitIcon',
 
   // 文件操作
-  'PrintIcon', 'DownloadIcon', 'UploadIcon', 'ShareIcon', 'LinkIcon', 'UnlinkIcon', 'RefreshIcon',
+  'PrintIcon',
+  'DownloadIcon',
+  'UploadIcon',
+  'ShareIcon',
+  'LinkIcon',
+  'UnlinkIcon',
+  'RefreshIcon',
 
   // 导航箭头
-  'ArrowUpIcon', 'ArrowDownIcon', 'ArrowLeftIcon', 'ArrowRightIcon',
-  'ChevronUpIcon', 'ChevronDownIcon', 'ChevronLeftIcon', 'ChevronRightIcon',
-  'ChevronUpSmallIcon', 'ChevronDownSmallIcon', 'ChevronLeftSmallIcon', 'ChevronRightSmallIcon',
-  'ChevronUpMedIcon', 'ChevronDownMedIcon', 'ChevronLeftMedIcon', 'ChevronRightMedIcon',
-  'BackIcon', 'ForwardIcon', 'UpIcon', 'DownIcon',
+  'ArrowUpIcon',
+  'ArrowDownIcon',
+  'ArrowLeftIcon',
+  'ArrowRightIcon',
+  'ChevronUpIcon',
+  'ChevronDownIcon',
+  'ChevronLeftIcon',
+  'ChevronRightIcon',
+  'ChevronUpSmallIcon',
+  'ChevronDownSmallIcon',
+  'ChevronLeftSmallIcon',
+  'ChevronRightSmallIcon',
+  'ChevronUpMedIcon',
+  'ChevronDownMedIcon',
+  'ChevronLeftMedIcon',
+  'ChevronRightMedIcon',
+  'BackIcon',
+  'ForwardIcon',
+  'UpIcon',
+  'DownIcon',
 
   // 展开/折叠
-  'ExpandIcon', 'CollapseIcon',
+  'ExpandIcon',
+  'CollapseIcon',
 
   // 状态图标
-  'ErrorIcon', 'WarningIcon', 'InfoIcon', 'SuccessIcon', 'BlockedIcon',
-  'CirclePauseIcon', 'CircleStopIcon', 'StatusCircleFullIcon', 'StatusTriangleIcon',
-  'UnknownIcon', 'ErrorBadgeIcon', 'CompletedIcon',
+  'ErrorIcon',
+  'WarningIcon',
+  'InfoIcon',
+  'SuccessIcon',
+  'BlockedIcon',
+  'CirclePauseIcon',
+  'CircleStopIcon',
+  'StatusCircleFullIcon',
+  'StatusTriangleIcon',
+  'UnknownIcon',
+  'ErrorBadgeIcon',
+  'CompletedIcon',
 
   // 文件和文件夹
-  'FolderIcon', 'FolderOpenIcon', 'FileCSSIcon', 'FileHTMLIcon', 'FileJSIcon',
-  'FileCodeIcon', 'FileSymlinkIcon', 'ImageIcon', 'VideoIcon', 'AudioIcon',
-  'AttachmentIcon', 'PageIcon', 'DocumentIcon',
+  'FolderIcon',
+  'FolderOpenIcon',
+  'FileCSSIcon',
+  'FileHTMLIcon',
+  'FileJSIcon',
+  'FileCodeIcon',
+  'FileSymlinkIcon',
+  'ImageIcon',
+  'VideoIcon',
+  'AudioIcon',
+  'AttachmentIcon',
+  'PageIcon',
+  'DocumentIcon',
 
   // 编辑格式
-  'BoldIcon', 'ItalicIcon', 'UnderlineIcon', 'StrikethroughIcon',
-  'FontSizeIcon', 'FontColorIcon', 'FontDecreaseIcon', 'FontIncreaseIcon',
-  'AlignLeftIcon', 'AlignCenterIcon', 'AlignRightIcon', 'AlignJustifyIcon',
-  'BulletListIcon', 'NumberListIcon', 'IndentIcon', 'OutdentIcon', 'LineSpacingIcon',
+  'BoldIcon',
+  'ItalicIcon',
+  'UnderlineIcon',
+  'StrikethroughIcon',
+  'FontSizeIcon',
+  'FontColorIcon',
+  'FontDecreaseIcon',
+  'FontIncreaseIcon',
+  'AlignLeftIcon',
+  'AlignCenterIcon',
+  'AlignRightIcon',
+  'AlignJustifyIcon',
+  'BulletListIcon',
+  'NumberListIcon',
+  'IndentIcon',
+  'OutdentIcon',
+  'LineSpacingIcon',
 
   // 媒体播放
-  'PlayIcon', 'PauseIcon', 'StopIcon', 'NextIcon', 'PreviousIcon',
-  'FastForwardIcon', 'RewindIcon', 'MuteIcon', 'UnmuteIcon', 'VolumeIcon',
+  'PlayIcon',
+  'PauseIcon',
+  'StopIcon',
+  'NextIcon',
+  'PreviousIcon',
+  'FastForwardIcon',
+  'RewindIcon',
+  'MuteIcon',
+  'UnmuteIcon',
+  'VolumeIcon',
 
   // 用户和账户
-  'ContactIcon', 'GroupIcon', 'PeopleIcon', 'PartyLeaderIcon', 'PermissionsIcon',
-  'ShieldIcon', 'LockIcon', 'UnlockIcon', 'ProtectedDocumentIcon', 'SecurityIcon',
+  'ContactIcon',
+  'GroupIcon',
+  'PeopleIcon',
+  'PartyLeaderIcon',
+  'PermissionsIcon',
+  'ShieldIcon',
+  'LockIcon',
+  'UnlockIcon',
+  'ProtectedDocumentIcon',
+  'SecurityIcon',
 
   // 其他常用
-  'SettingsIcon', 'GearIcon', 'ViewIcon', 'HideIcon', 'EyeIcon',
-  'HeartIcon', 'StarIcon', 'FlagIcon', 'PinIcon', 'TagIcon',
-  'MailIcon', 'CalendarIcon', 'ClockIcon', 'TimerIcon', 'AlarmClockIcon',
-  'LocationIcon', 'MapIcon', 'HomeIcon', 'FavoritedIcon', 'FavoriteIcon',
+  'SettingsIcon',
+  'GearIcon',
+  'ViewIcon',
+  'HideIcon',
+  'EyeIcon',
+  'HeartIcon',
+  'StarIcon',
+  'FlagIcon',
+  'PinIcon',
+  'TagIcon',
+  'MailIcon',
+  'CalendarIcon',
+  'ClockIcon',
+  'TimerIcon',
+  'AlarmClockIcon',
+  'LocationIcon',
+  'MapIcon',
+  'HomeIcon',
+  'FavoritedIcon',
+  'FavoriteIcon',
 ];
 
 /**
@@ -71,8 +175,10 @@ function convertReactToVue(reactCode, iconName) {
     // 移除 React 导入
     .replace(/import \* as React from ['"]react['"];\n/, '')
     // 修改 createSvgIcon 导入路径
-    .replace(/import createSvgIcon from ['"]\.\.\/utils\/createSvgIcon['"];/,
-      "import createSvgIcon from \"../utils/createSvgIcon\";")
+    .replace(
+      /import createSvgIcon from ['"]\.\.\/utils\/createSvgIcon['"];/,
+      'import createSvgIcon from "../utils/createSvgIcon";',
+    )
     // 移除 aria-hidden 属性
     .replace(/\s*aria-hidden=["']true["']\s*/g, ' ')
     // 移除 focusable 属性
@@ -129,7 +235,7 @@ function main() {
   let skipped = 0;
   let errors = 0;
 
-  ICONS_TO_MIGRATE.forEach(iconName => {
+  ICONS_TO_MIGRATE.forEach((iconName) => {
     try {
       const result = migrateIcon(iconName);
       if (result) {

@@ -3,7 +3,7 @@
  * 基于 @fluentui/tokens 的 teamsLightTheme
  */
 
-:root[data-theme="teams-light"] {
+:root[data-theme='teams-light'] {
   /* Teams 品牌色 */
   --colorBrandForeground1: #6264a7;
   --colorBrandForeground2: #5c5fc0;

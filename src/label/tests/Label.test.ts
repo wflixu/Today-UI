@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import Label from '../Label';
-import Input from '../../input/Input';
+import TLabel from '../Label';
+import TInput from '../../input/Input';
 
 describe('Label Component', () => {
   describe('Props Rendering', () => {
     it('should render with default props', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test' },
-        slots: { default: 'Test Label' }
+        slots: { default: 'Test Label' },
       });
 
       expect(wrapper.find('label').exists()).toBe(true);
@@ -20,10 +20,10 @@ describe('Label Component', () => {
     it('should render size variants correctly', () => {
       const sizes = ['small', 'medium', 'large'] as const;
 
-      sizes.forEach(size => {
-        const wrapper = mount(Label, {
+      sizes.forEach((size) => {
+        const wrapper = mount(TLabel, {
           props: { for: 'test', size },
-          slots: { default: 'Test' }
+          slots: { default: 'Test' },
         });
 
         expect(wrapper.find('label').classes()).toContain('t-label');
@@ -33,10 +33,10 @@ describe('Label Component', () => {
     it('should apply weight variants correctly', () => {
       const weights = ['normal', 'semibold', 'bold'] as const;
 
-      weights.forEach(weight => {
-        const wrapper = mount(Label, {
+      weights.forEach((weight) => {
+        const wrapper = mount(TLabel, {
           props: { for: 'test', weight },
-          slots: { default: 'Test' }
+          slots: { default: 'Test' },
         });
 
         expect(wrapper.find('label').exists()).toBe(true);
@@ -44,9 +44,9 @@ describe('Label Component', () => {
     });
 
     it('should show required indicator when required=true', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', required: true },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       const indicator = wrapper.find('.t-label__required-indicator');
@@ -55,12 +55,12 @@ describe('Label Component', () => {
     });
 
     it('should support custom required indicator slot', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', required: true },
         slots: {
           default: 'Test',
-          requiredIndicator: '(必填)'
-        }
+          requiredIndicator: '(必填)',
+        },
       });
 
       const indicator = wrapper.find('.t-label__required-indicator');
@@ -68,26 +68,26 @@ describe('Label Component', () => {
     });
 
     it('should apply disabled state', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', disabled: true },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       expect(wrapper.find('label').classes()).toContain('t-label');
     });
 
     it('should support label prop', () => {
-      const wrapper = mount(Label, {
-        props: { for: 'test', label: 'Label from prop' }
+      const wrapper = mount(TLabel, {
+        props: { for: 'test', label: 'Label from prop' },
       });
 
       expect(wrapper.find('label').text()).toBe('Label from prop');
     });
 
     it('should prioritize slot over prop', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', label: 'Label from prop' },
-        slots: { default: 'Label from slot' }
+        slots: { default: 'Label from slot' },
       });
 
       expect(wrapper.find('label').text()).toBe('Label from slot');
@@ -98,11 +98,9 @@ describe('Label Component', () => {
     it('should associate label with input via for/id', () => {
       const TestComponent = defineComponent({
         setup() {
-          return () => h('div', [
-            h(Label, { for: 'email' }, () => 'Email'),
-            h(Input, { id: 'email' })
-          ]);
-        }
+          return () =>
+            h('div', [h(TLabel, { for: 'email' }, () => 'Email'), h(TInput, { id: 'email' })]);
+        },
       });
 
       const wrapper = mount(TestComponent);
@@ -111,9 +109,9 @@ describe('Label Component', () => {
     });
 
     it('should hide required indicator from screen readers', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', required: true },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       const indicator = wrapper.find('.t-label__required-indicator');
@@ -121,9 +119,9 @@ describe('Label Component', () => {
     });
 
     it('should apply disabled attribute when disabled', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', disabled: true },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       // Note: HTML label elements don't have a disabled attribute
@@ -134,21 +132,21 @@ describe('Label Component', () => {
 
   describe('Styles and Classes', () => {
     it('should apply semantic t-label class', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test' },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       expect(wrapper.find('label').classes()).toContain('t-label');
     });
 
     it('should merge custom className with Griffel classes', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: {
           for: 'test',
-          class: 'custom-class'
+          class: 'custom-class',
         },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       expect(wrapper.find('label').classes()).toContain('t-label');
@@ -156,9 +154,9 @@ describe('Label Component', () => {
     });
 
     it('should not generate modifier classes for size variants', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', size: 'small' },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       const classes = wrapper.find('label').classes();
@@ -169,9 +167,9 @@ describe('Label Component', () => {
     });
 
     it('should not generate modifier classes for weight variants', () => {
-      const wrapper = mount(Label, {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', weight: 'bold' },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       const classes = wrapper.find('label').classes();
@@ -181,15 +179,15 @@ describe('Label Component', () => {
       expect(classes).toContain('t-label');
     });
 
-    it('should not generate modifier classes for disabled state', () => {
-      const wrapper = mount(Label, {
+    it('should apply disabled state class', () => {
+      const wrapper = mount(TLabel, {
         props: { for: 'test', disabled: true },
-        slots: { default: 'Test' }
+        slots: { default: 'Test' },
       });
 
       const classes = wrapper.find('label').classes();
-      // Should NOT have disabled class (removed in redesign)
-      expect(classes).not.toContain('disabled');
+      // Should have disabled class for styling
+      expect(classes).toContain('disabled');
       // Should have semantic class
       expect(classes).toContain('t-label');
     });
@@ -199,11 +197,12 @@ describe('Label Component', () => {
     it('should work correctly with Input component', () => {
       const TestComponent = defineComponent({
         setup() {
-          return () => h('div', [
-            h(Label, { for: 'test-input', size: 'large', required: true }, () => 'Test Label'),
-            h(Input, { id: 'test-input', size: 'large' })
-          ]);
-        }
+          return () =>
+            h('div', [
+              h(TLabel, { for: 'test-input', size: 'large', required: true }, () => 'Test Label'),
+              h(TInput, { id: 'test-input', size: 'large' }),
+            ]);
+        },
       });
 
       const wrapper = mount(TestComponent);

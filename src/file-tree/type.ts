@@ -1,12 +1,5 @@
-
-import type {
-  ComputedRef,
-  ExtractPropTypes,
-  PropType,
-  Ref,
-  SetupContext,
-} from "vue";
-import type { treeNodeProps, treeProps } from "./props";
+import type { ComputedRef, ExtractPropTypes, PropType, Ref, SetupContext } from 'vue';
+import type { treeNodeProps, treeProps } from './props';
 
 export type UseNamespace = {
   b: () => string;
@@ -15,12 +8,12 @@ export type UseNamespace = {
   em: (el: string, mo: string) => string;
 };
 
-export type ICheckStrategy = "upward" | "downward" | "both" | "none";
+export type ICheckStrategy = 'upward' | 'downward' | 'both' | 'none';
 
 export type ICheck = boolean | ICheckStrategy;
 
 export interface ITreeContextMenu {
-  key:string;
+  key: string;
   label: string;
   icon?: string;
 }
@@ -41,7 +34,7 @@ export interface ITreeNode {
   isLeaf?: boolean;
 
   contextMenuType?: string;
-  contextMenu?: ITreeContextMenu[]
+  contextMenu?: ITreeContextMenu[];
 }
 
 export interface IDropType {
@@ -51,7 +44,7 @@ export interface IDropType {
 }
 export type IDragdrop = boolean | IDropType;
 
-export type IOperateItem = "add" | "delete" | "edit";
+export type IOperateItem = 'add' | 'delete' | 'edit';
 
 export type IOperate = boolean | IOperateItem | Array<IOperateItem>;
 
@@ -59,7 +52,7 @@ export type IOperate = boolean | IOperateItem | Array<IOperateItem>;
 export interface IInnerTreeNode extends ITreeNode {
   id: string;
   level: number;
-  idType?: "random";
+  idType?: 'random';
   parentId?: string;
   isLeaf?: boolean;
   parentChildNodeCount?: number;
@@ -71,7 +64,6 @@ export interface IInnerTreeNode extends ITreeNode {
   isHide?: boolean; // 过滤后是否不显示该节点
   matchedText?: string; // 节点匹配的文字（需要高亮显示）
 }
-
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;
 
@@ -86,7 +78,7 @@ export interface IUseCore {
     config?: {
       expanded?: boolean;
       recursive?: boolean;
-    }
+    },
   ) => IInnerTreeNode[];
   clearNodeMap: () => void;
   getParent: (node: IInnerTreeNode) => IInnerTreeNode;
@@ -96,7 +88,7 @@ export interface IUseCore {
   setNodeValue: (
     node: IInnerTreeNode,
     key: keyof IInnerTreeNode,
-    value: valueof<IInnerTreeNode>
+    value: valueof<IInnerTreeNode>,
   ) => void;
   setTree: (newTree: IInnerTreeNode[]) => void;
   getTree: () => IInnerTreeNode[];
@@ -113,7 +105,8 @@ export type IUseTree = {
   treeData: Ref<IInnerTreeNode[]>;
 } & IUseCore &
   IUseToggle &
-  IUseSelect & IUseOperate;
+  IUseSelect &
+  IUseOperate;
 
 export interface IUseLazyLoad {
   lazyLoadNodes: (node: IInnerTreeNode) => void;
@@ -143,7 +136,6 @@ export interface IUseInitSelectCollection {
   getInitSelectedNodes: () => IInnerTreeNode[];
   clearInitSelectedNodes: () => void;
 }
-
 
 export interface IUseOperate {
   insertBefore: (parentNode: IInnerTreeNode, node: ITreeNode, referenceNode?: ITreeNode) => void;

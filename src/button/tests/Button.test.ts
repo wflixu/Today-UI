@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import Button from '../Button';
+import TButton from '../Button';
 import type { ButtonProps } from '../Button.types';
 
 describe('Button 组件', () => {
   describe('Props 渲染', () => {
     it('默认渲染为 button 元素', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         slots: {
-          default: '按钮文本'
-        }
+          default: '按钮文本',
+        },
       });
 
       const button = wrapper.find('button');
@@ -19,9 +19,9 @@ describe('Button 组件', () => {
     });
 
     it('默认外观为 secondary', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { appearance: 'secondary' as ButtonProps['appearance'] },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       const button = wrapper.find('button');
@@ -29,13 +29,19 @@ describe('Button 组件', () => {
     });
 
     describe('appearance 属性', () => {
-      const appearances: Array<ButtonProps['appearance']> = ['primary', 'secondary', 'outline', 'subtle', 'transparent'];
+      const appearances: Array<ButtonProps['appearance']> = [
+        'primary',
+        'secondary',
+        'outline',
+        'subtle',
+        'transparent',
+      ];
 
       appearances.forEach((appearance) => {
         it(`应该渲染 appearance="${appearance}"`, () => {
-          const wrapper = mount(Button, {
+          const wrapper = mount(TButton, {
             props: { appearance },
-            slots: { default: appearance }
+            slots: { default: appearance },
           });
 
           const button = wrapper.find('button');
@@ -50,9 +56,9 @@ describe('Button 组件', () => {
 
       sizes.forEach((size) => {
         it(`应该渲染 size="${size}"`, () => {
-          const wrapper = mount(Button, {
+          const wrapper = mount(TButton, {
             props: { size },
-            slots: { default: size }
+            slots: { default: size },
           });
 
           const button = wrapper.find('button');
@@ -66,9 +72,9 @@ describe('Button 组件', () => {
 
       shapes.forEach((shape) => {
         it(`应该渲染 shape="${shape}"`, () => {
-          const wrapper = mount(Button, {
+          const wrapper = mount(TButton, {
             props: { shape },
-            slots: { default: shape }
+            slots: { default: shape },
           });
 
           const button = wrapper.find('button');
@@ -79,12 +85,12 @@ describe('Button 组件', () => {
 
     describe('iconPosition 属性', () => {
       it('应该在内容前渲染图标（iconPosition="before"）', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: { iconPosition: 'before' },
           slots: {
             default: '文本',
-            icon: '🔍'
-          }
+            icon: '🔍',
+          },
         });
 
         const button = wrapper.find('button');
@@ -94,12 +100,12 @@ describe('Button 组件', () => {
       });
 
       it('应该在内容后渲染图标（iconPosition="after"）', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: { iconPosition: 'after' },
           slots: {
             default: '文本',
-            icon: '→'
-          }
+            icon: '→',
+          },
         });
 
         const button = wrapper.find('button');
@@ -111,9 +117,9 @@ describe('Button 组件', () => {
 
     describe('disabled 属性', () => {
       it('应该在禁用状态下禁用按钮', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: { disabled: true },
-          slots: { default: '禁用按钮' }
+          slots: { default: '禁用按钮' },
         });
 
         const button = wrapper.find('button');
@@ -122,12 +128,12 @@ describe('Button 组件', () => {
 
       it('禁用状态下不应该触发点击事件', async () => {
         const onClick = vi.fn();
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
             disabled: true,
-            onClick
+            onClick,
           },
-          slots: { default: '禁用按钮' }
+          slots: { default: '禁用按钮' },
         });
 
         const button = wrapper.find('button');
@@ -138,12 +144,12 @@ describe('Button 组件', () => {
 
     describe('disabledFocusable 属性', () => {
       it('应该设置 tabindex="-1" 当 disabledFocusable=true', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
             disabled: true,
-            disabledFocusable: true
+            disabledFocusable: true,
           },
-          slots: { default: '按钮' }
+          slots: { default: '按钮' },
         });
 
         const button = wrapper.find('button');
@@ -151,12 +157,12 @@ describe('Button 组件', () => {
       });
 
       it('不应该设置 tabindex 当 disabledFocusable=false', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
             disabled: true,
-            disabledFocusable: false
+            disabledFocusable: false,
           },
-          slots: { default: '按钮' }
+          slots: { default: '按钮' },
         });
 
         const button = wrapper.find('button');
@@ -166,9 +172,9 @@ describe('Button 组件', () => {
 
     describe('loading 属性', () => {
       it('应该显示加载状态', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: { loading: true },
-          slots: { default: '加载中' }
+          slots: { default: '加载中' },
         });
 
         const button = wrapper.find('button');
@@ -177,12 +183,12 @@ describe('Button 组件', () => {
 
       it('loading 状态下不应该触发点击事件', async () => {
         const onClick = vi.fn();
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
             loading: true,
-            onClick
+            onClick,
           },
-          slots: { default: '加载中' }
+          slots: { default: '加载中' },
         });
 
         const button = wrapper.find('button');
@@ -191,12 +197,12 @@ describe('Button 组件', () => {
       });
 
       it('应该显示加载文本（loadingText）', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
             loading: true,
-            loadingText: '处理中...'
+            loadingText: '处理中...',
           },
-          slots: { default: '提交' }
+          slots: { default: '提交' },
         });
 
         const button = wrapper.find('button');
@@ -206,14 +212,14 @@ describe('Button 组件', () => {
 
     describe('as 属性', () => {
       it('应该渲染为 <a> 元素当 as="a"', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
-            as: 'a'
+            as: 'a',
           },
           attrs: {
-            href: 'https://example.com'
+            href: 'https://example.com',
           },
-          slots: { default: '链接' }
+          slots: { default: '链接' },
         });
 
         const link = wrapper.find('a');
@@ -223,11 +229,11 @@ describe('Button 组件', () => {
       });
 
       it('应该渲染为自定义元素', () => {
-        const wrapper = mount(Button, {
+        const wrapper = mount(TButton, {
           props: {
-            as: 'div'
+            as: 'div',
           },
-          slots: { default: '自定义元素' }
+          slots: { default: '自定义元素' },
         });
 
         const div = wrapper.find('div');
@@ -240,9 +246,9 @@ describe('Button 组件', () => {
   describe('点击事件', () => {
     it('应该触发 onClick 事件', async () => {
       const onClick = vi.fn();
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { onClick },
-        slots: { default: '点击我' }
+        slots: { default: '点击我' },
       });
 
       const button = wrapper.find('button');
@@ -252,9 +258,9 @@ describe('Button 组件', () => {
 
     it('应该传递 MouseEvent 到 onClick 处理器', async () => {
       const onClick = vi.fn();
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { onClick },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       const button = wrapper.find('button');
@@ -265,8 +271,8 @@ describe('Button 组件', () => {
 
   describe('插槽', () => {
     it('应该渲染默认插槽内容', () => {
-      const wrapper = mount(Button, {
-        slots: { default: '默认内容' }
+      const wrapper = mount(TButton, {
+        slots: { default: '默认内容' },
       });
 
       const button = wrapper.find('button');
@@ -274,12 +280,12 @@ describe('Button 组件', () => {
     });
 
     it('应该渲染 icon 插槽', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { iconPosition: 'before' },
         slots: {
           default: '文本',
-          icon: '🔍'
-        }
+          icon: '🔍',
+        },
       });
 
       const button = wrapper.find('button');
@@ -289,11 +295,11 @@ describe('Button 组件', () => {
     });
 
     it('应该渲染为 icon-only 按钮（只有 icon 插槽）', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { shape: 'circular' },
         slots: {
-          icon: '🔍'
-        }
+          icon: '🔍',
+        },
       });
 
       const button = wrapper.find('button');
@@ -301,12 +307,12 @@ describe('Button 组件', () => {
     });
 
     it('应该同时渲染 icon 和 default 插槽', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { iconPosition: 'after' },
         slots: {
           default: '提交',
-          icon: '→'
-        }
+          icon: '→',
+        },
       });
 
       const button = wrapper.find('button');
@@ -318,9 +324,9 @@ describe('Button 组件', () => {
 
   describe('动态 props 更新', () => {
     it('应该响应 appearance prop 变化', async () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { appearance: 'secondary' },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       await wrapper.setProps({ appearance: 'primary' });
@@ -328,9 +334,9 @@ describe('Button 组件', () => {
     });
 
     it('应该响应 disabled prop 变化', async () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: { disabled: false },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       let button = wrapper.find('button');
@@ -343,12 +349,12 @@ describe('Button 组件', () => {
 
     it('应该响应 loading prop 变化', async () => {
       const onClick = vi.fn();
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         props: {
           loading: false,
-          onClick
+          onClick,
         },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       let button = wrapper.find('button');
@@ -367,13 +373,13 @@ describe('Button 组件', () => {
     it('使用 type prop 应该显示警告', () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-      mount(Button, {
+      mount(TButton, {
         props: { type: 'primary' },
-        slots: { default: '按钮' }
+        slots: { default: '按钮' },
       });
 
       expect(consoleSpy).toHaveBeenCalledWith(
-        '[Today-UI Button]: "type" prop is deprecated. Use "appearance" instead.'
+        '[Today-UI Button]: "type" prop is deprecated. Use "appearance" instead.',
       );
 
       consoleSpy.mockRestore();
@@ -382,12 +388,12 @@ describe('Button 组件', () => {
 
   describe('无障碍性相关', () => {
     it('应该支持传递自定义属性', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         attrs: {
           'aria-label': '关闭对话框',
-          'data-testid': 'close-button'
+          'data-testid': 'close-button',
         },
-        slots: { default: '✕' }
+        slots: { default: '✕' },
       });
 
       const button = wrapper.find('button');
@@ -396,9 +402,9 @@ describe('Button 组件', () => {
     });
 
     it('应该支持 name 属性（表单提交）', () => {
-      const wrapper = mount(Button, {
+      const wrapper = mount(TButton, {
         attrs: { name: 'submit-button' },
-        slots: { default: '提交' }
+        slots: { default: '提交' },
       });
 
       const button = wrapper.find('button');
@@ -408,7 +414,7 @@ describe('Button 组件', () => {
 
   describe('边界情况', () => {
     it('应该处理空内容', () => {
-      const wrapper = mount(Button);
+      const wrapper = mount(TButton);
 
       const button = wrapper.find('button');
       expect(button.exists()).toBe(true);
@@ -417,8 +423,8 @@ describe('Button 组件', () => {
 
     it('应该处理超长文本', () => {
       const longText = '这是一个非常非常非常非常长的按钮文本';
-      const wrapper = mount(Button, {
-        slots: { default: longText }
+      const wrapper = mount(TButton, {
+        slots: { default: longText },
       });
 
       const button = wrapper.find('button');
@@ -426,8 +432,8 @@ describe('Button 组件', () => {
     });
 
     it('应该处理 HTML 字符实体', () => {
-      const wrapper = mount(Button, {
-        slots: { default: '<>&"' }
+      const wrapper = mount(TButton, {
+        slots: { default: '<>&"' },
       });
 
       const button = wrapper.find('button');

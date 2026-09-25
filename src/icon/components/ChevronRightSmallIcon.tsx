@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const ChevronRightSmallIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -11,7 +11,7 @@ const ChevronRightSmallIcon = createSvgIcon({
       <path d="M590 7l1017 1017L590 2041l-241-242 775-775-775-775L590 7z" />
     </svg>
   ),
-  displayName: "ChevronRightSmallIcon",
+  displayName: 'ChevronRightSmallIcon',
 });
 
 export default ChevronRightSmallIcon;

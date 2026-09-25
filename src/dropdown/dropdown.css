@@ -1,55 +1,20 @@
-:root {
-  --highlighted: royalblue;
-  --active-unfocused: #d7dce5;
-}
-.t-dropdown-ref.trigger-wrap {
-  padding: 6px 14px;
-  border: none;
-  font-size: 16px;
-  background: none;
-  border-radius: 6px;
-  border: 1px solid var(--active-unfocused);
-  &[data-open],
-  &:hover {
-    background: var(--active-unfocused);
-  }
+/**
+ * Dropdown 样式
+ *
+ * 定位与显隐由 Popover 承担（.t-popover__content 提供浮层外观），
+ * 这里只做 Dropdown 特有的调整。
+ */
+
+/* .t-dropdown-menu 通过 Popover 的 contentClass 追加到浮层容器上。
+   浮层默认带内边距，而菜单项自带内边距，因此这里清零避免双重缩进。 */
+.t-popover__content.t-dropdown-menu {
+  padding: 0;
+  max-width: none;
+  width: max-content;
 }
 
-:root .t-dropdown-menu {
-  background: rgba(255, 255, 255, 0.8);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  width: max-content;
-  outline: 0;
-  &-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: none;
-    width: max-content;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    text-align: left;
-    line-height: 1.8;
-    min-width: 110px;
-    margin: 0;
-    outline: 0;
-    &:hover {
-      background: var(--highlighted);
-      color: white;
-      cursor: pointer;
-    }
-    &:focus {
-      background: var(--highlighted);
-      color: white;
-    }
-    &[data-nested][data-open]:not([data-focus-inside]) {
-      background: var(--highlighted);
-      color: white;
-    }
-    &[data-focus-inside][data-open] {
-      background: var(--active-unfocused);
-    }
-  }
+/* 触发元素由使用者提供，这里只补一个最小可见的默认外观。
+   使用者的类名会被 cloneVNode 合并保留，不会被覆盖。 */
+.t-dropdown-ref {
+  cursor: pointer;
 }

@@ -1,5 +1,7 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+# 推送到 release 分支时：装依赖 → 测试 → 构建 → 发布到 npm → 打 tag + 建 GitHub Release
+#
+# 发布成功之后才打 tag。构建或发布失败时不会在仓库里留下指向「未发布提交」的标签，
+# 重跑也不会因为 tag 已存在而卡死。
 
 name: npm package publish
 
@@ -8,42 +10,84 @@ on:
     branches:
       - release
 
+# 两次推送不要同时发版：后一次排队等待，而不是取消前一次（避免发出半个版本）
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+
+    # 闸门：只有标题带 chore(release) 的提交才会真正发布，
+    # 往 release 推普通提交不会误发。
+    #
+    # 判断的是本次推送的**最后一个**提交（head_commit），所以从 main 合并过来时，
+    # 要让那个合并提交自己带标题：
+    #     git merge main --no-ff -m "chore(release): 0.3.0"
+    # 先 merge 再补一个 bump 提交也可以，只要最后那个提交带标题。
+    if: contains(github.event.head_commit.message, 'chore(release)')
+
+    permissions:
+      contents: write # 推送 tag、创建 Release
     steps:
       - name: CheckOut Code
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           ref: release
+
       - name: Set pnpm
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v4
         with:
-          version: 8.6.12
+          version: 10
+
       - name: Set Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org/
-          cache: "pnpm"
+          cache: 'pnpm'
 
-      - name: Get package version
-        uses: tyankatsu0105/read-package-version-actions@v1
-        id: package-version
+      - name: Read version
+        id: version
+        run: |
+          node -p "'value=' + require('./package.json').version" >> "$GITHUB_OUTPUT"
 
-      - name: Create a tag
-        uses: negz/create-tag@v1
-        with:
-          version: v${{ steps.package-version.outputs.version }}
-          message: "Release v${{ steps.package-version.outputs.version }}"
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # 提前失败：忘记升版本号是最常见的失误，不该等装完依赖、跑完测试才发现
+      - name: Fail fast if version already published
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          if npm view "today-ui@$VERSION" version >/dev/null 2>&1; then
+            echo "::error::today-ui@$VERSION 已存在于 npm"
+            echo "  忘了升版本号 → 改 package.json 的 version 后重新推送"
+            echo "  上次发布成功但打 tag 失败 → 手动执行：git tag v$VERSION && git push origin v$VERSION"
+            exit 1
+          fi
 
       - name: Install dependencies
-        run: pnpm  install
-      - name: build
-        run: pnpm  build
-      - name: publish
-        run: npm  publish
+        run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish to npm
+        run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag and create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: v${{ steps.version.outputs.value }}
+        run: |
+          # 幂等：重跑时 tag / Release 可能已经存在，不应因此失败
+          if ! git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+            git tag "$VERSION"
+            git push origin "$VERSION"
+          fi
+          gh release view "$VERSION" >/dev/null 2>&1 \
+            || gh release create "$VERSION" --title "$VERSION" --generate-notes

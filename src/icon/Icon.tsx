@@ -1,8 +1,8 @@
-import { computed, defineComponent, toRefs, type PropType, unref } from "vue";
-import { ICONS } from "./icons";
+import { computed, defineComponent, toRefs, type PropType, unref } from 'vue';
+import { ICONS } from './icons';
 
 export default defineComponent({
-  name: "TIcon",
+  name: 'TIcon',
   props: {
     name: String as PropType<string>,
     size: {

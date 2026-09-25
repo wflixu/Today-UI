@@ -3,7 +3,7 @@
  * 基于 @fluentui/tokens 的 teamsDarkTheme
  */
 
-:root[data-theme="teams-dark"] {
+:root[data-theme='teams-dark'] {
   /* Teams 暗色主题 */
   --colorNeutralForeground1: #ffffff;
   --colorNeutralForeground1Hover: #ffffff;

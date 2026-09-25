@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const SpinnerFilledIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -14,7 +14,7 @@ const SpinnerFilledIcon = createSvgIcon({
       ></path>
     </svg>
   ),
-  displayName: "SpinnerFilledIcon",
+  displayName: 'SpinnerFilledIcon',
 });
 
 export default SpinnerFilledIcon;

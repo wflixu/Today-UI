@@ -1,12 +1,13 @@
-
-export { default as Button } from "./button";
-export { default as Dropdown } from "./dropdown/";
-export { default as Field } from "./field";
-export { default as FileTree } from "./file-tree/";
-export { default as TIcon } from "./icon";
-export { default as Input } from "./input";
-export { default as Label } from "./label";
-export { default as Menu } from "./menu/";
-export { default as Tooltip } from "./tooltip/";
-export { default as Tabs, Tablist, TabPanel } from "./tabs";
-
+export { default as TButton } from './button';
+export { default as TDropdown } from './dropdown/';
+export { default as TField } from './field';
+export { default as TDialog } from './dialog';
+export { default as TFileTree } from './file-tree/';
+export { default as TIcon } from './icon';
+export { default as TInput } from './input';
+export { default as TLabel } from './label';
+export { default as TMenu } from './menu/';
+export { default as TPopover } from './popover';
+export { default as TPortal } from './portal';
+export { default as TTooltip } from './tooltip/';
+export { default as TTabs, TTablist, TTabPanel } from './tabs';

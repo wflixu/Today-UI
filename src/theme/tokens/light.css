@@ -25,11 +25,13 @@
   --lineHeightHero800: 40px;
   --lineHeightHero900: 52px;
   --lineHeightHero1000: 92px;
-  --fontFamilyBase: "Segoe UI", "Segoe UI Web (West European)", -apple-system,
-    BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  --fontFamilyMonospace: Consolas, "Courier New", Courier, monospace;
-  --fontFamilyNumeric: Bahnschrift, "Segoe UI", "Segoe UI Web (West European)",
-    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --fontFamilyBase:
+    'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto,
+    'Helvetica Neue', sans-serif;
+  --fontFamilyMonospace: Consolas, 'Courier New', Courier, monospace;
+  --fontFamilyNumeric:
+    Bahnschrift, 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont,
+    Roboto, 'Helvetica Neue', sans-serif;
   --fontWeightRegular: 400;
   --fontWeightMedium: 500;
   --fontWeightSemibold: 600;
@@ -428,8 +430,6 @@
   --shadow16Brand: 0 0 2px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
   --shadow28Brand: 0 0 8px rgba(0, 0, 0, 0.3), 0 14px 28px rgba(0, 0, 0, 0.25);
   --shadow64Brand: 0 0 8px rgba(0, 0, 0, 0.3), 0 32px 64px rgba(0, 0, 0, 0.25);
-
-
 
   --color-primary: #1d4ed8;
   --color-secondary: #f97316;

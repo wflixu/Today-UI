@@ -3,7 +3,11 @@ import type { IInnerTreeNode, IUseCore, LazyNodeResult, IUseLazyLoad } from './t
 import { generateInnerTree } from './util';
 
 export function useLazyLoad() {
-  return function useLazyLoadFn(data: Ref<IInnerTreeNode[]>, core: IUseCore, context: SetupContext): IUseLazyLoad {
+  return function useLazyLoadFn(
+    data: Ref<IInnerTreeNode[]>,
+    core: IUseCore,
+    context: SetupContext,
+  ): IUseLazyLoad {
     const { getNode, setNodeValue, getIndex, getChildren } = core;
 
     const setCommonParent = (node: IInnerTreeNode, nodes: Ref<IInnerTreeNode[]>) => {
@@ -24,7 +28,9 @@ export function useLazyLoad() {
     const dealChildNodes = (result: LazyNodeResult) => {
       const node = getNode(result.node);
       setNodeValue(node, 'loading', false);
-      const childNodes = ref<IInnerTreeNode[]>(generateInnerTree(result.treeItems, 'children', node.level));
+      const childNodes = ref<IInnerTreeNode[]>(
+        generateInnerTree(result.treeItems, 'children', node.level),
+      );
       // 设置公共父节点
       setCommonParent(node, childNodes);
       // 插入children

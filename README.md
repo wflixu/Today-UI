@@ -11,14 +11,20 @@ Today-UI is a Vue 3 component library that brings Microsoft's [Fluent Design Sys
 
 ## ✨ Features
 
-- **🎨 Fluent Design** - Complete implementation of Microsoft's Fluent Design System specifications
+- **🎨 Fluent Design** - Implementation of Microsoft's Fluent Design System specifications
 - **💎 TypeScript** - Full type safety with TSX support for better development experience
-- **🎯 API Compatible** - High API compatibility with `@fluentui/react-components`
-- **⚡ Atomic CSS** - [griffel-vue](https://github.com/wflixu/griffel-vue) for highly optimized, tree-shakeable styles
-- **🌈 Theming** - 4 built-in themes (Web/Teams × Light/Dark) with CSS variables
+- **🎯 API Compatible** - Aims for API compatibility with `@fluentui/react-components`
+- **⚡ Pure CSS Variables** - No CSS-in-JS, no runtime style injection — zero runtime overhead
+- **🌈 Theming** - 4 built-in themes (Web/Teams × Light/Dark), switchable via `data-theme`
 - **📦 Tree-shakeable** - Pure ESM output for optimal bundle size
 - **🛠️ Developer Tools** - Integrated [Histoire](https://histoire.dev/) for component documentation
 - **🧩 110+ Icons** - Complete Fluent Design icon library
+- **🔧 Type-Safe Classes** - BEM naming with TypeScript utilities for class name management
+
+> ⏳ **已设计但尚未实现**（详见 [specs/style.md](specs/style.md)）：
+> - **Cascade Layers** —— `@layer` 分层尚未写入任何 CSS，消费者目前仍需与库比特异性
+> - **局部（嵌套）主题** —— 主题选择器仍限定 `:root`，暂不支持子树独立切换
+> - **组件级覆盖变量** —— `--t-{block}-{property}` 接口尚未落到组件 CSS
 
 ## 📦 Installation
 
@@ -35,28 +41,35 @@ yarn add today-ui
 
 ## 🚀 Quick Start
 
+> **组件名一律带 `T` 前缀**（`TButton`、`TInput`、`TDropdown`…）。
+> 原因与命名规范见 [specs/component-roadmap.md](specs/component-roadmap.md#命名规范)。
+
 ### Basic Usage
 
 ```vue
 <script setup>
-import { Button } from 'today-ui'
+import { TButton } from 'today-ui'
 </script>
 
 <template>
-  <Button appearance="primary">
+  <TButton appearance="primary">
     Click me
-  </Button>
+  </TButton>
 </template>
 ```
 
-### Import Styles
+### Styles
 
-Import the styles in your application entry file:
+Import the stylesheet once in your app entry:
 
-```typescript
+```ts
 // main.ts
-import 'today-ui/dist/style.css';
+import 'today-ui/style.css';
 ```
+
+All component CSS is bundled into that single file (173 KB, 440+ design tokens) — `@import` chains and CSS nesting are resolved at build time, so there is nothing else to configure.
+
+> Component styles are **not** auto-imported by the JS entries. Importing `today-ui/style.css` explicitly is required.
 
 ### Global Registration (Optional)
 
@@ -73,68 +86,134 @@ app.mount('#app');
 
 ## 🎨 Theming System
 
-Today-UI provides a complete Fluent Design theme system with the following presets:
+Today-UI provides a complete Fluent Design theme system built on 440+ CSS variables:
 
-- **Web Light** - Standard Web light theme (default)
-- **Web Dark** - Standard Web dark theme
-- **Teams Light** - Microsoft Teams light theme
-- **Teams Dark** - Microsoft Teams dark theme
+| Theme | `data-theme` value |
+|-------|--------------------|
+| Web Light (default) | `light` |
+| Web Dark | `dark` |
+| Teams Light | `teams-light` |
+| Teams Dark | `teams-dark` |
 
 ### Switch Themes
 
-```typescript
-import { setTheme } from 'today-ui';
-
-// Switch to dark theme
-setTheme('web-dark');
-
-// Switch to Teams light theme
-setTheme('teams-light');
+```html
+<!-- Global: set it on the root element -->
+<html data-theme="dark">
 ```
 
-### Custom Design Tokens
+```typescript
+// Or imperatively
+const el = document.documentElement;
+el.dataset.theme = 'dark';        // Web Dark
+el.dataset.theme = 'teams-light'; // Teams Light
+delete el.dataset.theme;          // back to Web Light
+```
+
+> ⏳ **Planned**: a `setTheme(theme, el?)` / `getTheme(el?)` helper is specified in [specs/style.md](specs/style.md) but **not yet exported**. Use the `data-theme` attribute directly as shown above.
+
+### Subtree (Nested) Theming
+
+> ⏳ **Planned, not yet working.** The theme selectors are still scoped to `:root`, so
+> `data-theme` on a non-root element currently has **no effect**.
+
+Once the token selectors drop the `:root` prefix, this will work — because CSS custom properties are **inherited** rather than global:
+
+```html
+<body>                          <!-- Web Light -->
+  <div data-theme="dark">       <!-- this subtree would be dark -->
+    <TButton>Dark</TButton>
+  </div>
+  <TButton>Still light</TButton>
+</body>
+```
+
+### Customizing Components
 
 ```css
-:root {
-  --colorBrandForeground1: #0f6cbd;
-  --colorNeutralBackground1: #ffffff;
-  --borderRadiusMedium: 4px;
-  /* More design tokens... */
+/* Apply your own class. Works today. */
+.brand-cta {
+  background-color: #7b2ff7;   /* needs !important today — see below */
+}
+
+/* Once @layer lands, unlayered styles beat the library automatically: */
+.brand-cta {
+  box-shadow: 0 4px 12px rgb(123 47 247 / 30%);
 }
 ```
 
+```html
+<TButton class="brand-cta">Buy</TButton>
+```
+
+> ⏳ **Planned**: component-level override variables (`--t-button-background`, etc.) are
+> specified in [specs/style.md](specs/style.md) but not yet implemented in any component CSS.
+
+### Custom Design Tokens
+
+Tokens are plain CSS variables — override them anywhere they cascade from:
+
+```css
+:root {
+  --colorBrandBackground: #0f6cbd;
+  --colorNeutralBackground1: #ffffff;
+  --borderRadiusMedium: 4px;
+  /* ...440+ tokens, see src/theme/tokens/light.css */
+}
+```
+
+### Browser Support
+
+**Chrome/Edge 105+ · Safari 15.4+ · Firefox 121+**
+
+CSS nesting (`&:hover`) and `@import` are resolved at build time, so they are not a constraint. The baseline is set by **`:has()`**, used in the Input component's disabled/hover/autofill states. Browsers without `:has()` drop those specific rules — other components are unaffected. See [specs/style.md](specs/style.md#浏览器基线) for the details and how to lower the baseline.
+
 ## 📚 Component List
 
-### Basic Components
+14 components ship in the source tree; 13 are exported from the package. Component names carry the `T` prefix — the **Name** column below is exactly what you import and write in templates.
 
-| Component | Description | Status |
-|-----------|-------------|--------|
-| **[Button](src/button/SPEC.md)** | Button with multiple appearances, sizes, and shapes | ✅ |
-| **[Icon](src/icon/)** | SVG icon component with 110+ Fluent icons | ✅ |
+### Basic
 
-### Form Components
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TButton`** | Appearances, sizes, and shapes | ✅ | ✅ |
+| **`TIcon`** | SVG icon system, 110+ Fluent icons | ✅ | — |
 
-| Component | Description | Status |
-|-----------|-------------|--------|
-| **[Dropdown](src/dropdown/)** | Dropdown menu and trigger | ✅ |
-| **[Menu](src/menu/)** | Context menu and navigation menu | ✅ |
+### Form
 
-### Feedback Components
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TInput`** | Text input with appearance and size variants | ✅ | ✅ |
+| **`TField`** | Form field wrapper | ✅ | ✅ |
+| **`TLabel`** | Form label | ✅ | ✅ |
+| **`TDropdown`** | Dropdown menu and trigger | ✅ | ✅ |
 
-| Component | Description | Status |
-|-----------|-------------|--------|
-| **[Dialog](src/dialog/)** | Modal dialog and confirmation dialog | ✅ |
-| **[Toast](src/toast/)** | Notification messages | ✅ |
-| **[Tooltip](src/tooltip/)** | Tooltip for additional information | ✅ |
+### Overlay
 
-### Data Display
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TPortal`** | Teleport wrapper with attach-target resolution and optional scroll lock | ✅ | ✅ |
+| **`TPopover`** | Positioning, triggering and open/close behaviour — the primitive behind `TDropdown`, `TTooltip` and `TDialog` | ✅ | ✅ |
 
-| Component | Description | Status |
-|-----------|-------------|--------|
-| **[Tabs](src/tabs/)** | Tab component for organizing content | ✅ |
-| **[FileTree](src/file-tree/)** | File tree with lazy loading support | ✅ |
+### Feedback
 
-More components coming soon...
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TTooltip`** | Tooltip for additional information | ✅ | ✅ |
+| **`TDialog`** | Modal dialog and confirmation dialog | ✅ | ✅ |
+| **`TToast`** | Notification messages | ❌ | — |
+
+> ⚠️ **`TToast`** has source files but is **not registered in `src/components.ts`**, so it is not part of the published package. It is currently a non-functional placeholder (no props, hardcoded content).
+
+### Navigation & Data Display
+
+| Name | Description | Exported | Tests |
+|------|-------------|:--------:|:-----:|
+| **`TMenu`** | Context menu and navigation menu | ✅ | — |
+| **`TTabs`** / **`TTablist`** / **`TTabPanel`** | Tabs | ✅ | — |
+| **`TFileTree`** | File tree with lazy loading (custom component, no React upstream) | ✅ | — |
+
+See [specs/component-roadmap.md](specs/component-roadmap.md) for the full 53-component plan against `@fluentui/react-components`.
 
 ## 🧩 Icon System
 
@@ -144,15 +223,17 @@ Today-UI includes 110+ Fluent Design icons with two usage methods:
 
 ```vue
 <template>
-  <Icon name="chevron-right" :size="24" />
+  <TIcon name="chevron-right" :size="24" />
 </template>
 ```
 
 ### Method 2: Direct Import
 
+Every icon is a named export from the package entry:
+
 ```vue
 <script setup>
-import { ChevronRightIcon } from 'today-ui/icons';
+import { ChevronRightIcon } from 'today-ui';
 </script>
 
 <template>
@@ -166,8 +247,8 @@ Available icon categories: Basic actions, Navigation arrows, Search & Zoom, Stat
 
 ### Requirements
 
-- **Node.js** >= 20
-- **pnpm** >= 9
+- **Node.js** >= 22.12 (Vitest 5 requires `^22.12.0 || ^24.0.0`; CI uses 24)
+- **pnpm** >= 10
 
 ### Install Dependencies
 
@@ -196,8 +277,17 @@ pnpm test
 # Type checking
 pnpm typecheck
 
-# Lint and fix code
+# Lint and fix code (oxlint)
 pnpm lint
+
+# Check lint without writing (CI)
+pnpm lint:check
+
+# Format code (oxfmt)
+pnpm format
+
+# Check formatting without writing (CI)
+pnpm format:check
 ```
 
 ### Project Structure
@@ -205,47 +295,58 @@ pnpm lint
 ```
 today-ui/
 ├── src/
-│   ├── button/              # Button component
-│   ├── dialog/              # Dialog component
-│   ├── dropdown/            # Dropdown component
-│   ├── icon/                # Icon component (110+ icons)
-│   ├── menu/                # Menu component
-│   ├── tabs/                # Tabs component
-│   ├── toast/               # Toast component
-│   ├── tooltip/             # Tooltip component
-│   ├── file-tree/           # FileTree component
-│   ├── shared/              # Shared utilities and configs
-│   │   ├── griffel/        # Griffel CSS-in-JS configuration
-│   │   └── theme/          # Theme system
-│   ├── style/               # Global styles and design tokens
-│   └── index.ts             # Component exports entry
-├── specs/                   # Component specification documents
+│   ├── button/              # TButton
+│   ├── dialog/              # TDialog (not exported yet)
+│   ├── dropdown/            # TDropdown
+│   ├── field/               # TField + THelperText
+│   ├── file-tree/           # TFileTree
+│   ├── icon/                # TIcon (110+ icons)
+│   ├── input/               # TInput
+│   ├── label/               # TLabel
+│   ├── menu/                # TMenu
+│   ├── tabs/                # TTabs / TTablist / TTabPanel
+│   ├── toast/               # TToast (not exported yet)
+│   ├── tooltip/             # TTooltip
+│   ├── style/
+│   │   ├── index.css       # Style entry
+│   │   └── base.css        # reset / body
+│   ├── theme/
+│   │   ├── tokens/         # light / dark / teams-light / teams-dark
+│   │   └── index.ts        # Theme API
+│   ├── shared/              # Shared utilities
+│   │   └── styles/         # Style utilities (cn, bem, etc.)
+│   └── index.ts             # Package entry
+├── react-components/        # Upstream React sources kept for transcription reference
+├── specs/                   # Design & component specification documents
 ├── histoire.config.ts       # Histoire configuration
-├── tsdown.config.ts        # tsdown build configuration
+├── vite.config.mts         # Vite build config (shared with Histoire)
 └── dist/                    # Build output (ESM)
 ```
 
 ## 📖 Documentation
 
-- **[Histoire Documentation](http://localhost:6006)** - Run `pnpm dev` to access interactive documentation
-- **[Component Specs](src/button/SPEC.md)** - Design decisions and implementation details
+- **[specs/style.md](specs/style.md)** - Style & theming architecture (layering, tokens, theming, override API)
+- **[specs/component-roadmap.md](specs/component-roadmap.md)** - Component implementation roadmap
+- **[specs/testing-guidelines.md](specs/testing-guidelines.md)** - Unit testing standards
+- **[Documentation site](https://wflixu.github.io/Today-UI/)** - Published Histoire build (GitHub Pages, redeployed on every push to `main`)
+- **[Histoire Documentation](http://localhost:6006)** - Run `pnpm dev` to access interactive documentation locally
 - **[CLAUDE.md](CLAUDE.md)** - Development guidelines and project conventions
 
 ## 🎯 Tech Stack
 
 - **Vue 3.5+** - Composition API + TSX
 - **TypeScript 5.9.2** - Full type support
-- **tsdown** - Library build tool (ESM output)
+- **CSS Variables** - 440+ Fluent Design tokens, zero runtime
+- **Vite** - Library build tool (library mode, ESM output)
 - **@floating-ui/vue** - Floating UI positioning engine
-- **griffel-vue** - CSS-in-JS styling solution
 - **Histoire** - Component documentation tool
 - **Vitest** - Unit testing framework
+- **oxlint + oxfmt** - Linting and formatting (Rust-based, replaced ESLint/Prettier)
 
 ## 🔗 Related Resources
 
 - [Fluent Design System](https://www.fluentui.com/)
 - [@fluentui/react-components](https://react.fluentui.dev/)
-- [griffel-vue](https://github.com/wflixu/griffel-vue)
 - [Vue 3 Documentation](https://vuejs.org/)
 - [Floating UI](https://floating-ui.com/)
 - [Histoire](https://histoire.dev/)
@@ -255,20 +356,26 @@ today-ui/
 This project follows these conventions:
 
 - **No Accessibility** - Focused on visual effects and basic interactions, does not implement ARIA attributes or keyboard navigation
+- **`T` Prefix** - All component names carry a `T` prefix (`TButton`, `TInput`, …) because `app.use()` registers into a global namespace
 - **TSX Syntax** - Components written in TSX for better type inference
-- **CSS-in-JS + CSS Variables** - Griffel for atomic styles, CSS variables as design tokens
-- **Dual Documentation** - Each component provides inline docs in Histoire stories and `spec.md` for design specifications
+- **Pure CSS + CSS Variables** - Semantic BEM class names with CSS variables for theming
+- **Native CSS Nesting** - `&` is allowed for grouping states and compound variants (max 3 levels deep)
+- **Type-Safe Classes** - Class names are composed with `cn()` from `@/shared/styles/classUtils`, which is the only helper there in real use. `bem` and `buildVariantClasses` in the same file are unused dead code — don't reach for them.
+- **Dual Documentation** - Histoire stories carry the inline docs; some components additionally ship a `docs/SPEC.md` with the design rationale
+
+> ⏳ **目标约定，尚未落地**：`@layer` 分层（组件 CSS 不写 `@layer`、不 `@import` 令牌文件、禁用 `!important`）。
+> 当前代码中没有任何 `@layer`，另有 5 个组件 CSS 违反约束。详见 [specs/style.md](specs/style.md)。
 
 See [CLAUDE.md](CLAUDE.md) for details.
 
 ## 🏗️ Build System
 
-Today-UI uses [tsdown](https://tsdown.dev/) for building:
+Today-UI uses [Vite](https://vite.dev/) in library mode (`vite.config.mts`):
 
-- **Output Format**: Pure ESM (`*.mjs` files)
-- **Type Definitions**: Auto-generated `.d.mts` files
-- **CSS Processing**: Automatic CSS extraction and bundling
-- **Code Splitting**: Preserved module structure for tree-shaking
+- **Output Format**: Pure ESM (`*.js`), `preserveModules` keeps the module structure for tree-shaking
+- **Type Definitions**: `vue-tsc --emitDeclarationOnly` in a second pass (`pnpm build:types`)
+- **CSS Processing**: `postcss-import` resolves the `@import` chain, then `postcss-nested` flattens nesting, then everything is merged into a single `dist/style.css`
+- **Shared Config**: Histoire loads the same `vite.config.mts`, so docs and the library build use one CSS pipeline — no dev/prod divergence
 - **Source Maps**: Included for debugging
 
 ## 🤝 Contributing

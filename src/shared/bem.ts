@@ -16,8 +16,8 @@ export function assign(target: { [x: string]: any }, ...args: any[]) {
   return target;
 }
 
-export const ERROR_BLOCK_NAME_TYPE = "Block name should be a string";
-export const ERROR_BLOCK_NAME_EMPTY = "Block name should be non-empty";
+export const ERROR_BLOCK_NAME_TYPE = 'Block name should be a string';
+export const ERROR_BLOCK_NAME_EMPTY = 'Block name should be non-empty';
 
 export interface BemSettings {
   ns?: string;
@@ -31,12 +31,7 @@ export interface BemMods {
   [mod: string]: string | boolean | any;
 }
 
-export type BemMix =
-  | string
-  | string[]
-  | BemBlock
-  | { toString: () => string }
-  | undefined;
+export type BemMix = string | string[] | BemBlock | { toString: () => string } | undefined;
 
 export type BemItem = {
   is(state: BemState): BemItem & string;
@@ -55,7 +50,7 @@ interface BemBlock {
   ): BemItem | string;
 }
 
-export type BemStatePrefix = "is-" | "has-";
+export type BemStatePrefix = 'is-' | 'has-';
 export type BemState = Record<string, boolean>;
 export type BemStates = Record<BemStatePrefix, BemState>;
 
@@ -76,44 +71,40 @@ export interface BemCn {
   (blockName: string): Block;
 }
 
-const isPrefix = "is-" as "is-";
-const hasPrefix = "has-" as "has-";
+const isPrefix = 'is-' as const;
+const hasPrefix = 'has-' as const;
 const defaultSettings: BemSettings = {
-  ns: "",
-  el: "__",
-  mod: "_",
-  modValue: "_",
+  ns: '',
+  el: '__',
+  mod: '_',
+  modValue: '_',
 };
 
 const isString = (nameOrMods: string | BemMods): nameOrMods is string =>
-  typeof nameOrMods === "string";
+  typeof nameOrMods === 'string';
 
 const isBemMods = (nameOrMods: string | BemMods): nameOrMods is BemMods =>
-  typeof nameOrMods !== "string";
+  typeof nameOrMods !== 'string';
 
 const normilizeMixes = (mixes: BemMix[] = []): string[] => {
   return mixes
     .map((mix) => {
       if (Array.isArray(mix)) {
-        return mix.join(" ");
-      } else if (typeof mix === "object" && mix !== null) {
+        return mix.join(' ');
+      } else if (typeof mix === 'object' && mix !== null) {
         return mix.toString();
-      } else if (typeof mix === "function") {
+      } else if (typeof mix === 'function') {
         return mix.toString();
-      } else if (typeof mix === "string") {
+      } else if (typeof mix === 'string') {
         return mix;
       }
 
-      return "";
+      return '';
     })
     .filter((mix) => !!mix);
 };
 
-const mix = (
-  settings: BemSettings,
-  context: BemContext,
-  ...mixes: BemMix[]
-): BemItem => {
+const mix = (settings: BemSettings, context: BemContext, ...mixes: BemMix[]): BemItem => {
   const copiedContext = assign({}, context);
 
   copiedContext.mixes = copiedContext.mixes.concat(mixes);
@@ -139,9 +130,8 @@ const split = (
   settings: BemSettings,
   context: BemContext,
   separator?: string,
-  limit?: number
-): string[] =>
-  String.prototype.split.call(toString(settings, context), separator, limit);
+  limit?: number,
+): string[] => String.prototype.split.call(toString(settings, context), separator, limit);
 
 const toString = (settings: BemSettings, context: BemContext) => {
   const { name, mods, mixes, states } = context;
@@ -162,7 +152,7 @@ const toString = (settings: BemSettings, context: BemContext) => {
           } else {
             return name + settings.mod + key + settings.modValue + value;
           }
-        })
+        }),
     );
   }
 
@@ -174,7 +164,7 @@ const toString = (settings: BemSettings, context: BemContext) => {
       classes = classes.concat(
         Object.keys(statesByPrefix)
           .filter((key) => statesByPrefix[key])
-          .map((key) => prefix + key)
+          .map((key) => prefix + key),
       );
     });
   }
@@ -195,7 +185,7 @@ const toString = (settings: BemSettings, context: BemContext) => {
     classes = classes.map((className) => classMap[className] || className);
   }
 
-  return classes.join(" ");
+  return classes.join(' ');
 };
 
 const bemItem = (context: BemContext, settings: BemSettings): BemItem => {
@@ -221,17 +211,13 @@ const bemBlock: BemBlock = (
 
   const copiedContext = assign({}, context);
 
-  const name = args
-    .filter(isString)
-    .reduce((acc, name) => acc + settings.el + name, "");
+  const name = args.filter(isString).reduce((acc, name) => acc + settings.el + name, '');
 
   if (name) {
     copiedContext.name = copiedContext.name + name;
   }
 
-  const mods = args
-    .filter(isBemMods)
-    .reduce((acc, mods) => assign(acc, mods), {} as BemMods);
+  const mods = args.filter(isBemMods).reduce((acc, mods) => assign(acc, mods), {} as BemMods);
 
   copiedContext.mods = assign({}, copiedContext.mods, mods);
 
@@ -243,7 +229,7 @@ const factory = (name: string, settings: BemSettings) => {
     name,
     mods: {},
     mixes: [],
-    states: { "is-": {}, "has-": {} },
+    states: { 'is-': {}, 'has-': {} },
   };
 
   const boundBlock = bemBlock.bind(null, settings, context) as Block;
@@ -260,7 +246,7 @@ const factory = (name: string, settings: BemSettings) => {
 export const setup =
   (settings: Partial<BemSettings> = {}): BemCn =>
   (blockName: string) => {
-    if (typeof blockName !== "string") {
+    if (typeof blockName !== 'string') {
       throw new Error(ERROR_BLOCK_NAME_TYPE);
     }
 

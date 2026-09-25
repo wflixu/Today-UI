@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const AddIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -6,7 +6,7 @@ const AddIcon = createSvgIcon({
       <path d="M2048 960v128h-960v960H960v-960H0V960h960V0h128v960h960z" />
     </svg>
   ),
-  displayName: "AddIcon",
+  displayName: 'AddIcon',
 });
 
 export default AddIcon;

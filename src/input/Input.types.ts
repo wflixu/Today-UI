@@ -17,7 +17,7 @@ export const inputProps = {
    */
   appearance: {
     type: String as PropType<InputAppearance>,
-    default: 'outline'
+    default: 'outline',
   },
 
   /**
@@ -30,7 +30,7 @@ export const inputProps = {
    */
   size: {
     type: String as PropType<InputSize>,
-    default: 'medium'
+    default: 'medium',
   },
 
   /**
@@ -40,7 +40,7 @@ export const inputProps = {
    */
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   /**
@@ -50,7 +50,7 @@ export const inputProps = {
    */
   readonly: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   /**
@@ -60,7 +60,7 @@ export const inputProps = {
    */
   required: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   /**
@@ -70,7 +70,7 @@ export const inputProps = {
    */
   error: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   /**
@@ -84,7 +84,7 @@ export const inputProps = {
    */
   validationState: {
     type: String as PropType<'none' | 'valid' | 'warning' | 'invalid'>,
-    default: 'none'
+    default: 'none',
   },
 
   /**
@@ -92,7 +92,7 @@ export const inputProps = {
    */
   validationMessage: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -102,7 +102,7 @@ export const inputProps = {
    */
   showClearButton: {
     type: Boolean,
-    default: true
+    default: true,
   },
 
   /**
@@ -112,7 +112,7 @@ export const inputProps = {
    */
   showPasswordToggle: {
     type: Boolean,
-    default: false
+    default: false,
   },
 
   /**
@@ -120,7 +120,7 @@ export const inputProps = {
    */
   progress: {
     type: Number,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -128,7 +128,7 @@ export const inputProps = {
    */
   modelValue: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -136,7 +136,7 @@ export const inputProps = {
    */
   defaultValue: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -144,7 +144,7 @@ export const inputProps = {
    */
   placeholder: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -152,7 +152,7 @@ export const inputProps = {
    */
   maxLength: {
     type: Number,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -160,7 +160,7 @@ export const inputProps = {
    */
   minLength: {
     type: Number,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -168,7 +168,15 @@ export const inputProps = {
    */
   type: {
     type: String as PropType<'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search'>,
-    default: 'text'
+    default: 'text',
+  },
+
+  /**
+   * 输入框唯一标识符
+   */
+  id: {
+    type: String,
+    default: undefined as undefined,
   },
 
   /**
@@ -176,7 +184,7 @@ export const inputProps = {
    */
   name: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -184,7 +192,7 @@ export const inputProps = {
    */
   autocomplete: {
     type: String,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -192,7 +200,7 @@ export const inputProps = {
    */
   onChange: {
     type: Function as PropType<(value: string, event: Event) => void>,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -200,7 +208,7 @@ export const inputProps = {
    */
   onInput: {
     type: Function as PropType<(value: string, event: Event) => void>,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -208,7 +216,7 @@ export const inputProps = {
    */
   onFocus: {
     type: Function as PropType<(event: FocusEvent) => void>,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 
   /**
@@ -216,7 +224,7 @@ export const inputProps = {
    */
   onBlur: {
     type: Function as PropType<(event: FocusEvent) => void>,
-    default: undefined as undefined
+    default: undefined as undefined,
   },
 };
 
@@ -231,6 +239,7 @@ export interface InputState {
   required: boolean;
   error: boolean;
   type: string;
+  id: string | undefined;
   name: string | undefined;
   autocomplete: string | undefined;
   placeholder: string | undefined;
@@ -249,6 +258,9 @@ export interface InputState {
   showClearButtonVisible: boolean;
   showPasswordToggleVisible: boolean;
   isPasswordVisible: boolean;
+  hasClearButtonSlot: boolean;
+  hasPasswordToggleButtonSlot: boolean;
+  hasProgressIndicatorSlot: boolean;
 
   // 事件处理
   onInput: (event: Event) => void;
@@ -260,6 +272,7 @@ export interface InputState {
 
   // 元素配置
   root: Record<string, any>;
+  inputWrapper: Record<string, any>;
   input: Record<string, any>;
   contentBefore?: Record<string, any>;
   contentAfter?: Record<string, any>;

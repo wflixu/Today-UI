@@ -49,7 +49,7 @@
         height: 30px;
         overflow: hidden;
 
-        &>.t-icon {
+        & > .t-icon {
           font-size: 18px;
           margin-left: 4px;
         }

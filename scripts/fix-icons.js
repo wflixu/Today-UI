@@ -30,10 +30,7 @@ function fixIconFile(filename) {
 
   // 确保有 svg: ({ classes }) 参数
   if (!content.includes('svg: ({ classes })')) {
-    content = content.replace(
-      /svg: \(\) => \(/,
-      'svg: ({ classes }) => ('
-    );
+    content = content.replace(/svg: \(\) => \(/, 'svg: ({ classes }) => (');
   }
 
   fs.writeFileSync(filePath, content, 'utf-8');
@@ -46,13 +43,14 @@ function fixIconFile(filename) {
 function main() {
   console.log('🔧 修复图标组件...\n');
 
-  const files = fs.readdirSync(COMPONENTS_DIR)
-    .filter(f => f.endsWith('.tsx') && f !== 'DismissFilled.tsx');
+  const files = fs
+    .readdirSync(COMPONENTS_DIR)
+    .filter((f) => f.endsWith('.tsx') && f !== 'DismissFilled.tsx');
 
   let fixed = 0;
   let skipped = 0;
 
-  files.forEach(file => {
+  files.forEach((file) => {
     if (fixIconFile(file)) {
       console.log(`✓  修复: ${file}`);
       fixed++;

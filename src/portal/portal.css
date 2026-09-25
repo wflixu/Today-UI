@@ -1,0 +1,22 @@
+/**
+ * Portal 层级令牌
+ *
+ * Portal 本身**不产生任何 DOM 元素**（内容直接 Teleport，保持结构透明），
+ * 因此这里只有全局的层级变量，没有组件样式。
+ *
+ * 层级顺序的依据：
+ *   popover < tooltip < dialog < toast
+ *
+ * - 工具提示可能出现在弹层内容里，需高于弹层
+ * - 对话框是模态，应遮住弹层与工具提示
+ * - 通知即使模态打开也应可见
+ *
+ * 各组件在自己的样式里引用这些变量，不再硬编码数值。
+ */
+
+:root {
+  --t-z-index-popover: 1000;
+  --t-z-index-tooltip: 1100;
+  --t-z-index-dialog: 1200;
+  --t-z-index-toast: 1300;
+}

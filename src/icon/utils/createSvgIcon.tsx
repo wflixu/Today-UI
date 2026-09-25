@@ -1,7 +1,7 @@
-import type { SvgIconCreateFnParams } from "./../types";
-import "../icon.css";
+import type { SvgIconCreateFnParams } from './../types';
+import '../icon.css';
 
-import { defineComponent, toRefs, type HTMLAttributes, computed } from "vue";
+import { defineComponent, toRefs, type HTMLAttributes, computed } from 'vue';
 
 const createSvgIcon = ({ svg, displayName }: SvgIconCreateFnParams) => {
   const Component = defineComponent({
@@ -22,7 +22,7 @@ const createSvgIcon = ({ svg, displayName }: SvgIconCreateFnParams) => {
       const styleObj = computed(() => {
         const res: { width?: string; height?: string; color?: string } = {};
         if (size.value) {
-          const sizeStr = typeof size.value === "number" ? `${size.value}px` : size.value;
+          const sizeStr = typeof size.value === 'number' ? `${size.value}px` : size.value;
           res.width = sizeStr;
           res.height = sizeStr;
         }
@@ -33,7 +33,7 @@ const createSvgIcon = ({ svg, displayName }: SvgIconCreateFnParams) => {
       });
 
       const classes = {
-        svg: "svg",
+        svg: 'svg',
       };
 
       return () => {

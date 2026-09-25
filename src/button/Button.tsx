@@ -1,14 +1,18 @@
-
 import { renderButton } from './renderButton';
-import { useButtonStyles } from './useButtonStyles.styles';
+import {
+  useButtonClasses,
+  type ButtonAppearance,
+  type ButtonSize,
+  type ButtonShape,
+} from './useButtonClasses';
 import { buttonProps, type ButtonProps, type ButtonSlots } from './Button.types';
 import './button.css';
 
 import { defineComponent, ref, SlotsType, computed } from 'vue';
 import { useButton } from './useButton';
 
-export const Button = defineComponent({
-  name: 'Button',
+export const TButton = defineComponent({
+  name: 'TButton',
   props: buttonProps,
   slots: Object as SlotsType<ButtonSlots>,
   setup(props: ButtonProps, { expose, slots }) {
@@ -17,8 +21,22 @@ export const Button = defineComponent({
     // 使用 computed 创建响应式状态
     const state = computed(() => {
       const buttonState = useButton(props);
-      // 应用样式到状态
-      useButtonStyles(buttonState);
+
+      // 使用纯 CSS 类名 Hook
+      const classes = useButtonClasses({
+        appearance: props.appearance as ButtonAppearance,
+        size: props.size as ButtonSize,
+        shape: props.shape as ButtonShape,
+        disabled: props.disabled,
+        loading: props.loading,
+        iconOnly: props.iconOnly,
+      });
+
+      // 应用类名到状态
+      if (buttonState.root) {
+        buttonState.root.className = classes;
+      }
+
       return buttonState;
     });
 
@@ -29,7 +47,7 @@ export const Button = defineComponent({
 
     // 返回渲染函数
     return () => renderButton(state.value, slots);
-  }
+  },
 });
 
-export default Button;
+export default TButton;

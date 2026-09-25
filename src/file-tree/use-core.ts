@@ -2,7 +2,6 @@ import { computed, type ComputedRef, type Ref, onUnmounted } from 'vue';
 import type { IInnerTreeNode, ITreeNode, IUseCore, valueof } from './type';
 import { generateInnerTree } from './util';
 
-
 const DEFAULT_CONFIG = {
   expanded: false, // 是否只从展开了的节点中获取数据
   recursive: true, // 是否需要获取非直接子节点
@@ -15,7 +14,10 @@ export function useCore(): (data: Ref<IInnerTreeNode[]>) => IUseCore {
       return data.value.find((item) => item.id === node.id)?.level ?? 0;
     };
 
-    const getChildren = (node: IInnerTreeNode, userConfig:Partial<typeof DEFAULT_CONFIG> = DEFAULT_CONFIG): IInnerTreeNode[] => {
+    const getChildren = (
+      node: IInnerTreeNode,
+      userConfig: Partial<typeof DEFAULT_CONFIG> = DEFAULT_CONFIG,
+    ): IInnerTreeNode[] => {
       if (node.isLeaf) {
         return [];
       }
@@ -54,7 +56,11 @@ export function useCore(): (data: Ref<IInnerTreeNode[]>) => IUseCore {
       const treeData = config.expanded ? getInnerExpendedTree() : data;
       const startIndex = treeData.value.findIndex((item) => item.id === node.id);
 
-      for (let i = startIndex + 1; i < treeData.value.length && getLevel(node) < treeData.value[i].level; i++) {
+      for (
+        let i = startIndex + 1;
+        i < treeData.value.length && getLevel(node) < treeData.value[i].level;
+        i++
+      ) {
         if (config.recursive && !treeData.value[i].isHide) {
           result.push(treeData.value[i]);
         } else if (getLevel(node) === treeData.value[i].level - 1 && !treeData.value[i].isHide) {
@@ -105,7 +111,11 @@ export function useCore(): (data: Ref<IInnerTreeNode[]>) => IUseCore {
       return data.value.find((item) => item.id === node.id)!;
     };
 
-    const setNodeValue = (node: IInnerTreeNode, key: keyof IInnerTreeNode, value: valueof<IInnerTreeNode>): void => {
+    const setNodeValue = (
+      node: IInnerTreeNode,
+      key: keyof IInnerTreeNode,
+      value: valueof<IInnerTreeNode>,
+    ): void => {
       clearNodeMap();
       if (getIndex(node) !== -1) {
         // @ts-ignore

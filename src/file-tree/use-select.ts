@@ -1,11 +1,6 @@
-import type { Ref, SetupContext } from "vue";
+import type { Ref, SetupContext } from 'vue';
 
-import type {
-  IInnerTreeNode,
-  IUseCore,
-  IUseSelect,
-  IUseInitSelectCollection,
-} from "./type";
+import type { IInnerTreeNode, IUseCore, IUseSelect, IUseInitSelectCollection } from './type';
 
 let selectedNodes: IInnerTreeNode[] = [];
 
@@ -37,8 +32,7 @@ export function useSelect() {
     ...args: any[]
   ): IUseSelect {
     const { setNodeValue } = core;
-    const { getInitSelectedNodes, clearInitSelectedNodes } =
-      useInitSelectCollection();
+    const { getInitSelectedNodes, clearInitSelectedNodes } = useInitSelectCollection();
 
     let prevActiveNode: IInnerTreeNode;
 
@@ -50,26 +44,24 @@ export function useSelect() {
       const initSelectedNodes = getInitSelectedNodes();
       if (initSelectedNodes.length) {
         initSelectedNodes.forEach((item) => {
-          setNodeValue(item, "selected", false);
+          setNodeValue(item, 'selected', false);
         });
         clearInitSelectedNodes();
       }
 
       if (prevActiveNode) {
-        const prevActiveNodeIndex = data.value.findIndex(
-          (item) => item.id === prevActiveNode.id
-        );
-        setNodeValue(data.value[prevActiveNodeIndex], "selected", false);
+        const prevActiveNodeIndex = data.value.findIndex((item) => item.id === prevActiveNode.id);
+        setNodeValue(data.value[prevActiveNodeIndex], 'selected', false);
       }
 
-      setNodeValue(node, "selected", true);
-      context.emit("select", node);
+      setNodeValue(node, 'selected', true);
+      context.emit('select', node);
       prevActiveNode = node;
     };
 
     const deselectNode = (node: IInnerTreeNode): void => {
-      setNodeValue(node, "selected", false);
-      context.emit("select", node);
+      setNodeValue(node, 'selected', false);
+      context.emit('select', node);
     };
 
     const toggleSelectNode = (node: IInnerTreeNode): void => {
