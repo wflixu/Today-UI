@@ -1,118 +1,100 @@
 {
   "name": "today-ui",
-  "version": "0.2.0",
-  "description": "dropdown menu toolptip powered by vue3, floating-ui",
-  "main": "dist/today-ui.umd.js",
-  "module": "dist/today-ui.es.js",
-  "types": "dist/today-ui.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/today-ui.d.ts",
-      "import": "./dist/today-ui.es.js",
-      "require": "./dist/today-ui.umd.js"
-    },
-    "./package.json": "./package.json",
-    "./dist/style.css": "./dist/style.css"
-  },
-  "sideEffects": [
-    "*.vue",
-    "*.md",
-    "dist/*",
-    "*.css"
+  "version": "0.4.0",
+  "description": "Fluent Design System components for Vue 3 using pure CSS Variables",
+  "keywords": [
+    "@floating-ui/dom",
+    "Vue.js",
+    "composition api",
+    "contextmenu",
+    "dropdown",
+    "file-tree",
+    "floating-ui",
+    "fluent",
+    "fluent design",
+    "menu",
+    "modal",
+    "tooltip",
+    "vue",
+    "vue3"
   ],
+  "license": "MIT",
+  "author": "wflixu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wflixu/Today-UI"
+  },
   "files": [
     "dist/",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
-  "scripts": {
-    "dev": "storybook dev -p 6006",
-    "tsup": "tsup ./src/index.ts --experimental-dts",
-    "dts": "api-extractor run --local",
-    "build": "vite build && pnpm build:type && pnpm dts && rm -rf dist/src",
-    "bd": "tsc -p tsconfig.app.json",
-    "build:type": "vue-tsc  -p tsconfig.type.json",
-    "preview": "vite preview --port 5050",
-    "test:unit": "vitest --environment jsdom",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "sb:dev": "storybook dev -p 6006",
-    "sb:build": "storybook build",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+  "type": "module",
+  "sideEffects": [
+    "*.vue",
+    "*.md",
+    "dist/*",
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
   },
-  "devDependencies": {
-    "@chromatic-com/storybook": "^1",
-    "@microsoft/api-extractor": "^7.43.1",
-    "@storybook/addon-essentials": "^8.1.0-beta.0",
-    "@storybook/addon-interactions": "^8.1.0-beta.0",
-    "@storybook/addon-links": "^8.1.0-beta.0",
-    "@storybook/addon-mdx-gfm": "^8.1.0-beta.0",
-    "@storybook/blocks": "^8.1.0-beta.0",
-    "@storybook/cli": "^8.1.0-beta.0",
-    "@storybook/test": "^8.1.0-beta.0",
-    "@storybook/vue3": "^8.1.0-beta.0",
-    "@storybook/vue3-vite": "^8.1.0-beta.0",
-    "@tsconfig/node20": "~20.1.2",
-    "@types/jsdom": "^21.1.6",
-    "@types/lodash": "^4.17.0",
-    "@types/node": "^20.11.30",
-    "@types/postcss-import": "^14.0.3",
-    "@types/react": "^18.2.67",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "@vitejs/plugin-vue-jsx": "^3.1.0",
-    "@vue/compiler-core": "^3.4.21",
-    "@vue/compiler-sfc": "^3.4.21",
-    "@vue/test-utils": "^2.4.5",
-    "@vue/tsconfig": "^0.5.1",
-    "@vuedx/typescript-plugin-vue": "^0.7.6",
-    "cross-env": "^7.0.3",
-    "jsdom": "^22.1.0",
-    "less": "^4.2.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.38",
-    "postcss-import": "^15.1.0",
-    "postcss-nested": "^6.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "remark-gfm": "^3.0.1",
-    "storybook": "^8.1.0-beta.0",
-    "tsup": "^8.0.2",
-    "typescript": "~5.1.6",
-    "vite": "^5.2.2",
-    "vitest": "^0.33.0",
-    "vue-tsc": "^2.0.7"
+  "scripts": {
+    "dev": "histoire dev",
+    "build": "vite build && pnpm build:types",
+    "build:types": "vue-tsc --noCheck --emitDeclarationOnly --rootDir src --outDir dist",
+    "build:watch": "vite build --watch",
+    "preview": "histoire preview",
+    "doc": "histoire build",
+    "doc:preview": "histoire preview",
+    "test": "vitest --environment jsdom",
+    "test:watch": "vitest --environment jsdom --watch",
+    "test:coverage": "vitest --environment jsdom --coverage",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "oxlint --fix .",
+    "lint:check": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
   },
   "dependencies": {
-    "@floating-ui/vue": "^1.0.6",
-    "lodash": "^4.17.21",
-    "vue": "^3.4.21"
+    "@floating-ui/vue": "^2.0.1",
+    "radash": "^12.1.1",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@fluentui/react-components": "^9.74.7",
+    "@histoire/plugin-vue": "1.0.0-beta.1",
+    "@tsconfig/node24": "~24.0.5",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "24.10.1",
+    "@types/postcss-import": "^14.0.3",
+    "@vitejs/plugin-vue": "6.0.9",
+    "@vitejs/plugin-vue-jsx": "5.1.6",
+    "@vue/compiler-core": "^3.5.43",
+    "@vue/compiler-sfc": "^3.5.43",
+    "@vue/test-utils": "^2.5.1",
+    "@vue/tsconfig": "0.9.1",
+    "cross-env": "10.1.0",
+    "histoire": "1.0.0-beta.1",
+    "jsdom": "^30.1.0",
+    "npm-run-all": "^4.1.5",
+    "oxfmt": "0.68.0",
+    "oxlint": "^1.83.0",
+    "pinia": "4.0.3",
+    "postcss": "^8.5.28",
+    "postcss-import": "17.0.0",
+    "postcss-nested": "^8.0.1",
+    "typescript": "5.9.2",
+    "vite": "8.3.0",
+    "vitest": "5.0.1",
+    "vue-tsc": "3.3.11"
   },
   "peerDependencies": {
-    "vue": "^3.3.4"
-  },
-  "keywords": [
-    "vue3",
-    "vue",
-    "Vue.js",
-    "fluent design",
-    "fluent",
-    "floating-ui",
-    "@floating-ui/dom",
-    "composition api",
-    "tooltip",
-    "menu",
-    "dropdown",
-    "contextmenu",
-    "modal",
-    "file-tree"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wflixu/Today-UI"
-  },
-  "author": "wflixu",
-  "license": "MIT"
+    "vue": "^3.4.0"
+  }
 }

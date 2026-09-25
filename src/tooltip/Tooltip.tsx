@@ -1,160 +1,77 @@
-// @ts-nocheck
-import { computed, defineComponent, onMounted, ref } from "vue";
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  arrow,
-} from "@floating-ui/vue";
-import { renderTNodeJSX, renderContent } from "../shared/render-tnode";
-import Container from "./container";
-import {tooltipProps} from "./props";
-import { on } from "../shared/dom";
-import "./style/tooltip.css";
+import { defineComponent, h, SlotsType } from 'vue';
+import TPopover from '../popover/Popover';
+import { useTooltipClasses, type TooltipRelationship } from './useTooltipClasses';
+import { tooltipProps, type TooltipProps, type TooltipSlots } from './Tooltip.types';
 
-export default defineComponent({
-  name: "TTooltip",
-  inheritAttrs: false,
+import './tooltip.css';
+
+/**
+ * 触发元素的包装类名。
+ *
+ * Tooltip 与 Dropdown / Dialog 不同：它给触发内容套一层 span，而不是直接克隆
+ * 使用者传入的元素。原因有二：
+ *
+ * 1. 这层 span 承载 `display: inline-block`，使行内内容（如纯文本）也能作为定位锚点
+ * 2. 保持既有 DOM 结构不变 —— 迁移前就是这个结构，既有测试也据此断言
+ *
+ * 该 span 会被 Popover 克隆并绑定事件与 ref，因此它同时也是实际的触发元素。
+ */
+const TRIGGER_CLASS = 't-tooltip-trigger';
+
+export const TTooltip = defineComponent({
+  name: 'TTooltip',
   props: tooltipProps,
-  setup(props, { slots }) {
-    const open = ref(false);
-    const reference = ref<HTMLElement>(null);
-    const floating = ref<HTMLElement>(null);
-    const arrowEl = ref<HTMLElement>(null);
+  slots: Object as SlotsType<TooltipSlots>,
+  setup(props: TooltipProps, { slots }) {
+    return () => {
+      const classes = useTooltipClasses({
+        isVisible: true,
+        relationship: props.relationship as TooltipRelationship,
+        withArrow: props.withArrow,
+      });
 
-    const { x, y, middlewareData, update } = useFloating(reference, floating, {
-      placement: props.placement,
-      middleware: [
-        flip(),
-        shift(),
-        offset(props.offset),
-        arrow({
-          element: arrowEl,
-        }),
-      ],
-    });
-
-    const tipStyle = computed(() => {
-
-      return {
-        top: `${y.value}px`,
-        left: `${x.value}px`,
-        display: open.value ? "block" : "none",
+      /**
+       * 内容样式。
+       *
+       * 迁移前 `maxWidth` 与 `wrapText` 只被透传到 state，渲染层从未读取 ——
+       * 两个 prop 完全失效。这里让它们真正生效。
+       */
+      const contentStyle: Record<string, string> = {
+        maxWidth: `${props.maxWidth}px`,
+        whiteSpace: props.wrapText ? 'normal' : 'nowrap',
       };
-    });
 
-    const arrowStyle = computed(() => {
-      const { x, y } = middlewareData.value.arrow ?? { x: 0, y: 0 };
-
-      const staticSide = {
-        top: "bottom",
-        right: "left",
-        bottom: "top",
-        left: "right",
-      }[props.placement.split("-")[0]] as string;
-
-      return {
-        left: x ? `${x}px` : "",
-        top: y ? `${y}px` : "",
-        right: "",
-        bottom: "",
-        [staticSide]: "-4px",
-      };
-    });
-
-    function handleOpen(_context: { trigger: string }) {
-      open.value = true;
-    }
-    function handleClose(_context: { trigger: string }) {
-      open.value = false;
-    }
-
-    onMounted(() => {
-      on(reference.value, "mouseenter", () =>
-        handleOpen({ trigger: "trigger-element-hover" })
+      return h(
+        TPopover,
+        {
+          visible: props.visible,
+          defaultVisible: props.defaultVisible,
+          trigger: props.trigger,
+          placement: props.placement,
+          offset: props.offset,
+          // Tooltip 用 delay / closeDelay 命名，Popover 用 openDelay / closeDelay
+          openDelay: props.delay,
+          closeDelay: props.closeDelay,
+          attach: props.attach,
+          withArrow: props.withArrow,
+          contentClass: classes.root,
+          // 箭头由 Popover 渲染并定位（它持有 arrowRef 与 arrowStyles），
+          // Tooltip 只把类名换掉，以便用 tooltip 的配色覆盖
+          arrowClass: classes.arrow,
+          'onUpdate:visible': (visible: boolean) => props.onVisibleChange?.(visible),
+        },
+        {
+          default: () => h('span', { class: TRIGGER_CLASS }, slots.default?.()),
+          content: () =>
+            h(
+              'div',
+              { class: 't-tooltip__content', style: contentStyle },
+              slots.content?.() ?? props.content,
+            ),
+        },
       );
-      on(reference.value, "mouseleave", () =>
-        handleClose({ trigger: "trigger-element-hover" })
-      );
-    });
-
-    const forwardRef = (ref: HTMLElement) => {
-      reference.value = ref;
     };
-
-    const setArrowRef = (ref: HTMLElement) => {
-      if (ref === arrowEl.value) return;
-
-      arrowEl.value = ref;
-    };
-    const setReferenceRef = (ref: HTMLElement) => {
-      if (ref === reference.value) {
-        return;
-      } else {
-        reference.value = ref;
-        update();
-      }
-    };
-
-    const setFloatingRef = (ref: HTMLElement) => {
-      if (ref === floating.value) {
-        return;
-      }
-      floating.value = ref;
-      update();
-    };
-
-    return {
-      tipStyle,
-      arrowStyle,
-      reference,
-      floating,
-      open,
-      arrowEl,
-      setArrowRef,
-      setReferenceRef,
-      setFloatingRef,
-      forwardRef,
-    };
-  },
-  render() {
-    const {
-      tipStyle,
-      arrowStyle,
-      forwardRef,
-      open,
-      setArrowRef,
-      setFloatingRef,
-    } = this;
-    const content = renderTNodeJSX(this, "label");
-    return (
-      <Container
-        ref="containerRef"
-        forwardRef={(ref) => forwardRef(ref)}
-        onContentMounted={(el) => {
-          
-        }}
-        visible={open}
-      >
-        {{
-          content: () => (
-            <div
-              ref={setFloatingRef}
-              class="t-tooltip-content"
-              style={tipStyle}
-            >
-              {content}
-              <div
-                class="t-tooltip-arrow"
-                ref={setArrowRef}
-                style={arrowStyle}
-              />
-            </div>
-          ),
-          default: () => renderContent(this, "default", "triggerElement"),
-        }}
-      </Container>
-    );
   },
 });
+
+export default TTooltip;

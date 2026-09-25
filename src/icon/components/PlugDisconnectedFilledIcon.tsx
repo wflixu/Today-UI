@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const PlugDisconnectedFilledIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -14,7 +14,7 @@ const PlugDisconnectedFilledIcon = createSvgIcon({
       ></path>
     </svg>
   ),
-  displayName: "PlugDisconnectedFilledIcon",
+  displayName: 'PlugDisconnectedFilledIcon',
 });
 
 export default PlugDisconnectedFilledIcon;

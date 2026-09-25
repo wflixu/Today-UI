@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+
+  // 唯一需要偏离 oxfmt 默认值的一项。
+  // 代码库现状：单引号 2360 行 vs 双引号 904 行（单引号占 72%）。
+  "singleQuote": true,
+
+  // 排除 Markdown：oxfmt 按「字符数」而非「显示宽度」对齐表格，
+  // 而本仓库文档大量使用中文（双宽字符），格式化后的源码反而错位。
+  // 实测 specs/style.md 会改动 356 行，且对齐结果在源码中并不整齐。
+  "ignorePatterns": ["**/*.md", "**/*.mdx"]
+
+  // 以下沿用默认值，因为它们与现有代码一致：
+  //   semi: true           —— .tsx 137/137、.ts 80/91 都用分号
+  //   printWidth: 100
+  //   tabWidth: 2
+  //   trailingComma: "all"
+  //   insertFinalNewline: true
+  //
+  // 保持默认关闭的项（会引入与格式化无关的改动）：
+  //   sortImports: 关闭
+  //   sortTailwindcss: 关闭
+  //
+  // 注意 sortPackageJson 默认开启，会重排 package.json 的键顺序。
+}

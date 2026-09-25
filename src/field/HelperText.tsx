@@ -1,0 +1,62 @@
+import { computed, defineComponent, SlotsType } from 'vue';
+import { helperTextProps, type HelperTextSlots } from './HelperText.types';
+import { useHelperText } from './useHelperText';
+import { useHelperTextClasses } from './useHelperTextClasses';
+import { renderHelperText } from './renderHelperText';
+
+/**
+ * HelperText component - Provides helper text or validation messages for form controls
+ *
+ * HelperText is typically used with Field component to display additional information
+ * about a form control, such as usage hints or validation messages.
+ *
+ * @example
+ * ```vue
+ * <TField>
+ *   <template #label>
+ *     <TLabel for="password">密码</TLabel>
+ *   </template>
+ *   <TInput id="password" type="password" />
+ *   <template #helperText>
+ *     <THelperText>密码长度至少 8 位，包含字母和数字</THelperText>
+ *   </template>
+ * </TField>
+ * ```
+ */
+export const THelperText = defineComponent({
+  name: 'THelperText',
+
+  props: helperTextProps,
+
+  slots: Object as SlotsType<HelperTextSlots>,
+
+  setup(props, { expose, slots }) {
+    // Compute the complete state by applying hooks
+    const state = computed(() => {
+      const helperTextState = useHelperText(props);
+
+      // 使用纯 CSS 类名 Hook
+      const classes = useHelperTextClasses({
+        disabled: helperTextState.disabled,
+        validationState: helperTextState.validationState,
+      });
+
+      // 应用类名到状态
+      if (helperTextState.root) {
+        helperTextState.root.className = classes;
+      }
+
+      return helperTextState;
+    });
+
+    // Expose the component's public API
+    expose({
+      state,
+    });
+
+    // Render function
+    return () => renderHelperText(state.value, slots);
+  },
+});
+
+export default THelperText;

@@ -1,7 +1,9 @@
 .t-menu {
   padding: 4px;
   width: max-content;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 0 2px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.14);
   overflow-x: hidden;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;

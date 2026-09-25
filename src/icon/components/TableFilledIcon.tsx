@@ -1,4 +1,4 @@
-import createSvgIcon from "../utils/createSvgIcon";
+import createSvgIcon from '../utils/createSvgIcon';
 
 const TableFilledIcon = createSvgIcon({
   svg: ({ classes }) => (
@@ -14,7 +14,7 @@ const TableFilledIcon = createSvgIcon({
       ></path>
     </svg>
   ),
-  displayName: "TableFilledIcon",
+  displayName: 'TableFilledIcon',
 });
 
 export default TableFilledIcon;

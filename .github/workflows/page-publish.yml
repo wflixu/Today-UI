@@ -13,26 +13,23 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          ref: dev
-          fetch-depth: 2
-      - uses: pnpm/action-setup@v2.0.1
+          version: 10
+      - uses: actions/setup-node@v4
         with:
-          version: 8.6.12
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: "pnpm"
+          node-version: 24
+          cache: 'pnpm'
 
       - name: Install
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: pnpm run sb:build
-      - uses: actions/configure-pages@v2
-      - uses: actions/upload-pages-artifact@v1
+        run: pnpm run doc
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: storybook-static/
+          path: .histoire/dist/
       - name: Deploy build page
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4

@@ -1,29 +1,31 @@
-import { computed, defineComponent } from "vue";
-import TIcon from "../icon/Icon";
+import { computed, defineComponent } from 'vue';
+import TIcon from '../icon/Icon';
 
-import { menuProps } from "./props";
-import type { MenuProps } from "./type";
-import "./menu.css";
-import { useMeun } from "./hook";
-import type { IDropdownOption } from "../dropdown/type";
+import { menuProps } from './props';
+import type { MenuProps } from './type';
+import './menu.css';
+import { useMeun } from './hook';
+import type { IMenuOption } from './type';
 
 export default defineComponent({
-  name: "TMenu",
+  name: 'TMenu',
   props: menuProps,
-  emits: ["select"],
+  emits: ['select'],
   setup(props: MenuProps, { emit }) {
     const { hasIcon, hasMarker } = useMeun(props);
     const listClasses = computed(() => {
-      let str = "t-menu-list";
+      let str = 't-menu-list';
       if (hasIcon.value) {
-        str += " has-icon";
+        str += ' has-icon';
       }
       if (hasMarker.value) {
-        str += " has-marker";
+        str += ' has-marker';
       }
     });
-    const onClickItem = (option: IDropdownOption, e: Event) => {
-      emit("select", option, e);
+    // 用 IMenuOption 而非 Dropdown 的派生类型 —— 后者派生自前者，
+    // 从 Menu 反向导入 Dropdown 会形成无谓的依赖方向
+    const onClickItem = (option: IMenuOption, e: Event) => {
+      emit('select', option, e);
     };
     return () => {
       return (
@@ -38,9 +40,7 @@ export default defineComponent({
                     onClick={(e) => onClickItem(option, e)}
                   >
                     {hasMarker.value ? <span class="marker"></span> : null}
-                    {hasIcon.value ? (
-                      <TIcon name={option.icon} class="icon"></TIcon>
-                    ) : null}
+                    {hasIcon.value ? <TIcon name={option.icon} class="icon"></TIcon> : null}
                     <div class="content">{option.label} </div>
                     <div class="secondary">{option.secondary} </div>
                   </div>

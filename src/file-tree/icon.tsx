@@ -1,7 +1,7 @@
-import { defineComponent, toRefs } from "vue";
-import { ChevronRightMedIcon, SpinnerFilledIcon } from "../icon/index";
+import { defineComponent, toRefs } from 'vue';
+import { ChevronRightMedIcon, SpinnerFilledIcon } from '../icon/index';
 export const IconToggle = defineComponent({
-  name: "TreeIconToggle",
+  name: 'TreeIconToggle',
   components: {
     ChevronRightMedIcon,
   },
@@ -24,8 +24,8 @@ export const IconToggle = defineComponent({
         <ChevronRightMedIcon
           size={14}
           style={{
-            transform: expanded.value ? "rotate(90deg)" : "",
-            cursor: "pointer",
+            transform: expanded.value ? 'rotate(90deg)' : '',
+            cursor: 'pointer',
           }}
         />
       );

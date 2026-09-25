@@ -1,0 +1,49 @@
+/* Field component styles */
+
+.t-field {
+  /* Base styles are handled by Griffel */
+  /* These CSS styles handle pseudo-classes and interaction states */
+}
+
+/* Orientation modifiers */
+.t-field.orientation-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacingVerticalS);
+}
+
+.t-field.orientation-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--spacingHorizontalM);
+}
+
+/* Content wrapper */
+.t-field__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Validation message styles */
+.t-field__validation-message {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingHorizontalXS);
+  font-size: var(--fontSizeBase200);
+  margin-top: var(--spacingVerticalXXS);
+}
+
+/* Validation state colors */
+.t-field__validation-message.validation-valid {
+  color: var(--colorPaletteGreenForeground1);
+}
+
+.t-field__validation-message.validation-warning {
+  color: var(--colorPaletteDarkOrangeForeground1);
+}
+
+.t-field__validation-message.validation-invalid {
+  color: var(--colorPaletteRedForeground1);
+}

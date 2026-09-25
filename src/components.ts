@@ -1,23 +1,13 @@
-
-export type { ButtonProps } from "./button/type";
-export { default as Button } from "./button";
-
-export type { IDropdownProps } from "./dropdown";
-export { default as Dropdown } from "./dropdown/";
-
-export type {
-  TreeProps,
-  TreeNodeProps,
-  ITreeNode,
-  IInnerTreeNode,
-} from "./file-tree/";
-export { default as FileTree } from "./file-tree/";
-
-export type { MenuProps } from "./menu/";
-export { default as Menu } from "./menu/";
-
-export type { TooltipProps } from "./tooltip/";
-export { default as Tooltip } from "./tooltip/";
-
-export type { TabsProps } from "./tabs";
-export { default as Tabs } from "./tabs";
+export { default as TButton } from './button';
+export { default as TDropdown } from './dropdown/';
+export { default as TField } from './field';
+export { default as TDialog } from './dialog';
+export { default as TFileTree } from './file-tree/';
+export { default as TIcon } from './icon';
+export { default as TInput } from './input';
+export { default as TLabel } from './label';
+export { default as TMenu } from './menu/';
+export { default as TPopover } from './popover';
+export { default as TPortal } from './portal';
+export { default as TTooltip } from './tooltip/';
+export { default as TTabs, TTablist, TTabPanel } from './tabs';
